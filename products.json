@@ -1,0 +1,67 @@
+[
+  {
+    "id": 13,
+    "name": "Lampă Ciupercă Wabi-Sabi LED",
+    "cat": "iluminat",
+    "catName": "Iluminat",
+    "price": 249,
+    "desc": "Lampă organică în formă de ciupercă, lumină caldă ambientală, reîncărcabilă",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 95,
+    "deCeTrend": "Trend viral masiv pe TikTok și Instagram în 2025-2026, cu milioane de vizualizări sub #mushroomlamp și #aestheticlamp.",
+    "sursa": "TikTok / redesigndaily.com / curatedinterior.com"
+  },
+  {
+    "id": 14,
+    "name": "Vază Ceramică Texturată Japandi",
+    "cat": "ceramica",
+    "catName": "Ceramică",
+    "price": 189,
+    "desc": "Vază artizanală mată, forme organice imperfecte, estetică Japandi minimalistă",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 82,
+    "deCeTrend": "Stilul Japandi domină designul interior în 2025-2026, cu cerere mare pentru ceramică handmade cu textură naturală.",
+    "sursa": "decorilla.com / cjdropshipping.com"
+  },
+  {
+    "id": 15,
+    "name": "Oglindă Wavy cu LED",
+    "cat": "perete",
+    "catName": "Decor perete",
+    "price": 389,
+    "desc": "Oglindă cu ramă ondulată și iluminare LED integrată, design contemporary statement",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 90,
+    "deCeTrend": "Oglinda wavy a devenit senzație TikTok, folosită ca piesă de artă funcțională în livinguri și dormitoare.",
+    "sursa": "homiodecor.com / curatedinterior.com"
+  },
+  {
+    "id": 16,
+    "name": "Difuzor Aromaterapie cu Lumini Ambientale",
+    "cat": "arome",
+    "catName": "Arome",
+    "price": 219,
+    "desc": "Difuzor ultrasonic premium cu lumini LED multicolore, design nordic elegant",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 86,
+    "deCeTrend": "Produsele de aromaterapie cu efect vizual 'flameless candle' sunt în trend viral pe paginile TikTok home.",
+    "sursa": "fastbundle.co / salehoo.com"
+  },
+  {
+    "id": 17,
+    "name": "Coș Decorativ Seagrass Împletit",
+    "cat": "accente",
+    "catName": "Accente",
+    "price": 159,
+    "desc": "Coș din iarbă de mare naturală, textură organică, accent eco-boho pentru orice cameră",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 78,
+    "deCeTrend": "Texturile naturale woven și seagrass sunt trending în 2025-2026 datorită mișcării eco și esteticii 'effortlessly curated'.",
+    "sursa": "redesigndaily.com / syncee.com"
+  }
+]
