@@ -1,0 +1,40 @@
+name: Radar ODAIE
+
+on:
+  schedule:
+    # 06:10 UTC = ~09:10 ora României. Evităm fix ora exactă (cron-ul poate întârzia).
+    - cron: "10 6 * * *"
+  workflow_dispatch:   # buton de pornire manuală din tab-ul Actions
+
+permissions:
+  contents: write       # ca să poată salva products.json înapoi în repo
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ia codul
+        uses: actions/checkout@v4
+
+      - name: Pregătește Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalează dependențele
+        run: pip install -r requirements.txt
+
+      - name: Rulează robotul
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python agent.py
+
+      - name: Salvează products.json
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add products.json
+          git commit -m "Radar: produse $(date -u +%F)" || echo "Nimic de comis"
+          git push
