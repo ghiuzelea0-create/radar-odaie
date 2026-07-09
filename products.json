@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă LED Sunset Proiecție Gradient",
+    "name": "Lampă LED Sunset cu Efect Rotativ",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Lampă ce proiectează lumină caldă tip apus, transformă instant orice cameră.",
+    "desc": "Lampă proiector cu gradient portocaliu, transformă instant atmosfera camerei.",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 92,
-    "deCeTrend": "Virală pe TikTok și Instagram datorită efectului vizual dramatic de apus de soare în cameră.",
-    "sursa": "ichiba.net / shiptothemoon.com"
+    "deCeTrend": "Virală pe TikTok și Instagram datorită efectului vizual spectaculos de apus de soare în orice cameră.",
+    "sursa": "ichiba.net / sellthetrend.com"
   },
   {
     "id": 14,
-    "name": "Difuzor Aromă Rain Cloud cu LED",
+    "name": "Difuzor Aromaterapie Rain Cloud",
     "cat": "arome",
     "catName": "Arome",
     "price": 229,
-    "desc": "Difuzor umidificator design nor cu picături, 7 moduri lumină ambientală.",
+    "desc": "Difuzor cu efect de ploaie, lumini LED și umidificator, design micro-peisaj.",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 89,
-    "deCeTrend": "Estetica calmantă și efectul vizual unic îl fac ideal pentru conținut viral pe TikTok și Instagram.",
-    "sursa": "tradelle.io / sellthetrend.com"
+    "deCeTrend": "Design instagramabil cu efect de picături de apă viral pe TikTok, combinând wellness și estetică.",
+    "sursa": "tradelle.io / accio.com"
   },
   {
     "id": 15,
-    "name": "Vază Ceramică Minimalistă Japandi",
-    "cat": "ceramica",
-    "catName": "Ceramică",
-    "price": 149,
-    "desc": "Vază ceramică stil Japandi, finisaj mat, disponibilă în culori neutre premium.",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 78,
-    "deCeTrend": "Stilul Japandi domină designul interior 2025-2026, cu cerere masivă pe Pinterest și Instagram.",
-    "sursa": "autods.com / ichiba.net"
-  },
-  {
-    "id": 16,
-    "name": "Lampă Ceară Parfumată Candle Warmer",
-    "cat": "arome",
-    "catName": "Arome",
-    "price": 199,
-    "desc": "Lampă elegantă care topește ceara parfumată fără flacără, design premium.",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 91,
-    "deCeTrend": "Senzație virală TikTok 2025-2026 ca alternativă sigură și estetică la lumânările tradiționale.",
-    "sursa": "eprolo.com / cjdropshipping.com"
-  },
-  {
-    "id": 17,
-    "name": "Oglindă Perete cu Margine Pufoasă Fluffy",
+    "name": "Semn LED Neon Personalizat",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 259,
-    "desc": "Oglindă decorativă rotundă cu ramă pufoasă, estetică aesthetic-room TikTok.",
+    "price": 349,
+    "desc": "Panou neon LED personalizabil cu mesaj, montabil pe perete, glow pastel.",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Prezentă masiv pe TikTok aesthetic rooms, generând vânzări impulsive prin conținut vizual captivant.",
-    "sursa": "fastbundle.co / sellthetrend.com"
+    "deCeTrend": "Tendința 2025-2026 spre decor personalizat și iluminat statement impulsionează cererea masivă.",
+    "sursa": "sosugary.com / neondesigns.shop"
+  },
+  {
+    "id": 16,
+    "name": "Set Fețe de Pernă Boucle Texturat",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 129,
+    "desc": "Fețe de pernă premium din boucle texturat, nuanțe neutre, stil organic-modern.",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 78,
+    "deCeTrend": "",
+    "sursa": "cjdropshipping.com / tiktok.com"
+  },
+  {
+    "id": 17,
+    "name": "Vas Ceramic Vază Minimalist Wabi-Sabi",
+    "cat": "ceramica",
+    "catName": "Ceramică",
+    "price": 159,
+    "desc": "Vază ceramică artizanală, formă organică, glazură mată, estetică japoneză wabi-sabi.",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 76,
+    "deCeTrend": "Sub-nișa Scandinavian-minimalist și wabi-sabi explodează pe Pinterest și Instagram în 2025-2026.",
+    "sursa": "cjdropshipping.com / sellthetrend.com"
   }
 ]
