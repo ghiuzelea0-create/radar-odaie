@@ -211,6 +211,8 @@
   .card-media{position:relative;aspect-ratio:4/5;overflow:hidden;display:grid;place-items:center}
   .card-media .obj{width:64%;height:64%;transition:transform .5s}
   .card:hover .card-media .obj{transform:scale(1.06) translateY(-4px)}
+  .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .card:hover .card-media img{transform:scale(1.06)}
   .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(240,234,224,.5);font-family:'Inter'}
   .tag{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--brass);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:30px;border:1px solid var(--line-strong)}
   .quick{
@@ -281,6 +283,8 @@
   .citem{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
   .citem-media{width:66px;height:80px;border:1px solid var(--line);border-radius:var(--radius);display:grid;place-items:center;flex-shrink:0;background:var(--ink-2)}
   .citem-media .obj{width:70%;height:70%}
+  .citem-media{overflow:hidden;position:relative}
+  .citem-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .citem-info{flex:1;min-width:0}
   .citem-info .nm{font-family:'Fraunces',serif;font-size:16px;margin-bottom:3px}
   .citem-info .pr{font-size:13px;color:var(--brass)}
@@ -604,6 +608,14 @@ document.getElementById('filters').innerHTML=filters.map((f,i)=>
 
 function tintBg(t){return `linear-gradient(155deg, ${tint[t]}22, ${tint[t]}0d)`;}
 function fmt(n){return n.toLocaleString('ro-RO')+' lei';}
+function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+function hasRealImg(p){return p.img && p.img!=='LINK_POZA' && /^https?:\/\//.test(p.img);}
+/* SVG-ul e mereu randat ca fundal; poza reală (dacă există și se încarcă) îl acoperă. */
+function media(p){
+  const svg=obj(p.obj,tint[p.tint]);
+  if(!hasRealImg(p)) return svg;
+  return svg+`<img src="${escAttr(p.img)}" alt="${escAttr(p.name)}" loading="lazy" onerror="this.remove()">`;
+}
 
 function renderGrid(filter='all'){
   const list=filter==='all'?products:products.filter(p=>p.cat===filter);
@@ -612,7 +624,7 @@ function renderGrid(filter='all'){
       <div class="card-media" style="background:${tintBg(p.tint)}">
         <span class="card-idx">${String(i+1).padStart(2,'0')}</span>
         ${p.tag?`<span class="tag">${p.tag}</span>`:''}
-        ${obj(p.obj,tint[p.tint])}
+        ${media(p)}
         <button class="quick" data-add="${p.id}">Adaugă în coș</button>
       </div>
       <div class="card-body">
@@ -659,7 +671,8 @@ async function loadRadar(){
         obj:st.obj, tint:st.tint,
         price:Number(it.price)||0,
         desc:it.desc||'',
-        tag:it.tag||'Trending'
+        tag:it.tag||'Trending',
+        img:it.img||''
       });
       added++;
     });
@@ -713,7 +726,7 @@ function renderCart(){
   wrap.innerHTML=ids.map(id=>{
     const p=products.find(x=>x.id==id),q=cart[id];
     return `<div class="citem">
-      <div class="citem-media" style="background:${tintBg(p.tint)}">${obj(p.obj,tint[p.tint])}</div>
+      <div class="citem-media" style="background:${tintBg(p.tint)}">${media(p)}</div>
       <div class="citem-info">
         <div class="nm">${p.name}</div>
         <div class="pr">${fmt(p.price)}</div>
