@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ghiuzelea0-create.github.io/radar-odaie/sitemap.xml
