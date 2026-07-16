@@ -2,6 +2,20 @@
 
 Materiale gata de folosit pentru promovarea site-ului pe rețele sociale. Site live (după activarea GitHub Pages): `https://ghiuzelea0-create.github.io/radar-odaie/`
 
+## Grafică gata de postat
+
+În `assets/social/` — imagini pătrate 1080×1080, în stilul brandului, gata de încărcat direct pe Instagram/Facebook:
+
+- `ig-1-lansare.png` — anunț de lansare + codul BUNVENIT10
+- `ig-2-produs.png` — highlight produs trending (Vază Ceramică Organică Mată)
+- `ig-3-brand.png` — citat de brand („Nu vindem decor. Compunem atmosferă.”)
+
+Pentru produse noi apărute prin radar (`products.json`), poți genera variante similare cerându-mi oricând o nouă imagine pentru un produs anume.
+
+## Template email de lansare
+
+`assets/email-lansare.html` — un email HTML de sine stătător (compatibil cu clienți de mail, layout pe tabele), gata de copiat într-un serviciu de newsletter (Mailchimp, Brevo etc.) sau de trimis direct către cunoștințe/prieteni ca anunț de lansare.
+
 ## Bio scurtă (Instagram / TikTok / Facebook)
 
 > ODAIE — obiecte unice pentru casă

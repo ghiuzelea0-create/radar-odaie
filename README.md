@@ -10,10 +10,16 @@ Site vitrină pentru un magazin de decorațiuni: ceramică, iluminat, textile ș
 - `products.json` — produsele "trending" adăugate automat de robot, citite de site prin `fetch`
 - `agent.py` — robotul zilnic de product research (caută pe web, scrie `products.json`, trimite alertă Telegram)
 - `assets/og-image.png` — imaginea de previzualizare pentru distribuire pe rețele sociale (Open Graph)
+- `assets/social/` — grafică 1080×1080 gata de postat pe Instagram/Facebook
+- `assets/email-lansare.html` — template de email pentru anunțul de lansare
 - `robots.txt`, `sitemap.xml` — indexare pentru motoare de căutare
 - `.github/workflows/radar.yml` — rulează `agent.py` zilnic
 - `.github/workflows/deploy-pages.yml` — publică site-ul pe GitHub Pages la fiecare push pe `main`
 - `PROMOVARE.md` — caption-uri, bio și hashtag-uri gata de folosit pentru rețele sociale
+
+## Poze reale de produs
+
+Fiecare produs poate avea o poză reală: în `products.json`, completează câmpul `img` cu un URL `https://...` valid (în loc de `LINK_POZA`). Site-ul o afișează automat peste ilustrația vectorială; dacă link-ul nu se încarcă, revine la ilustrație.
 
 ## Activare GitHub Pages (o singură dată)
 
