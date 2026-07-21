@@ -27,8 +27,8 @@
 <meta name="twitter:description" content="Piese alese cu grijă pentru casă — ceramică, iluminat, textile și accente care transformă o încăpere obișnuită într-un loc al tău.">
 <meta name="twitter:image" content="https://ghiuzelea0-create.github.io/radar-odaie/assets/og-image.png">
 
-<meta name="theme-color" content="#15120F">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%2315120F'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' fill='%23C9A56A' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#F7F2E7">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%232A2620'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' fill='%23B5815C' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,20 +55,20 @@
 </script>
 <style>
   :root{
-    --ink:#15120F;
-    --ink-2:#1D1916;
-    --ink-3:#272220;
-    --line:rgba(201,165,106,.18);
-    --line-strong:rgba(201,165,106,.35);
-    --paper:#F0EAE0;
-    --muted:#A39A8E;
-    --muted-2:#7C746A;
-    --brass:#C9A56A;
-    --brass-bright:#E0C28A;
-    --sage:#7B8770;
-    --clay:#B07E63;
-    --slate:#67757F;
-    --plum:#7A6675;
+    --ink:#F7F2E7;
+    --ink-2:#EFE7D6;
+    --ink-3:#E7DCC5;
+    --line:rgba(42,38,32,.10);
+    --line-strong:rgba(42,38,32,.22);
+    --paper:#2A2620;
+    --muted:#5C5346;
+    --muted-2:#8A8071;
+    --brass:#B5815C;
+    --brass-bright:#96683F;
+    --sage:#748268;
+    --clay:#A56B4E;
+    --slate:#5F6E78;
+    --plum:#75606B;
     --radius:2px;
     --maxw:1240px;
   }
@@ -90,6 +90,7 @@
   :focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
   .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:500}
+  .eyebrow .idx{color:var(--muted-2);font-weight:400;letter-spacing:.1em;margin-right:12px;font-variant-numeric:tabular-nums}
 
   /* Announcement */
   .announce{
@@ -102,7 +103,7 @@
   /* Header */
   header{
     position:sticky;top:0;z-index:60;
-    background:rgba(21,18,15,.82);backdrop-filter:blur(14px);
+    background:rgba(247,242,231,.82);backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
@@ -127,6 +128,12 @@
 
   /* Hero */
   .hero{position:relative;padding:78px 0 90px;overflow:hidden}
+  .scroll-cue{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted-2);font-size:10px;letter-spacing:.28em;text-transform:uppercase;transition:color .25s}
+  .scroll-cue:hover{color:var(--brass)}
+  .scroll-cue .line{width:1px;height:34px;background:var(--line-strong);position:relative;overflow:hidden}
+  .scroll-cue .line::after{content:"";position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--brass);animation:scrollline 2.4s ease-in-out infinite}
+  @keyframes scrollline{0%{top:-100%}55%{top:100%}100%{top:100%}}
+  @media(max-width:720px){.scroll-cue{display:none}}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
   .hero h1{font-size:clamp(44px,7vw,96px);letter-spacing:-.01em}
   .hero h1 em{font-style:italic;color:var(--brass)}
@@ -145,11 +152,11 @@
   .stage{position:relative;aspect-ratio:1/1;max-width:480px;margin-left:auto}
   .stage-frame{
     position:absolute;inset:0;border:1px solid var(--line-strong);border-radius:var(--radius);
-    background:radial-gradient(120% 90% at 50% 18%,#2A2420 0%,#191512 70%);
+    background:radial-gradient(120% 90% at 50% 18%,#FFFDF8 0%,#EAE0C9 70%);
     display:grid;place-items:center;overflow:hidden;
   }
   .stage-frame::before{content:"";position:absolute;top:-30%;left:50%;width:75%;height:75%;transform:translateX(-50%);
-    background:radial-gradient(circle,rgba(224,194,138,.22),transparent 65%);filter:blur(10px)}
+    background:radial-gradient(circle,rgba(181,129,92,.28),transparent 65%);filter:blur(10px)}
   .seal{
     position:absolute;right:-26px;bottom:-26px;width:128px;height:128px;z-index:3;
     animation:spin 26s linear infinite;
@@ -207,18 +214,19 @@
     background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);
     overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;display:flex;flex-direction:column;position:relative
   }
-  .card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 50px -24px rgba(0,0,0,.7)}
+  .card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 50px -24px rgba(42,38,32,.28)}
   .card-media{position:relative;aspect-ratio:4/5;overflow:hidden;display:grid;place-items:center}
   .card-media .obj{width:64%;height:64%;transition:transform .5s}
   .card:hover .card-media .obj{transform:scale(1.06) translateY(-4px)}
   .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
   .card:hover .card-media img{transform:scale(1.06)}
-  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(240,234,224,.5);font-family:'Inter'}
+  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(42,38,32,.4);font-family:'Inter'}
   .tag{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--brass);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:30px;border:1px solid var(--line-strong)}
   .quick{
-    position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink);color:var(--paper);
+    position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink-3);color:var(--paper);
     border:1px solid var(--line-strong);padding:12px;border-radius:var(--radius);font-size:12px;letter-spacing:.12em;
-    text-transform:uppercase;opacity:0;transform:translateY(10px);transition:all .32s;font-weight:500
+    text-transform:uppercase;opacity:0;transform:translateY(10px);transition:all .32s;font-weight:500;
+    box-shadow:0 8px 24px -8px rgba(42,38,32,.25);
   }
   .quick:hover{background:var(--brass);color:var(--ink);border-color:var(--brass)}
   .card:hover .quick{opacity:1;transform:translateY(0)}
@@ -234,8 +242,8 @@
   .editorial{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
   .ed-visual{aspect-ratio:5/4;border:1px solid var(--line-strong);border-radius:var(--radius);
-    background:radial-gradient(130% 100% at 30% 20%,#2C2622,#181410);display:grid;place-items:center;position:relative;overflow:hidden}
-  .ed-visual::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 80%,rgba(224,194,138,.14),transparent 55%)}
+    background:radial-gradient(130% 100% at 30% 20%,#FFFDF8,#E7DCC5);display:grid;place-items:center;position:relative;overflow:hidden}
+  .ed-visual::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 80%,rgba(181,129,92,.20),transparent 55%)}
   .ed-text h2{font-size:clamp(28px,4vw,44px);margin:18px 0 20px}
   .ed-text p{color:var(--muted);margin-bottom:16px}
 
@@ -269,12 +277,12 @@
   .foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted-2);font-size:12px;letter-spacing:.04em}
 
   /* Cart drawer */
-  .overlay{position:fixed;inset:0;background:rgba(10,8,6,.6);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.3s;z-index:80}
+  .overlay{position:fixed;inset:0;background:rgba(30,26,20,.45);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.3s;z-index:80}
   .overlay.open{opacity:1;visibility:visible}
   .drawer{
-    position:fixed;top:0;right:0;height:100%;width:420px;max-width:90vw;background:var(--ink);
+    position:fixed;top:0;right:0;height:100%;width:420px;max-width:90vw;background:var(--ink-2);
     border-left:1px solid var(--line-strong);z-index:90;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
-    display:flex;flex-direction:column
+    display:flex;flex-direction:column;box-shadow:-30px 0 60px -20px rgba(42,38,32,.25);
   }
   .drawer.open{transform:translateX(0)}
   .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:26px;border-bottom:1px solid var(--line)}
@@ -369,9 +377,9 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow">Atelier de obiecte · Ediția de toamnă</span>
+      <span class="eyebrow">Atelier de obiecte handmade · Colecție 2026</span>
       <h1 style="margin-top:22px">Fiecare odaie<br>merită un <em>obiect</em><br>care contează.</h1>
-      <p class="lead">Piese alese cu grijă pentru casă — ceramică, iluminat, textile și accente care transformă o încăpere obișnuită într-un loc al tău.</p>
+      <p class="lead">Fiecare piesă începe cu o idee. Lucrată manual din lut, lemn și fir, e finisată cu grijă pentru a deveni mai mult decât un decor.</p>
       <div class="hero-actions">
         <a href="#colectie" class="btn btn-primary">Vezi colecția</a>
         <a href="#editorial" class="btn btn-ghost">Povestea noastră</a>
@@ -382,12 +390,13 @@
         <div class="stage-frame" id="heroObj"></div>
         <svg class="seal" viewBox="0 0 100 100">
           <defs><path id="circ" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
-          <text><textPath href="#circ" startOffset="0">· obiecte alese cu grijă · pentru casa ta · din 2019 </textPath></text>
+          <text><textPath href="#circ" startOffset="0">· lucrat manual · pentru casa ta · din 2019 </textPath></text>
         </svg>
         <div class="seal-core" style="right:-26px;bottom:-26px;width:128px;height:128px;position:absolute"><span>O</span></div>
       </div>
     </div>
   </div>
+  <a href="#categorii" class="scroll-cue"><span>Descoperă</span><span class="line"></span></a>
 </section>
 
 <!-- MARQUEE -->
@@ -414,7 +423,7 @@
   <div class="wrap">
     <div class="head">
       <div>
-        <span class="eyebrow">Răsfoiește</span>
+        <span class="eyebrow"><b class="idx">01</b>Răsfoiește</span>
         <h2 style="margin-top:12px">Categorii</h2>
       </div>
       <p>Tot ce ține o casă caldă, organizat pe șase familii de obiecte.</p>
@@ -428,7 +437,7 @@
   <div class="wrap">
     <div class="head">
       <div>
-        <span class="eyebrow">Selecția curatorului</span>
+        <span class="eyebrow"><b class="idx">02</b>Selecția curatorului</span>
         <h2 style="margin-top:12px">Colecția</h2>
       </div>
       <p>Fiecare piesă e aleasă pentru materialitate, formă și felul în care îmbătrânește frumos.</p>
@@ -443,7 +452,7 @@
   <div class="wrap ed-grid">
     <div class="ed-visual" id="edObj"></div>
     <div class="ed-text">
-      <span class="eyebrow">Povestea</span>
+      <span class="eyebrow"><b class="idx">03</b>Povestea</span>
       <h2>Nu vindem decor.<br>Compunem atmosferă.</h2>
       <p>ODAIE a pornit dintr-o idee simplă: o casă nu se umple cu lucruri, ci se construiește cu obiecte care au sens. Alegem fiecare piesă personal — testăm materialul, ținem vaza în mână, aprindem lampa.</p>
       <p>Lucrăm cu meșteri și producători mici, livrăm direct la tine și ținem prețurile cinstite pentru că tăiem intermediarii, nu calitatea.</p>
@@ -473,8 +482,8 @@
       </div>
       <div class="benefit">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4.5"/></svg>
-        <h3>Alese personal</h3>
-        <p>Curatoriem fiecare obiect, fără excepție.</p>
+        <h3>Lucrate manual</h3>
+        <p>Meșteri și ateliere mici, materiale naturale.</p>
       </div>
     </div>
   </div>
@@ -484,7 +493,7 @@
 <section class="block" style="padding-top:0">
   <div class="wrap">
     <div class="news">
-      <span class="eyebrow">Rămâi aproape</span>
+      <span class="eyebrow"><b class="idx">04</b>Rămâi aproape</span>
       <h2 style="margin-top:14px">Obiecte noi, înaintea tuturor</h2>
       <p>Lansări, ediții limitate și o reducere de 10% la prima comandă. Fără spam — promitem.</p>
       <div class="news-form">
@@ -545,7 +554,7 @@
 
 <script>
 /* ---------- Product illustrations (inline SVG, self-contained) ---------- */
-const tint = {sage:'#7B8770',clay:'#B07E63',slate:'#67757F',plum:'#7A6675',brass:'#C9A56A'};
+const tint = {sage:'#748268',clay:'#A56B4E',slate:'#5F6E78',plum:'#75606B',brass:'#B5815C'};
 function obj(type,c){
   const s='stroke="'+c+'" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"';
   const fill='fill="'+c+'" opacity=".12"';
