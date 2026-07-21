@@ -27,8 +27,8 @@
 <meta name="twitter:description" content="Obiecte lucrate manual pentru casă — ceramică, iluminat, textile și accente care transformă o încăpere obișnuită într-un loc al tău.">
 <meta name="twitter:image" content="https://ghiuzelea0-create.github.io/radar-odaie/assets/og-image.png">
 
-<meta name="theme-color" content="#F7F2E7">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%232A2620'/%3E%3Ctext x='50' y='66' font-family='Georgia,serif' font-size='50' fill='%23B5815C' text-anchor='middle'%3E&amp;%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#FDFCFB">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%23313131'/%3E%3Ctext x='50' y='66' font-family='Georgia,serif' font-size='50' fill='%23B5815C' text-anchor='middle'%3E&amp;%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,16 +55,16 @@
 </script>
 <style>
   :root{
-    --ink:#F7F2E7;
-    --ink-2:#EFE7D6;
-    --ink-3:#E7DCC5;
-    --line:rgba(42,38,32,.10);
-    --line-strong:rgba(42,38,32,.22);
-    --paper:#2A2620;
-    --muted:#5C5346;
-    --muted-2:#8A8071;
+    --ink:#FDFCFB;
+    --ink-2:#F5F4F2;
+    --ink-3:#ECEAE6;
+    --line:rgba(49,49,49,.10);
+    --line-strong:rgba(49,49,49,.20);
+    --paper:#313131;
+    --muted:#676767;
+    --muted-2:#9B9895;
     --brass:#B5815C;
-    --brass-bright:#96683F;
+    --brass-bright:#9A623B;
     --sage:#748268;
     --clay:#A56B4E;
     --slate:#5F6E78;
@@ -103,7 +103,7 @@
   /* Header */
   header{
     position:sticky;top:0;z-index:60;
-    background:rgba(247,242,231,.82);backdrop-filter:blur(14px);
+    background:rgba(253,252,251,.82);backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
@@ -152,11 +152,11 @@
   .stage{position:relative;aspect-ratio:1/1;max-width:480px;margin-left:auto}
   .stage-frame{
     position:absolute;inset:0;border:1px solid var(--line-strong);border-radius:var(--radius);
-    background:radial-gradient(120% 90% at 50% 18%,#FFFDF8 0%,#EAE0C9 70%);
+    background:radial-gradient(120% 90% at 50% 18%,#FFFFFF 0%,#ECEAE6 72%);
     display:grid;place-items:center;overflow:hidden;
   }
   .stage-frame::before{content:"";position:absolute;top:-30%;left:50%;width:75%;height:75%;transform:translateX(-50%);
-    background:radial-gradient(circle,rgba(181,129,92,.28),transparent 65%);filter:blur(10px)}
+    background:radial-gradient(circle,rgba(181,129,92,.22),transparent 65%);filter:blur(10px)}
   .seal{
     position:absolute;right:-26px;bottom:-26px;width:128px;height:128px;z-index:3;
     animation:spin 26s linear infinite;
@@ -174,12 +174,12 @@
   @keyframes slide{to{transform:translateX(-50%)}}
 
   /* Campaign / launch offer */
-  .campaign{background:linear-gradient(155deg,rgba(201,165,106,.14),rgba(201,165,106,.03));border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:64px 0}
+  .campaign{background:linear-gradient(155deg,rgba(181,129,92,.10),rgba(181,129,92,.02));border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:64px 0}
   .campaign-inner{text-align:center;max-width:640px;margin:0 auto}
   .campaign-inner h2{font-size:clamp(28px,4.5vw,46px);margin:16px 0 14px}
   .campaign-inner p{color:var(--muted);margin-bottom:24px}
   .campaign-code{display:inline-flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:21px;letter-spacing:.08em;color:var(--brass);border:1px dashed var(--line-strong);padding:12px 26px;border-radius:var(--radius);margin-bottom:26px;transition:all .25s}
-  .campaign-code:hover{border-color:var(--brass);background:rgba(201,165,106,.08)}
+  .campaign-code:hover{border-color:var(--brass);background:rgba(181,129,92,.07)}
   .campaign-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
   /* Section base */
@@ -220,19 +220,19 @@
     background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);
     overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;display:flex;flex-direction:column;position:relative
   }
-  .card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 50px -24px rgba(42,38,32,.28)}
+  .card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 24px 50px -24px rgba(49,49,49,.16)}
   .card-media{position:relative;aspect-ratio:4/5;overflow:hidden;display:grid;place-items:center}
   .card-media .obj{width:64%;height:64%;transition:transform .5s}
   .card:hover .card-media .obj{transform:scale(1.06) translateY(-4px)}
   .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s;z-index:1}
   .card:hover .card-media img{transform:scale(1.06)}
-  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(42,38,32,.4);font-family:'Inter';z-index:2}
+  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(49,49,49,.42);font-family:'Inter';z-index:2}
   .tag{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--brass);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:30px;border:1px solid var(--line-strong);z-index:2}
   .quick{
     position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink-3);color:var(--paper);
     border:1px solid var(--line-strong);padding:12px;border-radius:var(--radius);font-size:12px;letter-spacing:.12em;
     text-transform:uppercase;opacity:0;transform:translateY(10px);transition:all .32s;font-weight:500;
-    box-shadow:0 8px 24px -8px rgba(42,38,32,.25);z-index:2;
+    box-shadow:0 8px 24px -8px rgba(49,49,49,.18);z-index:2;
   }
   .quick:hover{background:var(--brass);color:var(--ink);border-color:var(--brass)}
   .card:hover .quick{opacity:1;transform:translateY(0)}
@@ -248,7 +248,7 @@
   .editorial{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
   .ed-visual{aspect-ratio:5/4;border:1px solid var(--line-strong);border-radius:var(--radius);
-    background:radial-gradient(130% 100% at 30% 20%,#FFFDF8,#E7DCC5);display:grid;place-items:center;position:relative;overflow:hidden}
+    background:radial-gradient(130% 100% at 30% 20%,#FFFFFF,#ECEAE6);display:grid;place-items:center;position:relative;overflow:hidden}
   .ed-visual::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 80%,rgba(181,129,92,.20),transparent 55%)}
   .ed-text h2{font-size:clamp(28px,4vw,44px);margin:18px 0 20px}
   .ed-text p{color:var(--muted);margin-bottom:16px}
@@ -283,12 +283,12 @@
   .foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted-2);font-size:12px;letter-spacing:.04em}
 
   /* Cart drawer */
-  .overlay{position:fixed;inset:0;background:rgba(30,26,20,.45);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.3s;z-index:80}
+  .overlay{position:fixed;inset:0;background:rgba(24,24,24,.42);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.3s;z-index:80}
   .overlay.open{opacity:1;visibility:visible}
   .drawer{
     position:fixed;top:0;right:0;height:100%;width:420px;max-width:90vw;background:var(--ink-2);
     border-left:1px solid var(--line-strong);z-index:90;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
-    display:flex;flex-direction:column;box-shadow:-30px 0 60px -20px rgba(42,38,32,.25);
+    display:flex;flex-direction:column;box-shadow:-30px 0 60px -20px rgba(49,49,49,.18);
   }
   .drawer.open{transform:translateX(0)}
   .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:26px;border-bottom:1px solid var(--line)}
