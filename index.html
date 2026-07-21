@@ -224,15 +224,15 @@
   .card-media{position:relative;aspect-ratio:4/5;overflow:hidden;display:grid;place-items:center}
   .card-media .obj{width:64%;height:64%;transition:transform .5s}
   .card:hover .card-media .obj{transform:scale(1.06) translateY(-4px)}
-  .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s;z-index:1}
   .card:hover .card-media img{transform:scale(1.06)}
-  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(42,38,32,.4);font-family:'Inter'}
-  .tag{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--brass);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:30px;border:1px solid var(--line-strong)}
+  .card-idx{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.1em;color:rgba(42,38,32,.4);font-family:'Inter';z-index:2}
+  .tag{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--brass);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:30px;border:1px solid var(--line-strong);z-index:2}
   .quick{
     position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink-3);color:var(--paper);
     border:1px solid var(--line-strong);padding:12px;border-radius:var(--radius);font-size:12px;letter-spacing:.12em;
     text-transform:uppercase;opacity:0;transform:translateY(10px);transition:all .32s;font-weight:500;
-    box-shadow:0 8px 24px -8px rgba(42,38,32,.25);
+    box-shadow:0 8px 24px -8px rgba(42,38,32,.25);z-index:2;
   }
   .quick:hover{background:var(--brass);color:var(--ink);border-color:var(--brass)}
   .card:hover .quick{opacity:1;transform:translateY(0)}
@@ -591,18 +591,18 @@ const categories=[
   {id:'accente',name:'Accente',icon:'vas'},
 ];
 const products=[
-  {id:1,name:'Vază Argilă',cat:'ceramica',catName:'Ceramică',obj:'vaza',tint:'clay',price:149,old:189,desc:'Lut nesmălțuit, formă organică',tag:'Nou'},
-  {id:2,name:'Lampă Lună',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'brass',price:289,desc:'Abajur de in, lumină caldă'},
-  {id:3,name:'Oglindă Arcadă',cat:'perete',catName:'Decor perete',obj:'oglinda',tint:'brass',price:359,old:420,desc:'Ramă subțire, finisaj alamă',tag:'-15%'},
-  {id:4,name:'Set Lumânări Fum',cat:'arome',catName:'Arome',obj:'lumanare',tint:'sage',price:89,desc:'Ceară de soia, ardere 40h'},
-  {id:5,name:'Pernă Catifea',cat:'textile',catName:'Textile',obj:'perna',tint:'plum',price:119,desc:'45×45 cm, umplutură premium'},
-  {id:6,name:'Tablou Linie',cat:'perete',catName:'Decor perete',obj:'tablou',tint:'slate',price:199,desc:'Print pe hârtie cotton, A2'},
-  {id:7,name:'Suport Plante',cat:'accente',catName:'Accente',obj:'suport',tint:'sage',price:169,desc:'Ceramică & lemn de fag',tag:'Popular'},
-  {id:8,name:'Bol Decorativ',cat:'ceramica',catName:'Ceramică',obj:'vas',tint:'clay',price:99,desc:'Glazură reactivă, unicat'},
-  {id:9,name:'Ramă Foto Travertin',cat:'perete',catName:'Decor perete',obj:'rama',tint:'brass',price:79,desc:'Piatră naturală, 13×18'},
-  {id:10,name:'Difuzor Arome',cat:'arome',catName:'Arome',obj:'difuzor',tint:'sage',price:139,desc:'Ulei esențial, smochin & cedru'},
-  {id:11,name:'Pătură Lână',cat:'textile',catName:'Textile',obj:'patura',tint:'clay',price:249,old:299,desc:'Lână merinos, tricotaj gros',tag:'-17%'},
-  {id:12,name:'Ceas Minimal',cat:'accente',catName:'Accente',obj:'ceas',tint:'slate',price:179,desc:'Mecanism silențios, Ø30 cm'},
+  {id:1,name:'Vază Argilă',cat:'ceramica',catName:'Ceramică',obj:'vaza',tint:'clay',price:149,old:189,desc:'Lut nesmălțuit, formă organică',tag:'Nou',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/vaza-argila.jpg'},
+  {id:2,name:'Lampă Lună',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'brass',price:289,desc:'Abajur de in, lumină caldă',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/lampa-luna.jpg'},
+  {id:3,name:'Oglindă Arcadă',cat:'perete',catName:'Decor perete',obj:'oglinda',tint:'brass',price:359,old:420,desc:'Ramă subțire, finisaj alamă',tag:'-15%',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/oglinda-arcada.jpg'},
+  {id:4,name:'Set Lumânări Fum',cat:'arome',catName:'Arome',obj:'lumanare',tint:'sage',price:89,desc:'Ceară de soia, ardere 40h',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/lumanari-fum.jpg'},
+  {id:5,name:'Pernă Catifea',cat:'textile',catName:'Textile',obj:'perna',tint:'plum',price:119,desc:'45×45 cm, umplutură premium',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/perna-catifea.jpg'},
+  {id:6,name:'Tablou Linie',cat:'perete',catName:'Decor perete',obj:'tablou',tint:'slate',price:199,desc:'Print pe hârtie cotton, A2',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/tablou-linie.jpg'},
+  {id:7,name:'Suport Plante',cat:'accente',catName:'Accente',obj:'suport',tint:'sage',price:169,desc:'Ceramică & lemn de fag',tag:'Popular',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/suport-plante.jpg'},
+  {id:8,name:'Bol Decorativ',cat:'ceramica',catName:'Ceramică',obj:'vas',tint:'clay',price:99,desc:'Glazură reactivă, unicat',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/bol-decorativ.jpg'},
+  {id:9,name:'Ramă Foto Travertin',cat:'perete',catName:'Decor perete',obj:'rama',tint:'brass',price:79,desc:'Piatră naturală, 13×18',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/rama-travertin.jpg'},
+  {id:10,name:'Difuzor Arome',cat:'arome',catName:'Arome',obj:'difuzor',tint:'sage',price:139,desc:'Ulei esențial, smochin & cedru',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/difuzor-arome.jpg'},
+  {id:11,name:'Pătură Lână',cat:'textile',catName:'Textile',obj:'patura',tint:'clay',price:249,old:299,desc:'Lână merinos, tricotaj gros',tag:'-17%',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/patura-lana.jpg'},
+  {id:12,name:'Ceas Minimal',cat:'accente',catName:'Accente',obj:'ceas',tint:'slate',price:179,desc:'Mecanism silențios, Ø30 cm',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/ceas-minimal.jpg'},
   {id:18,name:'Lampă Podea Esență — Nuc',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'clay',price:520,desc:'Bază masivă din lemn de nuc, lucrată manual',tag:'Nou',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/lampa-esenta-nuc.jpg'},
   {id:19,name:'Lampă Podea Esență — Cilindrică',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'slate',price:490,desc:'Bază masivă din lemn, finisaj negru mat',tag:'Nou',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/lampa-esenta-cilindric.jpg'},
   {id:20,name:'Lampă Podea Esență — Trapez',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'slate',price:540,desc:'Bază masivă, LED liniar integrat',tag:'Nou',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/lampa-esenta-trapez.jpg'},
