@@ -7,8 +7,9 @@ Materiale gata de folosit pentru promovarea site-ului pe rețele sociale. Site l
 În `assets/social/` — imagini pătrate 1080×1080, gata de încărcat direct pe Instagram/Facebook:
 
 - `ig-1-lansare.png` — anunț de lansare + codul BUNVENIT10
-- `ig-2-produs.png` — highlight produs trending (Vază Ceramică Organică Mată)
+- `ig-2-produs.png` — highlight de produs din colecție (Vază Argilă, cu ilustrația reală)
 - `ig-3-brand.png` — citat de brand („Nu vindem decor. Compunem atmosferă.”)
+- `ig-4-colectie.png` — grilă cu patru produse din colecție (Vază Argilă, Lampă Lună, Oglindă Arcadă, Pernă Catifea), cu prețuri
 
 Pentru produse noi apărute prin radar (`products.json`), poți genera variante similare cerându-mi oricând o nouă imagine pentru un produs anume.
 
