@@ -1,4 +1,4 @@
-name: Deploy ODAIE pe GitHub Pages
+name: Deploy Lut & Lemn pe GitHub Pages
 
 on:
   push:

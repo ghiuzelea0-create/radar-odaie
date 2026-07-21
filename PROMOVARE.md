@@ -1,10 +1,10 @@
-# Promovare ODAIE
+# Promovare Lut & Lemn
 
 Materiale gata de folosit pentru promovarea site-ului pe rețele sociale. Site live (după activarea GitHub Pages): `https://ghiuzelea0-create.github.io/radar-odaie/`
 
 ## Grafică gata de postat
 
-În `assets/social/` — imagini pătrate 1080×1080, în stilul brandului, gata de încărcat direct pe Instagram/Facebook:
+În `assets/social/` — imagini pătrate 1080×1080, gata de încărcat direct pe Instagram/Facebook:
 
 - `ig-1-lansare.png` — anunț de lansare + codul BUNVENIT10
 - `ig-2-produs.png` — highlight produs trending (Vază Ceramică Organică Mată)
@@ -18,22 +18,22 @@ Pentru produse noi apărute prin radar (`products.json`), poți genera variante 
 
 ## Bio scurtă (Instagram / TikTok / Facebook)
 
-> ODAIE — obiecte unice pentru casă
+> Lut & Lemn — atelier de obiecte handmade
 > Ceramică · Iluminat · Textile · Accente
 > ✦ Cod BUNVENIT10 = -10% la prima comandă
 > Link în bio 👇
 
 ## Descriere lungă (despre pagină / secțiunea "Despre")
 
-> ODAIE a pornit dintr-o idee simplă: o casă nu se umple cu lucruri, ci se construiește cu obiecte care au sens. Alegem personal fiecare piesă — ceramică lucrată manual, iluminat de atmosferă, textile naturale și accente care transformă o cameră obișnuită într-un loc al tău. Livrare rapidă în toată România, retur în 30 de zile.
+> Lut & Lemn a pornit dintr-o idee simplă: o casă nu se umple cu lucruri, ci se construiește cu obiecte care au sens. Alegem personal fiecare piesă — ceramică lucrată manual, iluminat de atmosferă, textile naturale și accente care transformă o cameră obișnuită într-un loc al tău. Livrare rapidă în toată România, retur în 30 de zile.
 
 ## Caption-uri gata de postat
 
 **1. Lansare**
-> Fiecare odaie merită un obiect care contează. 🕯️
-> Am deschis ODAIE — un loc cu obiecte alese cu grijă pentru casa ta: ceramică, lumină caldă, textile naturale.
+> Din lut și lemn, iese un obiect care contează. 🕯️
+> Am deschis Lut & Lemn — un atelier cu obiecte handmade alese cu grijă pentru casa ta: ceramică, lumină caldă, textile naturale.
 > Cod **BUNVENIT10** = -10% la prima comandă. Link în bio.
-> #decorcasa #decoratiuniinteriore #ceramicahandmade #odaie
+> #decorcasa #decoratiuniinteriore #ceramicahandmade #lutsilemn
 
 **2. Produs — ceramică**
 > Textură, formă, imperfecțiune frumoasă. Vaza asta e lucrată manual, unicat — nu găsești două la fel. 🏺
@@ -51,16 +51,16 @@ Pentru produse noi apărute prin radar (`products.json`), poți genera variante 
 
 **5. Ofertă / urgență blândă**
 > Psst — codul BUNVENIT10 (-10%) e valabil doar pentru comenzile noi, pe timp limitat. Nu-l lăsa să treacă. 🤍
-> #reducere #ofertalimitata #decorcasa #odaie
+> #reducere #ofertalimitata #decorcasa #lutsilemn
 
 **6. Poveste / brand**
 > Nu vindem decor. Compunem atmosferă. 🕯️
-> Lucrăm cu meșteri și producători mici, tăiem intermediarii, nu calitatea.
+> Lucrăm cu meșteri și ateliere mici, tăiem intermediarii, nu calitatea.
 > #madeinromania #meșteșug #slowliving #decorconstiincios
 
 ## Hashtag-uri (rotește 8-15 per postare)
 
-`#decorcasa #decoratiuniinteriore #homedecor #ceramicahandmade #iluminatdecorativ #textilecasa #cozyhome #interiordesign #madeinromania #decorunicat #slowliving #odaie #decorulcasei #ambientlight #japandi #cottagecore`
+`#decorcasa #decoratiuniinteriore #homedecor #ceramicahandmade #iluminatdecorativ #textilecasa #cozyhome #interiordesign #madeinromania #decorunicat #slowliving #lutsilemn #decorulcasei #ambientlight #japandi #cottagecore`
 
 ## Ritm recomandat de postare
 
