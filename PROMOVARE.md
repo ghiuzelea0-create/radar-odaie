@@ -10,8 +10,6 @@ Materiale gata de folosit pentru promovarea site-ului pe rețele sociale. Site l
 - `ig-2-produs.png` — highlight produs trending (Vază Ceramică Organică Mată)
 - `ig-3-brand.png` — citat de brand („Nu vindem decor. Compunem atmosferă.”)
 
-> Notă: aceste trei imagini au fost generate pentru vechiul brand (ODAIE, temă întunecată) și au numele/paleta vechi arse în pixeli — dacă vrei grafică nouă cu numele Lut & Lemn și paleta deschisă lut-lemn, cere-mi oricând să le regenerez.
-
 Pentru produse noi apărute prin radar (`products.json`), poți genera variante similare cerându-mi oricând o nouă imagine pentru un produs anume.
 
 ## Template email de lansare
