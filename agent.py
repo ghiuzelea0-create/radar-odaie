@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Radar ODAIE — robot zilnic de produse virale.
+Radar Lut & Lemn — robot zilnic de produse virale.
 Caută pe web decorațiuni în trend, le dă un scor viral,
-scrie products.json (format ODAIE) și trimite o alertă pe Telegram.
+scrie products.json (format Lut & Lemn) și trimite o alertă pe Telegram.
 """
 
 import os
@@ -99,7 +99,7 @@ def parse_json(raw):
 
 
 def scrie_products_json(produse):
-    """Salvează în format compatibil cu array-ul products din ODAIE."""
+    """Salvează în format compatibil cu array-ul products din Lut & Lemn."""
     out = []
     for i, p in enumerate(produse):
         cat = p.get("categorie") if p.get("categorie") in CAT_NAME else "accente"
@@ -129,7 +129,7 @@ def trimite_telegram(produse):
         return
     azi = datetime.date.today().strftime("%d.%m.%Y")
     produse = sorted(produse, key=lambda x: x.get("scorViral", 0), reverse=True)
-    linii = [f"🔥 <b>Radar ODAIE — {azi}</b>", ""]
+    linii = [f"🔥 <b>Radar Lut &amp; Lemn — {azi}</b>", ""]
     for p in produse:
         linii.append(f"<b>{p.get('name','')}</b> — scor {p.get('scorViral',0)}/100")
         linii.append(f"{p.get('catName','')} · ~{p.get('price',0)} lei")

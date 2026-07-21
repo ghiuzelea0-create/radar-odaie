@@ -1,6 +1,6 @@
-# ODAIE — obiecte unice pentru casă
+# Lut & Lemn — atelier de obiecte handmade
 
-Site vitrină pentru un magazin de decorațiuni: ceramică, iluminat, textile și accente. Colecția de bază e fixă, iar `products.json` e completat automat, zilnic, de un robot care caută produse virale/în trend (vezi `agent.py` și `.github/workflows/radar.yml`).
+Site vitrină pentru un atelier de obiecte handmade: ceramică, iluminat, textile și accente. Colecția de bază e fixă, iar `products.json` e completat automat, zilnic, de un robot care caută produse virale/în trend (vezi `agent.py` și `.github/workflows/radar.yml`).
 
 **Site live:** `https://ghiuzelea0-create.github.io/radar-odaie/` (după activarea GitHub Pages — vezi mai jos)
 
