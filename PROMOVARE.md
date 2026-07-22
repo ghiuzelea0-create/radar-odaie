@@ -19,9 +19,9 @@ Pentru produse noi apărute prin radar (`products.json`), poți genera variante 
 
 ## Bio scurtă (Instagram / TikTok / Facebook)
 
-> Lut & Lemn — atelier de obiecte handmade
-> Ceramică · Iluminat · Textile · Accente
-> ✦ Cod BUNVENIT10 = -10% la prima comandă
+> Lut & Lemn — obiecte calme pentru interioare contemporane
+> Ceramică · Lumânări · Textile · Obiecte decorative
+> Lucrate lent, în loturi mici · ✦ Cod BUNVENIT10 = -10% la prima comandă
 > Link în bio 👇
 
 ## Descriere lungă (despre pagină / secțiunea "Despre")
