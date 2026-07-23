@@ -1,0 +1,24 @@
+name: Teste
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ia codul
+        uses: actions/checkout@v4
+
+      - name: Pregătește Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalează dependențele
+        run: pip install -r requirements-dev.txt
+
+      - name: Rulează testele
+        run: pytest -v
