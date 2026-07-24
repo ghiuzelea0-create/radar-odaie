@@ -126,18 +126,55 @@
   /* Hero */
   .hero{padding:76px 0 124px}
   .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center}
+  .hero-copy{transition:opacity .32s ease}
+  .hero-copy.switching{opacity:0}
   .hero h1{font-size:clamp(46px,6.8vw,98px);font-weight:300;letter-spacing:-.025em;line-height:1.0;margin:30px 0 0}
   .hero h1 em{font-style:italic;color:var(--clay)}
   .hero .lead{font-size:18px;max-width:430px;margin:30px 0 46px}
   .hero-actions{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
   .hero-media{position:relative;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;
     background:radial-gradient(120% 90% at 50% 22%,#332C25 0%,#28231E 60%,#1C1915 100%)}
-  .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero-slide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.15s ease}
+  .hero-slide-img.active{opacity:1}
+  .hero-dots{display:flex;gap:10px;justify-content:center;margin-top:22px}
+  .hero-dot{width:8px;height:8px;border-radius:50%;background:var(--line-strong);transition:.3s;padding:0}
+  .hero-dot:hover{background:var(--taupe)}
+  .hero-dot.active{background:var(--clay);width:24px;border-radius:5px}
   .hero-seal{position:absolute;right:20px;bottom:20px;width:118px;height:118px;z-index:3;animation:spin 30s linear infinite}
   .hero-seal text{fill:var(--bronze);font-family:'Jost';font-size:8px;letter-spacing:.24em;text-transform:uppercase}
   .hero-seal-core{position:absolute;right:20px;bottom:20px;width:118px;height:118px;display:grid;place-items:center;z-index:3}
   .hero-seal-core span{font-family:'Fraunces',serif;font-size:26px;color:var(--bronze)}
   @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Explode diagram */
+  .explode{background:var(--bg-deep);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+  .explode-stage{position:relative;max-width:640px;margin:0 auto;aspect-ratio:1/1}
+  .explode-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .explode-part{fill:var(--bg-warm);fill-opacity:.9;stroke:var(--clay);stroke-width:1.2;transform:translateY(var(--collapse,0px));transition:transform 1.15s cubic-bezier(.16,1,.3,1);transition-delay:var(--delay,0s)}
+  .explode-leader line{stroke:var(--line-strong);stroke-width:1}
+  .explode-leader circle{fill:var(--clay)}
+  .explode-leader{opacity:0;transition:opacity .8s ease;transition-delay:var(--delay,0s)}
+  .explode-stage.in-view .explode-part{transform:translateY(0)}
+  .explode-stage.in-view .explode-leader{opacity:1}
+  .explode-label{position:absolute;width:190px;opacity:0;transition:opacity .8s ease,transform .8s ease;transition-delay:var(--delay,0s);transform:translateY(8px)}
+  .explode-stage.in-view .explode-label{opacity:1;transform:translateY(0)}
+  .explode-label.left{right:calc(100% - 6%);text-align:right}
+  .explode-label.right{left:calc(100% - 6%)}
+  .explode-label-name{display:block;font-family:'Fraunces',serif;font-size:15px;color:var(--ink);margin-bottom:3px}
+  .explode-label-note{display:block;font-size:12px;color:var(--taupe);line-height:1.5}
+  .explode-cta{text-align:center;margin-top:54px}
+  @media(max-width:860px){
+    .explode-label{position:static;width:auto;text-align:left!important;margin:10px 0 0}
+  }
+
+  /* Story / custom order */
+  .story-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:36px;margin-top:60px}
+  .story-media{position:relative;border-radius:var(--r);overflow:hidden;background:var(--bg-warm)}
+  .story-media img{width:100%;height:100%;object-fit:cover;min-height:320px}
+  .story-card{background:var(--bg-warm);border-radius:var(--r);padding:46px 40px;display:flex;flex-direction:column;justify-content:center}
+  .story-card h3{font-size:26px;font-weight:340;margin:14px 0 16px}
+  .story-card p{color:var(--taupe);font-size:14px;line-height:1.7;margin-bottom:28px}
+  @media(max-width:860px){.story-grid{grid-template-columns:1fr}}
 
   /* Section scaffolding */
   section.block{padding:132px 0}
@@ -338,26 +375,10 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wrap hero-grid">
+    <div class="hero-copy" id="heroCopy"></div>
     <div>
-      <span class="eyebrow">Atelier de ceramică &amp; obiecte handmade</span>
-      <h1>Obiecte calme<br>pentru <em>interioare</em><br>contemporane.</h1>
-      <p class="lead">Piese handmade pentru casă — lucrate lent, în loturi mici, cu texturi naturale și forme imperfecte. Prezență discretă, pentru case cu ritm lent și gust rafinat.</p>
-      <div class="hero-actions">
-        <a href="#colectie" class="btn btn-dark">Descoperă colecția</a>
-        <a href="#atelier" class="link-arrow">Povestea atelierului
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-      </div>
-    </div>
-    <div>
-      <div class="hero-media">
-        <img src="https://ghiuzelea0-create.github.io/radar-odaie/assets/editorial/hero.jpg" alt="Compoziție handmade — ceramică mată, lemn și in, în lumină caldă" onerror="this.remove()">
-        <svg class="hero-seal" viewBox="0 0 100 100">
-          <defs><path id="circ" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs>
-          <text><textPath href="#circ" startOffset="0">· lucrat lent · în loturi mici · lut &amp; lemn · </textPath></text>
-        </svg>
-        <div class="hero-seal-core"><span>&amp;</span></div>
-      </div>
+      <div class="hero-media" id="heroMedia"></div>
+      <div class="hero-dots" id="heroDots"></div>
     </div>
   </div>
 </section>
@@ -417,6 +438,23 @@
   </div>
 </section>
 
+<!-- EXPLODE / ANATOMIE PRODUS -->
+<section class="block explode" id="anatomie">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">Colecția Arca</span>
+      <h2>Anatomia lămpii <em>Totem</em></h2>
+      <p class="lead">Patru straturi lucrate separat, fațetate manual și asamblate într-o singură coloană sculpturală.</p>
+    </div>
+    <div class="explode-stage" id="explodeStage"></div>
+    <div class="explode-cta">
+      <a href="#colectie" class="link-arrow">Vezi lampa Totem
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- STATEMENT -->
 <section class="statement">
   <div class="wrap statement-inner">
@@ -445,6 +483,28 @@
       <div class="mood m-e"><img src="https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/lumanari-fum.jpg" alt="Lumânări" loading="lazy" onerror="this.style.opacity=0"></div>
       <div class="mood m-f"><img src="https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/patura-lana.jpg" alt="Textile din lână" loading="lazy" onerror="this.style.opacity=0"></div>
       <div class="mood m-g"><img src="https://ghiuzelea0-create.github.io/radar-odaie/assets/products/ilustratii/bol-decorativ.jpg" alt="Bol decorativ" loading="lazy" onerror="this.style.opacity=0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / COMENZI PERSONALIZATE -->
+<section class="block story">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">Comenzi personalizate</span>
+      <h2>O moștenire atemporală</h2>
+      <p class="lead">Piesele noastre nu se produc în serie — pot fi gândite special pentru locul lor, cu materialul și finisajul alese împreună cu tine.</p>
+    </div>
+    <div class="story-grid">
+      <div class="story-media">
+        <img src="https://ghiuzelea0-create.github.io/radar-odaie/assets/editorial/hero.jpg" alt="Schiță de atelier — desenul unei piese înainte de a prinde formă" loading="lazy" onerror="this.remove()">
+      </div>
+      <div class="story-card">
+        <span class="eyebrow">Comandă unicat</span>
+        <h3>Creează ceva doar al tău</h3>
+        <p>Alegem împreună forma, materialul și finisajul. O piesă unicat, lucrată manual pentru locul ei din casa ta.</p>
+        <button class="btn btn-dark" id="customBtn">Cere o comandă personalizată</button>
+      </div>
     </div>
   </div>
 </section>

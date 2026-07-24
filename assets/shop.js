@@ -61,6 +61,93 @@ export const products=[
   {id:25,name:'Lampă LED Obelisk',cat:'iluminat',catName:'Iluminat',obj:'lampa',tint:'slate',price:590,desc:'Bază obelisc din lemn masiv, LED cald integrat',tag:'Nou',img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/arca/obelisk.jpg'},
 ];
 
+/* ---------- Hero slider (date) ---------- */
+export const heroSlides=[
+  {
+    eyebrow:'Atelier de ceramică & obiecte handmade',
+    heading:'Obiecte calme<br>pentru <em>interioare</em><br>contemporane.',
+    lead:'Piese handmade pentru casă — lucrate lent, în loturi mici, cu texturi naturale și forme imperfecte. Prezență discretă, pentru case cu ritm lent și gust rafinat.',
+    cta:{label:'Descoperă colecția',href:'#colectie'},
+    img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/editorial/hero.jpg',
+    alt:'Compoziție handmade — ceramică mată, lemn și in, în lumină caldă',
+  },
+  {
+    eyebrow:'Procesul nostru',
+    heading:'Lucrate lent,<br>în <em>loturi mici</em>.',
+    lead:'Fiecare piesă trece prin mâna meșterului — modelată, finisată și verificată pe rând. Fără producție de serie, fără compromisuri.',
+    cta:{label:'Povestea atelierului',href:'#atelier'},
+    img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/editorial/atelier.jpg',
+    alt:'Detaliu de atelier — mâini, lut și lumină caldă',
+  },
+  {
+    eyebrow:'Colecția Arca',
+    heading:'O prezență <em>sculpturală</em>,<br>nu un produs.',
+    lead:'Lămpi LED din lemn masiv, fațetate manual — coloane discrete de lumină caldă pentru interioare contemporane.',
+    cta:{label:'Anatomia lămpii Totem',href:'#anatomie'},
+    img:'https://ghiuzelea0-create.github.io/radar-odaie/assets/products/arca/monolith.jpg',
+    alt:'Lampă LED Monolith — coloană din lemn masiv cu LED liniar cald',
+  },
+];
+
+export function nextSlideIndex(current,total){
+  return ((current+1)%total+total)%total;
+}
+
+export function prefersReducedMotion(w){
+  return !!(w && w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+
+/* ---------- Anatomia lămpii Totem (diagramă explodată) ---------- */
+export const explodeLayers=[
+  {id:'rod',label:'Tijă LED liniară',note:'Lumină caldă, 3000K, integrată în lemn.',side:'right'},
+  {id:'top',label:'Corp superior',note:'Lemn masiv, fațetat manual.',side:'left'},
+  {id:'mid',label:'Corp median',note:'Îmbinare sculptată, fără șuruburi vizibile.',side:'right'},
+  {id:'base',label:'Bază',note:'Lemn masiv, talpă antiderapantă.',side:'left'},
+];
+
+const EXPLODE_GEOMETRY=[
+  {kind:'rod',cy:90,rx:7,h:130},
+  {kind:'disc',cy:230,rx:72,ry:20},
+  {kind:'disc',cy:352,rx:98,ry:26},
+  {kind:'disc',cy:486,rx:128,ry:32},
+];
+const EXPLODE_COLLAPSE_CY=310;
+
+export function renderExplodeMarkup(layers){
+  const geo=EXPLODE_GEOMETRY;
+  const parts=layers.map((l,i)=>{
+    const g=geo[i]||geo[geo.length-1];
+    const collapse=EXPLODE_COLLAPSE_CY-g.cy;
+    const delay=(i*0.12).toFixed(2)+'s';
+    const style=`style="--collapse:${collapse}px;--delay:${delay}"`;
+    if(g.kind==='rod'){
+      return `<rect class="explode-part" data-layer="${i}" x="${320-g.rx}" y="${g.cy-g.h/2}" width="${g.rx*2}" height="${g.h}" rx="${g.rx}" ${style}/>`;
+    }
+    return `<ellipse class="explode-part" data-layer="${i}" cx="320" cy="${g.cy}" rx="${g.rx}" ry="${g.ry}" ${style}/>`;
+  }).join('');
+  const leaders=layers.map((l,i)=>{
+    const g=geo[i]||geo[geo.length-1];
+    const edgeX=l.side==='right'?320+g.rx:320-g.rx;
+    const outX=l.side==='right'?600:40;
+    const delay=(i*0.12+0.3).toFixed(2)+'s';
+    return `<g class="explode-leader" data-layer="${i}" style="--delay:${delay}">
+      <line x1="${edgeX}" y1="${g.cy}" x2="${outX}" y2="${g.cy}"/>
+      <circle cx="${edgeX}" cy="${g.cy}" r="3"/>
+    </g>`;
+  }).join('');
+  const svg=`<svg class="explode-svg" viewBox="0 0 640 640" aria-hidden="true">${leaders}${parts}</svg>`;
+  const labels=layers.map((l,i)=>{
+    const g=geo[i]||geo[geo.length-1];
+    const topPct=(g.cy/640*100).toFixed(2);
+    const delay=(i*0.12+0.3).toFixed(2)+'s';
+    return `<div class="explode-label ${l.side}" data-layer="${i}" style="top:${topPct}%;--delay:${delay}">
+      <span class="explode-label-name">${escAttr(l.label)}</span>
+      <span class="explode-label-note">${escAttr(l.note)}</span>
+    </div>`;
+  }).join('');
+  return svg+labels;
+}
+
 /* ---------- Render helpers (pure) ---------- */
 export function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
 export function fmt(n){return n.toLocaleString('ro-RO')+' lei';}
@@ -111,6 +198,93 @@ export function applyQtyChange(cart,id,d){
 
 /* ---------- DOM wiring (only runs when a page DOM is present) ---------- */
 export function initShop(doc=document){
+  const win=doc.defaultView||(typeof window!=='undefined'?window:undefined);
+
+  let slideIndex=0, slideTimer=null;
+
+  function renderHeroMedia(){
+    const media=doc.getElementById('heroMedia');
+    if(!media) return;
+    media.innerHTML=heroSlides.map((s,i)=>
+      `<img class="hero-slide-img${i===0?' active':''}" data-i="${i}" src="${escAttr(s.img)}" alt="${escAttr(s.alt)}" onerror="this.style.opacity=0">`
+    ).join('')+
+    `<svg class="hero-seal" viewBox="0 0 100 100"><defs><path id="circ" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs><text><textPath href="#circ" startOffset="0">· lucrat lent · în loturi mici · lut &amp; lemn · </textPath></text></svg>
+    <div class="hero-seal-core"><span>&amp;</span></div>`;
+  }
+
+  function renderHeroDots(){
+    const dots=doc.getElementById('heroDots');
+    if(!dots) return;
+    dots.innerHTML=heroSlides.map((_,i)=>
+      `<button class="hero-dot${i===0?' active':''}" data-slide="${i}" aria-label="Slide ${i+1}"></button>`
+    ).join('');
+  }
+
+  function renderHeroCopy(i,immediate){
+    const copy=doc.getElementById('heroCopy');
+    if(!copy) return;
+    const s=heroSlides[i];
+    const html=`
+      <span class="eyebrow">${s.eyebrow}</span>
+      <h1>${s.heading}</h1>
+      <p class="lead">${s.lead}</p>
+      <div class="hero-actions">
+        <a href="${s.cta.href}" class="btn btn-dark">${s.cta.label}</a>
+        <a href="#colectii" class="link-arrow">Vezi toate colecțiile
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>`;
+    if(immediate){copy.innerHTML=html;return;}
+    copy.classList.add('switching');
+    setTimeout(()=>{copy.innerHTML=html;copy.classList.remove('switching');},260);
+  }
+
+  function goToSlide(i){
+    slideIndex=((i%heroSlides.length)+heroSlides.length)%heroSlides.length;
+    renderHeroCopy(slideIndex);
+    doc.querySelectorAll('.hero-slide-img').forEach(img=>img.classList.toggle('active',+img.dataset.i===slideIndex));
+    doc.querySelectorAll('.hero-dot').forEach(d=>d.classList.toggle('active',+d.dataset.slide===slideIndex));
+  }
+
+  function stopAutoplay(){if(slideTimer){clearInterval(slideTimer);slideTimer=null;}}
+  function startAutoplay(){
+    if(prefersReducedMotion(win)) return;
+    stopAutoplay();
+    slideTimer=setInterval(()=>goToSlide(nextSlideIndex(slideIndex,heroSlides.length)),5000);
+  }
+
+  function initHero(){
+    if(!doc.getElementById('heroMedia')) return;
+    renderHeroMedia();
+    renderHeroDots();
+    renderHeroCopy(0,true);
+    const dotsEl=doc.getElementById('heroDots');
+    dotsEl.addEventListener('click',e=>{
+      const b=e.target.closest('[data-slide]');if(!b)return;
+      goToSlide(+b.dataset.slide);stopAutoplay();startAutoplay();
+    });
+    const mediaEl=doc.getElementById('heroMedia');
+    mediaEl.addEventListener('mouseenter',stopAutoplay);
+    mediaEl.addEventListener('mouseleave',startAutoplay);
+    startAutoplay();
+  }
+
+  function initExplode(){
+    const stage=doc.getElementById('explodeStage');
+    if(!stage) return;
+    stage.innerHTML=renderExplodeMarkup(explodeLayers);
+    if(!win||typeof win.IntersectionObserver!=='function'||prefersReducedMotion(win)){
+      stage.classList.add('in-view');
+      return;
+    }
+    const io=new win.IntersectionObserver(entries=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){stage.classList.add('in-view');io.disconnect();}
+      });
+    },{threshold:.35});
+    io.observe(stage);
+  }
+
   async function loadRadar(){
     try{
       const res=await fetch(RADAR_URL,{cache:'no-store'});
@@ -190,6 +364,9 @@ export function initShop(doc=document){
   let toastT;
   function toast(msg){const t=doc.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);}
 
+  initHero();
+  initExplode();
+
   renderCats();
   doc.getElementById('filters').innerHTML=filters.map((f,i)=>
     `<button class="chip ${i===0?'active':''}" data-filter="${f.id}">${f.name}</button>`).join('');
@@ -222,10 +399,15 @@ export function initShop(doc=document){
   doc.getElementById('searchToggle').onclick=()=>{doc.getElementById('colectie').scrollIntoView({behavior:'smooth'});toast('Caută în prăvălia de mai jos');};
   doc.getElementById('newsBtn').onclick=()=>{const v=doc.getElementById('newsEmail').value;toast(v&&v.includes('@')?'Mulțumim — ești pe listă!':'Scrie o adresă validă');};
   doc.getElementById('promoCode').onclick=()=>{const code='BUNVENIT10';if(navigator.clipboard)navigator.clipboard.writeText(code).catch(()=>{});toast('Cod copiat: '+code);};
+  const customBtn=doc.getElementById('customBtn');
+  if(customBtn) customBtn.onclick=()=>toast('Demo — te-am adăuga în lista de comenzi personalizate 🤍');
 
   renderCart();
 
-  return {renderGrid,renderCats,renderCart,addToCart,changeQty,removeItem,openCart,closeCart,getCart:()=>cart};
+  return {
+    renderGrid,renderCats,renderCart,addToCart,changeQty,removeItem,openCart,closeCart,getCart:()=>cart,
+    goToSlide,stopAutoplay,startAutoplay,getSlideIndex:()=>slideIndex,
+  };
 }
 
 if(typeof document!=='undefined' && document.getElementById('cats')){
