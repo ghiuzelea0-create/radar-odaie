@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  test-python:
     runs-on: ubuntu-latest
     steps:
       - name: Ia codul
@@ -22,3 +22,21 @@ jobs:
 
       - name: Rulează testele
         run: pytest -v
+
+  test-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ia codul
+        uses: actions/checkout@v4
+
+      - name: Pregătește Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalează dependențele
+        run: npm ci
+
+      - name: Rulează testele
+        run: npm test
