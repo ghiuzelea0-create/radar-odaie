@@ -9,6 +9,11 @@ import {
   buildRadarProduct,
   mergeRadarData,
   radarStyle,
+  heroSlides,
+  nextSlideIndex,
+  prefersReducedMotion,
+  explodeLayers,
+  renderExplodeMarkup,
 } from '../assets/shop.js';
 
 describe('escAttr', () => {
@@ -192,5 +197,85 @@ describe('mergeRadarData', () => {
     const list = [{ id: 1 }];
     expect(mergeRadarData(list, { not: 'an array' }, radarStyle)).toBe(0);
     expect(list).toHaveLength(1);
+  });
+});
+
+describe('heroSlides', () => {
+  it('has three slides, each with the required fields', () => {
+    expect(heroSlides).toHaveLength(3);
+    heroSlides.forEach(s => {
+      expect(s.eyebrow).toBeTruthy();
+      expect(s.heading).toBeTruthy();
+      expect(s.lead).toBeTruthy();
+      expect(s.cta.label).toBeTruthy();
+      expect(s.cta.href).toMatch(/^#/);
+      expect(s.img).toMatch(/^https:\/\//);
+      expect(s.alt).toBeTruthy();
+    });
+  });
+});
+
+describe('nextSlideIndex', () => {
+  it('advances to the next index', () => {
+    expect(nextSlideIndex(0, 3)).toBe(1);
+    expect(nextSlideIndex(1, 3)).toBe(2);
+  });
+
+  it('wraps from the last slide back to zero', () => {
+    expect(nextSlideIndex(2, 3)).toBe(0);
+  });
+});
+
+describe('prefersReducedMotion', () => {
+  it('is false when matchMedia is unavailable', () => {
+    expect(prefersReducedMotion(undefined)).toBe(false);
+    expect(prefersReducedMotion({})).toBe(false);
+  });
+
+  it('reflects matchMedia when the query matches', () => {
+    const fakeWindow = { matchMedia: () => ({ matches: true }) };
+    expect(prefersReducedMotion(fakeWindow)).toBe(true);
+  });
+
+  it('reflects matchMedia when the query does not match', () => {
+    const fakeWindow = { matchMedia: () => ({ matches: false }) };
+    expect(prefersReducedMotion(fakeWindow)).toBe(false);
+  });
+});
+
+describe('explodeLayers', () => {
+  it('has four layers, each with a label, note and side', () => {
+    expect(explodeLayers).toHaveLength(4);
+    explodeLayers.forEach(l => {
+      expect(l.label).toBeTruthy();
+      expect(l.note).toBeTruthy();
+      expect(['left', 'right']).toContain(l.side);
+    });
+  });
+});
+
+describe('renderExplodeMarkup', () => {
+  const markup = renderExplodeMarkup(explodeLayers);
+
+  it('renders one SVG shape per layer', () => {
+    const shapeCount = (markup.match(/class="explode-part"/g) || []).length;
+    expect(shapeCount).toBe(explodeLayers.length);
+  });
+
+  it('renders one leader line per layer', () => {
+    const leaderCount = (markup.match(/class="explode-leader"/g) || []).length;
+    expect(leaderCount).toBe(explodeLayers.length);
+  });
+
+  it('renders one label per layer, escaped and on the right side', () => {
+    explodeLayers.forEach(l => {
+      expect(markup).toContain(`explode-label ${l.side}`);
+      expect(markup).toContain(escAttr(l.label));
+    });
+  });
+
+  it('does not throw for an empty layer list', () => {
+    expect(() => renderExplodeMarkup([])).not.toThrow();
+    expect(renderExplodeMarkup([])).toBe('<svg class="explode-svg" viewBox="0 0 640 640" aria-hidden="true"></svg>');
   });
 });
