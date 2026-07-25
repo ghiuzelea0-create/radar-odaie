@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Parametri generali de costing</h2>
+<p class="notice">Moneda RON. Toate preturile din model sunt fara TVA. Ajusteaza aici valorile — devizele noi vor folosi valorile actualizate.</p>
+<form method="post">
+  <div class="card">
+    {% for cheie, item in parametri.items() %}
+      <label for="{{ cheie }}">{{ item.parametru }}</label>
+      {% if cheie == 'regiune' %}
+        <select id="{{ cheie }}" name="{{ cheie }}">
+          {% for r in regiuni %}
+            <option value="{{ r }}" {% if item.valoare == r %}selected{% endif %}>{{ r }}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <input type="number" step="0.0001" id="{{ cheie }}" name="{{ cheie }}" value="{{ item.valoare }}">
+      {% endif %}
+      <p class="muted">{{ item.observatii }}</p>
+    {% endfor %}
+    <button type="submit" class="btn">Salveaza parametrii</button>
+  </div>
+</form>
+{% endblock %}
