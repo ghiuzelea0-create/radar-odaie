@@ -2,19 +2,42 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import date
 
 from flask import Flask, redirect, render_template, request, url_for
 
 from costing_engine import DevizError, DevizInput, Logistica, ManoperaLine, MaterialLine, calculeaza_deviz
 from design_engine import CorpError, CorpInput, TIPURI_CONSTRUCTIE, TIPURI_INCHIDERE_SUS, SISTEME_ASAMBLARE, calculeaza_corp
+from management_engine import (
+    CODURI_TRASABILITATE,
+    FAZE_FLUX,
+    NOMENCLATOR_CAUZE,
+    PROCEDURA_FLUX,
+    EvenimentCauza,
+    FazaLucru,
+    ProiectInput,
+    TermenRealistInput,
+    calculeaza_durate_flux,
+    calculeaza_kpi,
+    calculeaza_pareto_cauze,
+    calculeaza_termen_realist,
+    delta_marja,
+    zile_intarziere,
+)
 from qa_agent import QAIndisponibil, verifica_deviz
 from storage import (
     incarca_corp,
     incarca_deviz,
+    incarca_proiect_management,
     listeaza_corpuri,
     listeaza_devize,
+    listeaza_evenimente_cauze,
+    listeaza_evenimente_cauze_pentru,
+    listeaza_proiecte_management,
     salveaza_corp,
     salveaza_deviz,
+    salveaza_eveniment_cauza,
+    salveaza_proiect_management,
 )
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -154,6 +177,193 @@ def corp_detail(corp_id: str):
     if record is None:
         return "Corp negasit", 404
     return render_template("corp_detail.html", record=record)
+
+
+def _proiect_input_din_record(rec: dict) -> ProiectInput:
+    i = rec["input"]
+    return ProiectInput(
+        cod_proiect=i["cod_proiect"],
+        client=i["client"],
+        denumire=i["denumire"],
+        data_comanda=date.fromisoformat(i["data_comanda"]),
+        termen_promis=date.fromisoformat(i["termen_promis"]),
+        termen_realizat=date.fromisoformat(i["termen_realizat"]) if i.get("termen_realizat") else None,
+        valoare_fara_tva=i.get("valoare_fara_tva", 0),
+        marja_ofertata=i.get("marja_ofertata", 0),
+        marja_realizata=i.get("marja_realizata"),
+        faza_curenta=i.get("faza_curenta", ""),
+        observatii=i.get("observatii", ""),
+    )
+
+
+def _eveniment_din_record(rec: dict) -> EvenimentCauza:
+    return EvenimentCauza(
+        data=date.fromisoformat(rec["data"]),
+        cod_proiect=rec["cod_proiect"],
+        faza_afectata=rec["faza_afectata"],
+        cod_cauza=rec["cod_cauza"],
+        zile_pierdute=rec["zile_pierdute"],
+        nota=rec.get("nota", ""),
+    )
+
+
+@app.route("/management")
+def management_dashboard():
+    proiecte_records = listeaza_proiecte_management()
+    evenimente_records = listeaza_evenimente_cauze()
+
+    proiecte_input = [_proiect_input_din_record(r) for r in proiecte_records]
+    evenimente_input = [_eveniment_din_record(r) for r in evenimente_records]
+
+    kpi = calculeaza_kpi(proiecte_input, evenimente_input)
+    pareto = calculeaza_pareto_cauze(evenimente_input)
+
+    registru = []
+    for rec, p in zip(proiecte_records, proiecte_input):
+        registru.append(
+            {
+                "id": rec["id"],
+                "proiect": p,
+                "zile_intarziere": zile_intarziere(p),
+                "delta_marja": delta_marja(p),
+            }
+        )
+
+    return render_template("management_dashboard.html", kpi=kpi, pareto=pareto, registru=registru)
+
+
+@app.route("/management/proceduri")
+def proceduri_view():
+    return render_template("proceduri.html", pasi=PROCEDURA_FLUX, coduri=CODURI_TRASABILITATE)
+
+
+@app.route("/management/proiect/nou", methods=["GET", "POST"])
+def proiect_management_nou():
+    if request.method == "POST":
+        f = request.form
+        input_dict = {
+            "cod_proiect": f.get("cod_proiect", "").strip(),
+            "client": f.get("client", "").strip(),
+            "denumire": f.get("denumire", "").strip(),
+            "data_comanda": f.get("data_comanda"),
+            "termen_promis": f.get("termen_promis"),
+            "termen_realizat": f.get("termen_realizat") or None,
+            "valoare_fara_tva": float(f.get("valoare_fara_tva") or 0),
+            "marja_ofertata": float(f.get("marja_ofertata") or 0) / 100,
+            "marja_realizata": (float(f.get("marja_realizata")) / 100) if f.get("marja_realizata") else None,
+            "faza_curenta": f.get("faza_curenta", "").strip(),
+            "observatii": f.get("observatii", "").strip(),
+        }
+        proiect_id = salveaza_proiect_management({"input": input_dict, "jurnal_flux": {}, "termen_realist": None})
+        return redirect(url_for("proiect_management_detail", proiect_id=proiect_id))
+
+    return render_template("proiect_management_nou.html", faze_flux=FAZE_FLUX)
+
+
+@app.route("/management/proiect/<proiect_id>")
+def proiect_management_detail(proiect_id: str):
+    rec = incarca_proiect_management(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+
+    p = _proiect_input_din_record(rec)
+    jurnal_flux_dates = {
+        faza: (date.fromisoformat(v) if v else None) for faza, v in rec.get("jurnal_flux", {}).items()
+    }
+    durate = calculeaza_durate_flux(jurnal_flux_dates)
+    evenimente = listeaza_evenimente_cauze_pentru(p.cod_proiect)
+
+    return render_template(
+        "proiect_management_detail.html",
+        record=rec,
+        proiect=p,
+        zile_intarziere=zile_intarziere(p),
+        delta_marja=delta_marja(p),
+        faze_flux=FAZE_FLUX,
+        jurnal_flux_dates=jurnal_flux_dates,
+        durate=durate,
+        evenimente=evenimente,
+        cauze_nomenclator=NOMENCLATOR_CAUZE,
+        termen_realist=rec.get("termen_realist"),
+    )
+
+
+@app.route("/management/proiect/<proiect_id>/jurnal-flux", methods=["POST"])
+def proiect_management_jurnal_flux(proiect_id: str):
+    rec = incarca_proiect_management(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+
+    jurnal = {}
+    for idx, faza in enumerate(FAZE_FLUX):
+        valoare = request.form.get(f"data_{idx}", "").strip()
+        jurnal[faza] = valoare or None
+    rec["jurnal_flux"] = jurnal
+    salveaza_proiect_management(rec, proiect_id=proiect_id)
+    return redirect(url_for("proiect_management_detail", proiect_id=proiect_id))
+
+
+@app.route("/management/proiect/<proiect_id>/cauza", methods=["POST"])
+def proiect_management_cauza_noua(proiect_id: str):
+    rec = incarca_proiect_management(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+
+    p = _proiect_input_din_record(rec)
+    f = request.form
+    salveaza_eveniment_cauza(
+        {
+            "data": f.get("data"),
+            "cod_proiect": p.cod_proiect,
+            "faza_afectata": f.get("faza_afectata", "").strip(),
+            "cod_cauza": f.get("cod_cauza"),
+            "zile_pierdute": float(f.get("zile_pierdute") or 0),
+            "nota": f.get("nota", "").strip(),
+        }
+    )
+    return redirect(url_for("proiect_management_detail", proiect_id=proiect_id))
+
+
+@app.route("/management/proiect/<proiect_id>/termen-realist", methods=["GET", "POST"])
+def proiect_management_termen_realist(proiect_id: str):
+    rec = incarca_proiect_management(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+    p = _proiect_input_din_record(rec)
+
+    if request.method == "POST":
+        f = request.form
+        faze = []
+        for idx, faza in enumerate(FAZE_FLUX):
+            ore = float(f.get(f"ore_{idx}") or 0)
+            operatori = int(f.get(f"operatori_{idx}") or 0)
+            faze.append(FazaLucru(faza, ore, operatori))
+
+        termen_input = TermenRealistInput(
+            cod_proiect=p.cod_proiect,
+            client=p.client,
+            data_comanda=p.data_comanda,
+            termen_cerut=p.termen_promis,
+            ore_lucratoare_zi=float(f.get("ore_lucratoare_zi") or 8),
+            faze=faze,
+            aprobare_client_zile=float(f.get("aprobare_client_zile") or 0),
+            masuratori_zile=float(f.get("masuratori_zile") or 0),
+            aprovizionare_zile=float(f.get("aprovizionare_zile") or 0),
+            uscare_zile=float(f.get("uscare_zile") or 0),
+            acces_santier_zile=float(f.get("acces_santier_zile") or 0),
+            buffer_zile=float(f.get("buffer_zile") or 0),
+            suprapunere_aprovizionare_pct=float(f.get("suprapunere_aprovizionare_pct") or 0) / 100,
+        )
+        rezultat = calculeaza_termen_realist(termen_input)
+        rezultat_serializabil = dict(rezultat)
+        rezultat_serializabil["data_livrare_realista"] = rezultat["data_livrare_realista"].isoformat()
+        rezultat_serializabil["termen_cerut"] = rezultat["termen_cerut"].isoformat()
+
+        rec["termen_realist"] = {"rezultat": rezultat_serializabil}
+        salveaza_proiect_management(rec, proiect_id=proiect_id)
+        return redirect(url_for("proiect_management_detail", proiect_id=proiect_id))
+
+    return render_template("termen_realist_form.html", proiect=p, faze_flux=FAZE_FLUX)
 
 
 @app.route("/deviz/nou", methods=["GET", "POST"])

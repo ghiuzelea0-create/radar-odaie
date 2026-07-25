@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+{% set p = proiect %}
+<h2>{{ p.cod_proiect }} — {{ p.denumire }}</h2>
+<p class="muted">Client: {{ p.client }} · Faza curenta: {{ p.faza_curenta or "—" }}</p>
+
+<div class="card">
+  <h3>Identificare</h3>
+  <table>
+    <tbody>
+      <tr><td>Data comanda</td><td>{{ p.data_comanda }}</td></tr>
+      <tr><td>Termen promis</td><td>{{ p.termen_promis }}</td></tr>
+      <tr><td>Termen realizat</td><td>{{ p.termen_realizat or "—" }}</td></tr>
+      <tr>
+        <td>Zile intarziere</td>
+        <td>
+          {% if zile_intarziere is none %}—
+          {% elif zile_intarziere <= 0 %}<span class="badge ok">{{ zile_intarziere }} zile</span>
+          {% else %}<span class="badge alert">+{{ zile_intarziere }} zile</span>{% endif %}
+        </td>
+      </tr>
+      <tr><td>Valoare fara TVA</td><td>{{ "%.2f"|format(p.valoare_fara_tva) }} RON</td></tr>
+      <tr><td>Marja ofertata</td><td>{{ "%.1f"|format(p.marja_ofertata * 100) }}%</td></tr>
+      <tr><td>Marja realizata</td><td>{{ "%.1f"|format(p.marja_realizata * 100) if p.marja_realizata is not none else "—" }}{% if p.marja_realizata is not none %}%{% endif %}</td></tr>
+      <tr><td>Delta marja</td><td>{% if delta_marja is not none %}{{ "%.1f"|format(delta_marja * 100) }}%{% else %}—{% endif %}</td></tr>
+      <tr><td>Observatii</td><td>{{ p.observatii or "—" }}</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Calculator termen realist</h3>
+  {% if termen_realist %}
+    {% set r = termen_realist.rezultat %}
+    <table>
+      <tbody>
+        <tr><td>Total ore manopera</td><td>{{ r.total_ore }} ore</td></tr>
+        <tr><td>Total zile de lucru</td><td>{{ "%.1f"|format(r.total_zile_lucru) }} zile</td></tr>
+        <tr><td>Total zile de asteptare</td><td>{{ "%.1f"|format(r.total_asteptare) }} zile</td></tr>
+        <tr><td><strong>Total zile necesare</strong></td><td><strong>{{ "%.1f"|format(r.total_zile_necesare) }} zile</strong></td></tr>
+        <tr><td><strong>Data livrare realista</strong></td><td><strong>{{ r.data_livrare_realista }}</strong></td></tr>
+        <tr><td>Termen cerut</td><td>{{ r.termen_cerut }}</td></tr>
+        <tr><td>Marja fata de cerere</td><td>{{ r.marja_fata_de_cerere }} zile</td></tr>
+        <tr><td>Pondere munca / asteptare</td><td>{{ "%.0f"|format(r.pondere_munca * 100) }}% / {{ "%.0f"|format(r.pondere_asteptare * 100) }}%</td></tr>
+        <tr><td>Verdict</td><td>
+          {% if r.verdict.startswith("OK") %}<span class="badge ok">{{ r.verdict }}</span>
+          {% elif r.verdict.startswith("RISC") %}<span class="badge warn">{{ r.verdict }}</span>
+          {% else %}<span class="badge alert">{{ r.verdict }}</span>{% endif %}
+        </td></tr>
+      </tbody>
+    </table>
+  {% else %}
+    <p class="notice">Termenul realist nu a fost calculat inca.</p>
+  {% endif %}
+  <a href="{{ url_for('proiect_management_termen_realist', proiect_id=record.id) }}" class="btn secondary">{{ "Recalculeaza" if termen_realist else "Calculeaza termenul realist" }}</a>
+</div>
+
+<div class="card">
+  <h3>Jurnal de flux — data intrarii in fiecare faza</h3>
+  <form method="post" action="{{ url_for('proiect_management_jurnal_flux', proiect_id=record.id) }}">
+    <div class="row-grid" style="grid-template-columns: repeat(3, 1fr);">
+    {% for faza in faze_flux %}
+      <div>
+        <label for="data_{{ loop.index0 }}">{{ faza }}</label>
+        <input type="date" id="data_{{ loop.index0 }}" name="data_{{ loop.index0 }}" value="{{ jurnal_flux_dates.get(faza).isoformat() if jurnal_flux_dates.get(faza) else '' }}">
+      </div>
+    {% endfor %}
+    </div>
+    <button type="submit" class="btn secondary" style="margin-top: 0.75rem;">Salveaza datele de flux</button>
+  </form>
+
+  <table style="margin-top: 1rem;">
+    <thead><tr><th>Faza</th><th>Urmatoarea faza</th><th>Durata reala (zile)</th></tr></thead>
+    <tbody>
+      {% for d in durate %}
+      <tr>
+        <td>{{ d.faza }}</td>
+        <td>{{ d.faza_urmatoare }}</td>
+        <td>{{ d.durata_zile if d.durata_zile is not none else "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Cauze de intarziere</h3>
+  <form method="post" action="{{ url_for('proiect_management_cauza_noua', proiect_id=record.id) }}">
+    <div class="row-grid" style="grid-template-columns: 1fr 1.5fr 2fr 1fr auto;">
+      <div><label for="data">Data</label><input type="date" id="data" name="data" required></div>
+      <div><label for="faza_afectata">Faza afectata</label>
+        <select id="faza_afectata" name="faza_afectata">
+          {% for f in faze_flux %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label for="cod_cauza">Cauza</label>
+        <select id="cod_cauza" name="cod_cauza">
+          {% for c in cauze_nomenclator %}<option value="{{ c.cod }}">{{ c.cod }} — {{ c.denumire }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label for="zile_pierdute">Zile pierdute</label><input type="number" step="0.5" min="0" id="zile_pierdute" name="zile_pierdute" required></div>
+      <div><button type="submit" class="btn">Adauga</button></div>
+    </div>
+    <label for="nota">Nota</label>
+    <input type="text" id="nota" name="nota" placeholder="ex: Decor indisponibil la distribuitor">
+  </form>
+
+  {% if evenimente %}
+  <table style="margin-top: 1rem;">
+    <thead><tr><th>Data</th><th>Faza</th><th>Cauza</th><th>Zile pierdute</th><th>Nota</th></tr></thead>
+    <tbody>
+      {% for e in evenimente %}
+      <tr>
+        <td>{{ e.data }}</td>
+        <td>{{ e.faza_afectata }}</td>
+        <td>{{ e.cod_cauza }}</td>
+        <td>{{ e.zile_pierdute }}</td>
+        <td class="muted">{{ e.nota }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="notice">Niciun eveniment de intarziere inregistrat pentru acest proiect.</p>
+  {% endif %}
+</div>
+
+<a href="{{ url_for('management_dashboard') }}" class="muted">&larr; Inapoi la Management</a>
+{% endblock %}

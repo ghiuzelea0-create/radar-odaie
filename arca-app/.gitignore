@@ -5,3 +5,7 @@ data/devize/*.json
 !data/devize/.gitkeep
 data/corpuri/*.json
 !data/corpuri/.gitkeep
+data/proiecte_management/*.json
+!data/proiecte_management/.gitkeep
+data/evenimente_cauze/*.json
+!data/evenimente_cauze/.gitkeep

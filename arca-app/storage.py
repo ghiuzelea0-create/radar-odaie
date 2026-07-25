@@ -69,3 +69,27 @@ def incarca_corp(corp_id: str) -> dict | None:
 
 def listeaza_corpuri() -> list[dict]:
     return _listeaza("corpuri")
+
+
+def salveaza_proiect_management(record: dict, proiect_id: str | None = None) -> str:
+    return _salveaza("proiecte_management", record, proiect_id)
+
+
+def incarca_proiect_management(proiect_id: str) -> dict | None:
+    return _incarca("proiecte_management", proiect_id)
+
+
+def listeaza_proiecte_management() -> list[dict]:
+    return _listeaza("proiecte_management")
+
+
+def salveaza_eveniment_cauza(record: dict, eveniment_id: str | None = None) -> str:
+    return _salveaza("evenimente_cauze", record, eveniment_id)
+
+
+def listeaza_evenimente_cauze() -> list[dict]:
+    return _listeaza("evenimente_cauze")
+
+
+def listeaza_evenimente_cauze_pentru(cod_proiect: str) -> list[dict]:
+    return [e for e in _listeaza("evenimente_cauze") if e.get("cod_proiect") == cod_proiect]

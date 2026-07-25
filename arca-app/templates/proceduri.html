@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Procedura de flux si trasabilitate</h2>
+<p class="muted">Regula de baza: nicio faza nu incepe daca poarta ei de intrare nu e indeplinita. Portile previn refacerile.</p>
+
+<div class="card">
+  <table>
+    <thead><tr><th>#</th><th>Faza</th><th>Poarta de intrare</th><th>Cine raspunde</th><th>Ce se inregistreaza</th></tr></thead>
+    <tbody>
+      {% for pas in pasi %}
+      <tr>
+        <td>{{ pas.pas }}</td>
+        <td>{{ pas.faza }}</td>
+        <td>{{ pas.poarta }}</td>
+        <td>{{ pas.responsabil }}</td>
+        <td class="muted">{{ pas.inregistrare }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Sistemul de coduri de trasabilitate</h3>
+  <table>
+    <thead><tr><th>Nivel</th><th>Format</th><th>Exemplu</th><th>Unde apare</th></tr></thead>
+    <tbody>
+      {% for c in coduri %}
+      <tr>
+        <td>{{ c.nivel }}</td>
+        <td>{{ c.format }}</td>
+        <td>{{ c.exemplu }}</td>
+        <td class="muted">{{ c.unde }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">Eticheta minima pe piesa: cod piesa, decor, cote finale (dupa cantuire), ruta de statii. O foaie A4 cu 12 etichete, printata la debitare, elimina cea mai frecventa cauza de refacere: piesa corecta montata in corpul gresit.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Management fabrica — KPI</h2>
+<p class="muted"><a href="{{ url_for('proiect_management_nou') }}" class="btn">+ Proiect nou</a> <a href="{{ url_for('proceduri_view') }}" class="btn secondary">Procedura de flux</a></p>
+
+<div class="card">
+  <table>
+    <tbody>
+      <tr><td>Proiecte livrate</td><td><strong>{{ kpi.proiecte_livrate }}</strong> buc</td></tr>
+      <tr><td>Livrate la termen</td><td><strong>{{ kpi.livrate_la_termen }}</strong> buc</td></tr>
+      <tr><td>% livrate la termen</td><td><strong>{{ "%.0f"|format(kpi.procent_livrate_la_termen * 100) }}%</strong></td></tr>
+      <tr><td>Intarziere medie</td><td>{{ "%.1f"|format(kpi.intarziere_medie_zile) }} zile</td></tr>
+      <tr><td>Lead time mediu</td><td>{{ "%.1f"|format(kpi.lead_time_mediu_zile) }} zile</td></tr>
+      <tr><td>Marja ofertata medie</td><td>{{ "%.1f"|format(kpi.marja_ofertata_medie * 100) }}%</td></tr>
+      <tr><td>Marja realizata medie</td><td>{{ "%.1f"|format(kpi.marja_realizata_medie * 100) }}%</td></tr>
+      <tr>
+        <td>Erodare de marja</td>
+        <td>
+          {% if kpi.erodare_marja_medie < 0 %}
+            <span class="badge alert">{{ "%.1f"|format(kpi.erodare_marja_medie * 100) }}%</span>
+          {% else %}
+            <span class="badge ok">{{ "%.1f"|format(kpi.erodare_marja_medie * 100) }}%</span>
+          {% endif %}
+        </td>
+      </tr>
+      <tr><td>Zile pierdute cumulat</td><td>{{ kpi.zile_pierdute_cumulat }} zile</td></tr>
+      <tr><td>Cauza principala</td><td><strong>{{ kpi.cauza_principala }}</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Top 3 cauze de intarziere</h3>
+  <table>
+    <thead><tr><th>Loc</th><th>Cauza</th><th>Categorie</th><th>Zile pierdute</th><th>% din total</th></tr></thead>
+    <tbody>
+      {% for c in pareto.top3 %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        {% if c %}
+          <td>{{ c.denumire }}</td>
+          <td>{{ c.categorie }}</td>
+          <td>{{ c.zile_pierdute }}</td>
+          <td>{{ "%.0f"|format(c.procent * 100) }}%</td>
+        {% else %}
+          <td colspan="4" class="muted">— insuficiente date —</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Registru de proiecte</h3>
+  {% if not registru %}
+    <p class="notice">Niciun proiect inca. <a href="{{ url_for('proiect_management_nou') }}">Adauga primul proiect</a>.</p>
+  {% else %}
+  <table>
+    <thead>
+      <tr><th>Cod</th><th>Client</th><th>Denumire</th><th>Termen promis</th><th>Termen realizat</th><th>Intarziere</th><th>Faza curenta</th><th>Marja (ofertat / delta)</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for r in registru %}
+      <tr>
+        <td>{{ r.proiect.cod_proiect }}</td>
+        <td>{{ r.proiect.client }}</td>
+        <td>{{ r.proiect.denumire }}</td>
+        <td>{{ r.proiect.termen_promis }}</td>
+        <td>{{ r.proiect.termen_realizat or "—" }}</td>
+        <td>
+          {% if r.zile_intarziere is none %}
+            <span class="muted">—</span>
+          {% elif r.zile_intarziere <= 0 %}
+            <span class="badge ok">{{ r.zile_intarziere }} zile</span>
+          {% else %}
+            <span class="badge alert">+{{ r.zile_intarziere }} zile</span>
+          {% endif %}
+        </td>
+        <td>{{ r.proiect.faza_curenta }}</td>
+        <td>
+          {{ "%.0f"|format(r.proiect.marja_ofertata * 100) }}%
+          {% if r.delta_marja is not none %}
+            {% if r.delta_marja < 0 %}
+              <span class="badge alert">{{ "%.0f"|format(r.delta_marja * 100) }}%</span>
+            {% else %}
+              <span class="badge ok">+{{ "%.0f"|format(r.delta_marja * 100) }}%</span>
+            {% endif %}
+          {% endif %}
+        </td>
+        <td><a href="{{ url_for('proiect_management_detail', proiect_id=r.id) }}">Deschide</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endblock %}
