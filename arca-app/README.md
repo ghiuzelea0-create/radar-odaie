@@ -1,7 +1,7 @@
-# ARCA — Costing & Ofertare + Proiectare
+# ARCA — Costing & Ofertare + Proiectare + Management
 
 Aplicație web + agent Claude pentru arhitectura ARCA AI ORCHESTRATOR (Arca Interiors /
-Arca Fancons SRL). Implementează doua module funcționale, pe baza datelor reale din
+Arca Fancons SRL). Implementează trei module funcționale, pe baza datelor reale din
 fișierele Excel încărcate:
 
 - **Costing & Ofertare** — calculul de deviz, oferta comercială pentru client și
@@ -10,10 +10,13 @@ fișierele Excel încărcate:
 - **Proiectare** — calculatorul parametric de corp de mobilier, pe baza datelor din
   `arcatechspec.xlsx` (verificare geometrică automată, listă de debitare, listă
   feronerie, consum de material).
+- **Management** — calculator de termen realist, registru de proiecte, jurnal de flux,
+  jurnal de cauze de întârziere cu analiză Pareto și 7 KPI, pe baza datelor din
+  `arcaflux.xlsx`.
 
-Motoarele de calcul (`costing_engine.py`, `design_engine.py`) replică exact formulele
-din workbook-urile originale — validate prin teste automate (`tests/`) care reproduc
-cifră cu cifră exemplele reale din ambele fișiere (corp bucătărie 800×720×560 mm).
+Motoarele de calcul (`costing_engine.py`, `design_engine.py`, `management_engine.py`)
+replică exact formulele din workbook-urile originale — validate prin teste automate
+(`tests/`) care reproduc cifră cu cifră exemplele reale din toate cele trei fișiere.
 
 ## Instalare
 
@@ -57,9 +60,11 @@ python3 -m pytest tests/ -v
 - `costing_engine.py` — motorul de calcul deviz/ofertă (funcții pure, testabile)
 - `design_engine.py` — motorul de proiectare parametrică a corpului de mobilier
   (verificare geometrică, listă de debitare, feronerie, consum)
+- `management_engine.py` — motorul de management (termen realist, registru proiecte,
+  jurnal flux, Pareto cauze de întârziere, KPI)
 - `qa_agent.py` — integrarea cu Claude API pentru verificarea QA
-- `storage.py` — persistență locală a devizelor și corpurilor (fișiere JSON în
-  `data/devize/` și `data/corpuri/`)
+- `storage.py` — persistență locală (fișiere JSON în `data/devize/`, `data/corpuri/`,
+  `data/proiecte_management/`, `data/evenimente_cauze/`)
 - `app.py` — aplicația Flask (rute, formulare)
 - `data/parametri.json`, `data/materiale.json`, `data/manopera.json` — datele reale
   extrase din `arcacosting.xlsx`
@@ -84,6 +89,38 @@ de gabarit, comutatoare de construcție, convenții de execuție) și generează
 Transferul dintre Proiectare și Costing rămâne manual (ca în workbook-ul original): pagina
 de detaliu a corpului afișează clar cifrele de introdus, dar utilizatorul alege decorul
 exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
+
+## Modulul Management
+
+Pagina „Management" oferă:
+
+- **Registru de proiecte** — un rând per proiect (cod, client, termen promis/realizat,
+  zile de întârziere, valoare, marjă ofertată/realizată/delta) — cheia care leagă restul
+  modulelor.
+- **Calculator de termen realist** — pe pagina de detaliu a unui proiect: introduci orele
+  de manoperă pe fază (din Proiectare/Costing) și operatorii alocați, plus zilele de
+  așteptare (aprobare client, aprovizionare, uscare, acces șantier, buffer). Calculează
+  automat data de livrare realistă (zile lucrătoare, fără sărbători legale), marja față
+  de termenul cerut și un verdict (OK / RISC / NU ÎNCAPI). Reține mesajul central din
+  workbook: peste 40% din lead time e de obicei așteptare, nu muncă efectivă — acolo e
+  pârghia, nu în viteza de lucru.
+- **Jurnal de flux** — data intrării în fiecare din cele 9 faze de producție; durata
+  reală pe fază se calculează automat din diferențele de date.
+- **Cauze de întârziere** — jurnal de evenimente (dată, fază afectată, cauză, zile
+  pierdute) pe un nomenclator fix de 14 cauze; analiza Pareto (top 3 cauze) arată unde
+  să intervii primul, agregat pe toate proiectele.
+- **7 KPI** calculați automat: proiecte livrate, % livrate la termen, întârziere medie,
+  lead time mediu, marjă ofertată/realizată medie, erodare de marjă (cel mai important —
+  negativ înseamnă model de cost prea optimist sau pierdere de bani în execuție), zile
+  pierdute cumulat, cauza principală.
+- **Procedura de flux** (`/management/proceduri`) — pagină de referință statică,
+  imprimabilă: cele 14 faze cu porțile de intrare care previn refacerile, plus sistemul
+  de coduri de trasabilitate (proiect / corp / piesă / lot material).
+
+Notă privind fidelitatea: „Lead time mediu" este calculat aici direct din Registrul de
+proiecte (medie a `termen realizat - data comandă`), nu din coloanele granulare ale
+foii JURNAL FLUX din workbook (care nu erau vizibile complet la extragere) — validat
+cifră cu cifră (28 zile) față de exemplul real din fișier.
 
 ## Ipoteze și limite ale datelor (din foaia SURSE DATE a workbook-ului original)
 
@@ -110,10 +147,8 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
 
 ## Ce nu acoperă această versiune
 
-Nu sunt incluse încă (rămân pentru etape ulterioare, pe baza celorlalte fișiere încărcate
-— `arcatechspecproiect.xlsx`, `arcaflux.xlsx`):
+Nu sunt incluse încă (rămân pentru etape ulterioare):
 
 - proiecte cu mai multe corpuri / liste de debitare agregate pe proiect complet
   (`arcatechspecproiect.xlsx`);
-- managementul fluxului de proiecte, termene și KPI — Agent Management Fabrică;
 - module Web Design și Product Design.

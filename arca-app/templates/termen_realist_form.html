@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Calculator termen realist — {{ proiect.cod_proiect }}</h2>
+<p class="muted">Data comanda: {{ proiect.data_comanda }} · Termen promis: {{ proiect.termen_promis }}</p>
+
+<form method="post">
+  <div class="card">
+    <label for="ore_lucratoare_zi">Ore lucratoare / zi</label>
+    <input type="number" step="0.5" min="1" id="ore_lucratoare_zi" name="ore_lucratoare_zi" value="8">
+  </div>
+
+  <div class="card">
+    <h3>B. Timp de lucru — ore de manopera pe faza</h3>
+    <table>
+      <thead><tr><th>Faza</th><th>Ore manopera</th><th>Operatori alocati</th></tr></thead>
+      <tbody>
+        {% for faza in faze_flux %}
+        <tr>
+          <td>{{ faza }}</td>
+          <td><input type="number" step="0.5" min="0" name="ore_{{ loop.index0 }}" value="0"></td>
+          <td><input type="number" step="1" min="0" name="operatori_{{ loop.index0 }}" value="1"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>C. Timp de asteptare — zile calendaristice</h3>
+    <label for="aprobare_client_zile">Aprobare client: decor, finisaj, cote (zile)</label>
+    <input type="number" step="0.5" min="0" id="aprobare_client_zile" name="aprobare_client_zile" value="0">
+    <label for="masuratori_zile">Masuratori la fata locului / acces (zile)</label>
+    <input type="number" step="0.5" min="0" id="masuratori_zile" name="masuratori_zile" value="0">
+    <label for="aprovizionare_zile">Aprovizionare material (zile)</label>
+    <input type="number" step="0.5" min="0" id="aprovizionare_zile" name="aprovizionare_zile" value="0">
+    <label for="uscare_zile">Uscare / intarire vopsea (zile)</label>
+    <input type="number" step="0.5" min="0" id="uscare_zile" name="uscare_zile" value="0">
+    <label for="acces_santier_zile">Asteptare acces santier pentru montaj (zile)</label>
+    <input type="number" step="0.5" min="0" id="acces_santier_zile" name="acces_santier_zile" value="0">
+    <label for="buffer_zile">Buffer de siguranta (zile)</label>
+    <input type="number" step="0.5" min="0" id="buffer_zile" name="buffer_zile" value="0">
+    <label for="suprapunere_aprovizionare_pct">Suprapunere aprovizionare cu proiectarea (%)</label>
+    <input type="number" step="1" min="0" max="100" id="suprapunere_aprovizionare_pct" name="suprapunere_aprovizionare_pct" value="0">
+  </div>
+
+  <button type="submit" class="btn">Calculeaza termenul realist</button>
+</form>
+{% endblock %}
