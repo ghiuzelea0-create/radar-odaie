@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+{% set r = record.rezultat %}
+<h2>{{ record.proiect }}</h2>
+<p class="muted">Client: {{ record.client }} · Data: {{ record.data }}</p>
+
+<div class="card">
+  <h3>A. Materiale directe</h3>
+  <table>
+    <thead><tr><th>Denumire</th><th>U.M.</th><th>Cant.</th><th>Pret unitar</th><th>% pierdere</th><th>Valoare (RON)</th></tr></thead>
+    <tbody>
+    {% for m in r.materiale %}
+      <tr>
+        <td>{{ m.denumire }}</td>
+        <td>{{ m.um }}</td>
+        <td>{{ m.cantitate }}</td>
+        <td>{{ "%.2f"|format(m.pret_unitar) }}</td>
+        <td>{{ "%.1f"|format(m.pierdere_pct * 100) }}%</td>
+        <td>{{ "%.2f"|format(m.valoare) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p><strong>Subtotal materiale: {{ "%.2f"|format(r.sinteza.subtotal_materiale) }} RON</strong></p>
+</div>
+
+<div class="card">
+  <h3>B. Manopera directa</h3>
+  <table>
+    <thead><tr><th>Faza</th><th>Ore</th><th>Cost/ora (RON)</th><th>Valoare (RON)</th></tr></thead>
+    <tbody>
+    {% for m in r.manopera %}
+      <tr>
+        <td>{{ m.faza }}</td>
+        <td>{{ m.ore }}</td>
+        <td>{{ "%.2f"|format(m.cost_ora) }}</td>
+        <td>{{ "%.2f"|format(m.valoare) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p><strong>Subtotal manopera: {{ "%.2f"|format(r.sinteza.subtotal_manopera) }} RON</strong></p>
+</div>
+
+<div class="card">
+  <h3>C. Proiectare</h3>
+  <p>Cost/ora: {{ "%.2f"|format(r.sinteza.cost_ora_proiectare) }} RON — Valoare: <strong>{{ "%.2f"|format(r.sinteza.valoare_proiectare) }} RON</strong></p>
+</div>
+
+<div class="card">
+  <h3>D. Logistica si montaj</h3>
+  <p>Montaj: {{ "%.2f"|format(r.sinteza.valoare_montaj) }} RON</p>
+  <p><strong>Subtotal logistica: {{ "%.2f"|format(r.sinteza.subtotal_logistica) }} RON</strong></p>
+</div>
+
+<div class="card">
+  <h3>Sinteza cost</h3>
+  <table>
+    <tbody>
+      <tr><td>Subtotal cost direct (A+B+C+D)</td><td>{{ "%.2f"|format(r.sinteza.subtotal_cost_direct) }} RON</td></tr>
+      <tr><td>Regie / cheltuieli indirecte</td><td>{{ "%.2f"|format(r.sinteza.regie) }} RON</td></tr>
+      <tr><td><strong>Cost total productie</strong></td><td><strong>{{ "%.2f"|format(r.sinteza.cost_total_productie) }} RON</strong></td></tr>
+      <tr><td>Adaos comercial</td><td>{{ "%.2f"|format(r.sinteza.adaos) }} RON</td></tr>
+      <tr><td>Rezerva de risc</td><td>{{ "%.2f"|format(r.sinteza.rezerva) }} RON</td></tr>
+      <tr><td><strong>Pret vanzare fara TVA</strong></td><td><strong>{{ "%.2f"|format(r.sinteza.pret_vanzare_fara_tva) }} RON</strong></td></tr>
+      <tr><td>TVA</td><td>{{ "%.2f"|format(r.sinteza.tva) }} RON</td></tr>
+      <tr><td><strong>PRET TOTAL CU TVA</strong></td><td><strong>{{ "%.2f"|format(r.sinteza.pret_total_cu_tva) }} RON</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Oferta comerciala (vedere client)</h3>
+  <p>Mobilier la comanda conform proiect <strong>{{ r.oferta.proiect }}</strong></p>
+  <p>Total fara TVA: {{ "%.2f"|format(r.oferta.total_fara_tva) }} RON</p>
+  <p>TVA (21%): {{ "%.2f"|format(r.oferta.tva) }} RON</p>
+  <p><strong>TOTAL DE PLATA (cu TVA): {{ "%.2f"|format(r.oferta.total_cu_tva) }} RON</strong></p>
+  <p class="muted">Oferta valabila 30 de zile. Preturi in RON, fara TVA pana la sinteza finala.</p>
+</div>
+
+<div class="card">
+  <h3>Verificare marja si profitabilitate</h3>
+  {% set vm = r.verificare_marja %}
+  <p>Marja bruta: {{ "%.2f"|format(vm.marja_bruta_ron) }} RON ({{ "%.1f"|format(vm.marja_bruta_pct * 100) }}%)</p>
+  <p>Prag marja minima: {{ "%.1f"|format(vm.prag_marja_minima * 100) }}%</p>
+  <p>Pondere materiale in cost: {{ "%.1f"|format(vm.pondere_materiale * 100) }}% · Pondere manopera in cost: {{ "%.1f"|format(vm.pondere_manopera * 100) }}%</p>
+  {% if vm.stare_marja == "OK" %}
+    <span class="badge ok">{{ vm.stare_marja }}</span>
+  {% elif vm.stare_marja.startswith("ATENTIE") %}
+    <span class="badge warn">{{ vm.stare_marja }}</span>
+  {% else %}
+    <span class="badge alert">{{ vm.stare_marja }}</span>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Agent QA si Validare</h3>
+  {% if record.qa_raport %}
+    <div class="qa-report">{{ record.qa_raport }}</div>
+  {% elif record.qa_eroare %}
+    <div class="error">{{ record.qa_eroare }}</div>
+  {% else %}
+    <p class="muted">Nicio verificare QA rulata inca pentru acest deviz.</p>
+  {% endif %}
+  <form method="post" action="{{ url_for('deviz_qa', deviz_id=record.id) }}" style="margin-top: 0.75rem;">
+    <button type="submit" class="btn">Ruleaza verificarea QA</button>
+  </form>
+</div>
+
+<a href="{{ url_for('index') }}" class="muted">&larr; Inapoi la lista de devize</a>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Deviz nou</h2>
+{% if eroare %}<div class="error">{{ eroare }}</div>{% endif %}
+
+<form method="post">
+  <div class="card">
+    <label for="proiect">Proiect</label>
+    <input type="text" id="proiect" name="proiect" required value="{{ form.get('proiect', '') }}">
+    <label for="client">Client</label>
+    <input type="text" id="client" name="client" value="{{ form.get('client', '') }}">
+    <label for="data">Data</label>
+    <input type="date" id="data" name="data" value="{{ form.get('data', '') }}">
+  </div>
+
+  <div class="card">
+    <h3>A. Materiale directe</h3>
+    <p class="muted">Denumirea trebuie sa corespunda exact unei intrari din nomenclator (vezi pagina Nomenclator). % pierdere se completeaza automat din Parametri daca lasi campul gol.</p>
+    <datalist id="lista-materiale">
+      {% for m in materiale %}
+      <option value="{{ m.denumire }}">{{ m.categorie }} — {{ m.pret_contract or m.pret_retail }} RON/{{ m.um }}</option>
+      {% endfor %}
+    </datalist>
+    <div id="materiale-rows"></div>
+    <button type="button" class="btn secondary" onclick="adaugaRandMaterial()">+ Adauga material</button>
+  </div>
+
+  <div class="card">
+    <h3>B. Manopera directa</h3>
+    <div id="manopera-rows"></div>
+    <button type="button" class="btn secondary" onclick="adaugaRandManopera()">+ Adauga faza</button>
+  </div>
+
+  <div class="card">
+    <h3>C. Proiectare</h3>
+    <label for="ore_proiectare">Ore proiectare tehnica</label>
+    <input type="number" step="0.1" min="0" id="ore_proiectare" name="ore_proiectare" value="{{ form.get('ore_proiectare', 0) }}">
+  </div>
+
+  <div class="card">
+    <h3>D. Logistica si montaj</h3>
+    <label for="transport">Transport (RON)</label>
+    <input type="number" step="0.01" min="0" id="transport" name="transport" value="{{ form.get('transport', 0) }}">
+    <label for="cazare">Cazare / diurna (RON)</label>
+    <input type="number" step="0.01" min="0" id="cazare" name="cazare" value="{{ form.get('cazare', 0) }}">
+    <label for="montaj_ore">Montaj — ore</label>
+    <input type="number" step="0.1" min="0" id="montaj_ore" name="montaj_ore" value="{{ form.get('montaj_ore', 0) }}">
+    <label for="montaj_nr_montatori">Montaj — numar montatori</label>
+    <input type="number" step="1" min="0" id="montaj_nr_montatori" name="montaj_nr_montatori" value="{{ form.get('montaj_nr_montatori', 0) }}">
+  </div>
+
+  <button type="submit" class="btn">Calculeaza deviz</button>
+</form>
+
+<script>
+const fazeManopera = {{ faze_manopera|tojson }};
+
+function adaugaRandMaterial() {
+  const container = document.getElementById('materiale-rows');
+  const row = document.createElement('div');
+  row.className = 'row-grid';
+  row.innerHTML = `
+    <div><input type="text" name="mat_denumire" list="lista-materiale" placeholder="Denumire material"></div>
+    <div><input type="number" name="mat_cantitate" step="0.001" min="0" placeholder="Cantitate"></div>
+    <div><input type="number" name="mat_pierdere" step="0.1" min="0" placeholder="% pierdere (opt.)"></div>
+    <button type="button" class="remove-row" onclick="this.parentElement.remove()">×</button>
+  `;
+  container.appendChild(row);
+}
+
+function adaugaRandManopera() {
+  const container = document.getElementById('manopera-rows');
+  const row = document.createElement('div');
+  row.className = 'row-grid-manopera';
+  const options = fazeManopera.map(f => `<option value="${f}">${f}</option>`).join('');
+  row.innerHTML = `
+    <div><select name="man_faza"><option value="">-- alege faza --</option>${options}</select></div>
+    <div><input type="number" name="man_ore" step="0.1" min="0" placeholder="Ore"></div>
+    <button type="button" class="remove-row" onclick="this.parentElement.remove()">×</button>
+  `;
+  container.appendChild(row);
+}
+
+adaugaRandMaterial();
+adaugaRandManopera();
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Arca — Costing &amp; Ofertare{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site">
+    <h1>ARCA — Costing &amp; Ofertare</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Devize</a>
+      <a href="{{ url_for('deviz_nou') }}">Deviz nou</a>
+      <a href="{{ url_for('nomenclator_view') }}">Nomenclator</a>
+      <a href="{{ url_for('parametri_view') }}">Parametri</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

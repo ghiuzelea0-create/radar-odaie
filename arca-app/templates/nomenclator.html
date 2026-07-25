@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Nomenclator materiale</h2>
+<p class="muted">Egger / Kronospan / Kastamonu (Mathaus) · Blum (Luxfer) · Hafele. Pretul aplicat = pret contract daca exista, altfel pret retail.</p>
+<table>
+  <thead><tr><th>Denumire</th><th>Producator</th><th>Categorie</th><th>U.M.</th><th>Pret retail</th><th>Pret contract</th></tr></thead>
+  <tbody>
+  {% for m in materiale %}
+    <tr>
+      <td>{{ m.denumire }}</td>
+      <td>{{ m.producator }}</td>
+      <td>{{ m.categorie }}</td>
+      <td>{{ m.um }}</td>
+      <td>{{ m.pret_retail if m.pret_retail is not none else "—" }}</td>
+      <td>{{ m.pret_contract if m.pret_contract else "—" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2 style="margin-top: 2rem;">Nomenclator manopera</h2>
+<table>
+  <thead><tr><th>Faza</th><th>Brut Bucuresti</th><th>Brut Cluj</th><th>Brut Brasov</th><th>Nota</th></tr></thead>
+  <tbody>
+  {% for m in manopera %}
+    <tr>
+      <td>{{ m.faza }}</td>
+      <td>{{ m.brut_bucuresti }}</td>
+      <td>{{ m.brut_cluj }}</td>
+      <td>{{ m.brut_brasov }}</td>
+      <td class="muted">{{ m.nota }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

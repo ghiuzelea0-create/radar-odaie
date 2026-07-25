@@ -1,0 +1,72 @@
+{
+  "tva": {
+    "valoare": 0.21,
+    "observatii": "FAPT: cota standard = 21% din 1 august 2025 (Legea 141/2025).",
+    "parametru": "TVA"
+  },
+  "pierdere_pal_mdf": {
+    "valoare": 0.1,
+    "observatii": "IPOTEZA. Ajusteaza la randamentul real al debitarii tale.",
+    "parametru": "Pierdere tehnologica PAL/MDF"
+  },
+  "pierdere_lemn_masiv": {
+    "valoare": 0.15,
+    "observatii": "IPOTEZA.",
+    "parametru": "Pierdere tehnologica lemn masiv"
+  },
+  "regie": {
+    "valoare": 0.15,
+    "observatii": "IPOTEZA. % aplicat la costul direct. ATENTIE la dubla-numarare.",
+    "parametru": "Regie / cheltuieli indirecte"
+  },
+  "adaos_comercial": {
+    "valoare": 0.3,
+    "observatii": "Adaos aplicat pe costul total de productie.",
+    "parametru": "Adaos comercial"
+  },
+  "marja_bruta_tinta": {
+    "valoare": 0.35,
+    "observatii": "Prag-tinta; nu intra in calcul.",
+    "parametru": "Marja bruta tinta (referinta)"
+  },
+  "rezerva_risc": {
+    "valoare": 0.05,
+    "observatii": "% pe costul total de productie.",
+    "parametru": "Rezerva de risc / neprevazute"
+  },
+  "tichete_masa_luna": {
+    "valoare": 0,
+    "observatii": "Opțional. Plafon legal max ~840 lei/luna. Intra in costul orar.",
+    "parametru": "Tichete de masa / angajat / luna"
+  },
+  "prag_alerta_marja": {
+    "valoare": 0.25,
+    "observatii": "Sub acest prag, VERIFICARE MARJA da alerta.",
+    "parametru": "Prag alerta marja minima"
+  },
+  "salariu_minim_brut": {
+    "valoare": 4325,
+    "observatii": "FAPT: 4.325 lei din 1 iulie 2026 (HG 146/2026). In S1 2026 era 4.050 lei.",
+    "parametru": "Salariu minim brut (RON/luna)"
+  },
+  "ore_nominale_luna": {
+    "valoare": 168,
+    "observatii": "21 zile lucratoare x 8 ore. Baza de calcul.",
+    "parametru": "Ore nominale plafon / luna"
+  },
+  "grad_utilizare_productiva": {
+    "valoare": 0.75,
+    "observatii": "IPOTEZA. Acopera concediu, sarbatori legale, instruire, timp neproductiv.",
+    "parametru": "Grad de utilizare productiva"
+  },
+  "cam_contributie_angajator": {
+    "valoare": 0.0225,
+    "observatii": "FAPT: 2,25%, singura contributie peste brut suportata de angajator.",
+    "parametru": "CAM — contributie angajator"
+  },
+  "regiune": {
+    "valoare": "Bucuresti",
+    "observatii": "Scrie exact: Bucuresti / Cluj / Brasov. Comuta coloana de salarii folosita.",
+    "parametru": "REGIUNE pentru tarife manopera"
+  }
+}
