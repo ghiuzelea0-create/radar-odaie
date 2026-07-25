@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Corp nou — parametri</h2>
+<p class="muted">Completeaza dimensiunile de gabarit si comutatoarele de constructie. Verificarea geometrica si listele de debitare/feronerie/consum se genereaza automat.</p>
+{% if eroare %}<div class="error">{{ eroare }}</div>{% endif %}
+
+<form method="post">
+  <div class="card">
+    <label for="proiect">Proiect / corp</label>
+    <input type="text" id="proiect" name="proiect" required value="{{ form.get('proiect', '') }}" placeholder="ex: Corp baza bucatarie 800">
+  </div>
+
+  <div class="card">
+    <h3>Dimensiuni de gabarit</h3>
+    <label for="latime">Latime corp - L (mm)</label>
+    <input type="number" step="1" min="1" id="latime" name="latime" required value="{{ form.get('latime', 800) }}">
+    <label for="inaltime">Inaltime corp - H (mm)</label>
+    <input type="number" step="1" min="1" id="inaltime" name="inaltime" required value="{{ form.get('inaltime', 720) }}">
+    <label for="adancime">Adancime corp - A (mm, fara spate)</label>
+    <input type="number" step="1" min="1" id="adancime" name="adancime" required value="{{ form.get('adancime', 560) }}">
+    <label for="grosime_pal">Grosime PAL corp (mm)</label>
+    <input type="number" step="0.1" min="1" id="grosime_pal" name="grosime_pal" value="{{ form.get('grosime_pal', 18) }}">
+    <label for="grosime_spate_hdf">Grosime spate HDF (mm)</label>
+    <input type="number" step="0.1" min="0" id="grosime_spate_hdf" name="grosime_spate_hdf" value="{{ form.get('grosime_spate_hdf', 3) }}">
+    <label for="nr_rafturi">Numar rafturi</label>
+    <input type="number" step="1" min="0" id="nr_rafturi" name="nr_rafturi" value="{{ form.get('nr_rafturi', 1) }}">
+    <label for="nr_usi">Numar usi</label>
+    <input type="number" step="1" min="0" id="nr_usi" name="nr_usi" value="{{ form.get('nr_usi', 2) }}">
+    <label for="nr_sertare">Numar sertare</label>
+    <input type="number" step="1" min="0" id="nr_sertare" name="nr_sertare" value="{{ form.get('nr_sertare', 0) }}">
+  </div>
+
+  <div class="card">
+    <h3>Comutatoare de constructie</h3>
+    <label for="tip_constructie">Tip constructie corp</label>
+    <select id="tip_constructie" name="tip_constructie">
+      {% for t in tipuri_constructie %}
+        <option value="{{ t }}" {% if form.get('tip_constructie', 'Laterale continue') == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+    <label for="tip_inchidere_sus">Tip inchidere sus</label>
+    <select id="tip_inchidere_sus" name="tip_inchidere_sus">
+      {% for t in tipuri_inchidere %}
+        <option value="{{ t }}" {% if form.get('tip_inchidere_sus', 'Traverse') == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+    <label for="sistem_asamblare">Sistem asamblare</label>
+    <select id="sistem_asamblare" name="sistem_asamblare">
+      {% for s in sisteme_asamblare %}
+        <option value="{{ s }}" {% if form.get('sistem_asamblare', 'Confirmat') == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+    <label for="cant_04_pe_muchii_ascunse">Cant 0,4 mm pe muchii ascunse</label>
+    <select id="cant_04_pe_muchii_ascunse" name="cant_04_pe_muchii_ascunse">
+      <option value="Da" {% if form.get('cant_04_pe_muchii_ascunse', 'Da') == 'Da' %}selected{% endif %}>Da</option>
+      <option value="Nu" {% if form.get('cant_04_pe_muchii_ascunse') == 'Nu' %}selected{% endif %}>Nu</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h3>Conventii de executie</h3>
+    <label for="latime_traversa_sus">Latime traversa sus (mm)</label>
+    <input type="number" step="1" min="0" id="latime_traversa_sus" name="latime_traversa_sus" value="{{ form.get('latime_traversa_sus', 100) }}">
+    <label for="retragere_raft">Retragere raft fata de adancime (mm)</label>
+    <input type="number" step="1" min="0" id="retragere_raft" name="retragere_raft" value="{{ form.get('retragere_raft', 20) }}">
+    <label for="rost_fronturi">Rost intre fronturi (mm)</label>
+    <input type="number" step="0.1" min="0" id="rost_fronturi" name="rost_fronturi" value="{{ form.get('rost_fronturi', 3) }}">
+    <label for="inaltime_front_usa">Inaltime front usa (mm) — implicit H - rost, ajusteaza daca ai sertare deasupra</label>
+    <input type="number" step="1" min="0" id="inaltime_front_usa" name="inaltime_front_usa" value="{{ form.get('inaltime_front_usa', '') }}" placeholder="implicit H - rost">
+    <label for="inaltime_zona_sertare">Inaltime zona sertare (mm) — doar daca ai sertare</label>
+    <input type="number" step="1" min="0" id="inaltime_zona_sertare" name="inaltime_zona_sertare" value="{{ form.get('inaltime_zona_sertare', 0) }}">
+    <label for="puncte_fixare">Puncte de fixare / imbinare</label>
+    <input type="number" step="1" min="1" id="puncte_fixare" name="puncte_fixare" value="{{ form.get('puncte_fixare', 3) }}">
+    <label for="pas_suruburi_spate">Pas suruburi spate (mm)</label>
+    <input type="number" step="1" min="1" id="pas_suruburi_spate" name="pas_suruburi_spate" value="{{ form.get('pas_suruburi_spate', 150) }}">
+    <label for="pierdere_tehnologica">Pierdere tehnologica PAL/MDF (%) — implicit din Parametri Costing</label>
+    <input type="number" step="0.1" min="0" id="pierdere_tehnologica" name="pierdere_tehnologica" value="{{ form.get('pierdere_tehnologica', pierdere_implicita) }}">
+  </div>
+
+  <button type="submit" class="btn">Genereaza lista de debitare</button>
+</form>
+{% endblock %}

@@ -1,16 +1,19 @@
-# ARCA — Costing & Ofertare
+# ARCA — Costing & Ofertare + Proiectare
 
-Aplicație web + agent Claude pentru modulul **Costing și Ofertare** din arhitectura
-ARCA AI ORCHESTRATOR (Arca Interiors / Arca Fancons SRL). Prima versiune funcțională
-implementează un singur modul (cel mai concret, cu date reale disponibile): calculul de
-deviz, oferta comercială pentru client și verificarea marjei — pe baza datelor reale din
-`arcacosting.xlsx` (parametri, nomenclator materiale Egger/Kronospan/Kastamonu/Blum/Hafele,
-nomenclator manoperă).
+Aplicație web + agent Claude pentru arhitectura ARCA AI ORCHESTRATOR (Arca Interiors /
+Arca Fancons SRL). Implementează doua module funcționale, pe baza datelor reale din
+fișierele Excel încărcate:
 
-Motorul de calcul (`costing_engine.py`) replică exact formulele din foile PARAMETRI,
-NOMENCLATOR MATERIALE, NOMENCLATOR MANOPERA, DEVIZ, OFERTA și VERIFICARE MARJA ale
-workbook-ului original — validat prin teste automate (`tests/test_costing_engine.py`)
-care reproduc exemplul real din workbook (corp bucătărie 800mm) cifră cu cifră.
+- **Costing & Ofertare** — calculul de deviz, oferta comercială pentru client și
+  verificarea marjei, pe baza datelor din `arcacosting.xlsx` (parametri, nomenclator
+  materiale Egger/Kronospan/Kastamonu/Blum/Hafele, nomenclator manoperă).
+- **Proiectare** — calculatorul parametric de corp de mobilier, pe baza datelor din
+  `arcatechspec.xlsx` (verificare geometrică automată, listă de debitare, listă
+  feronerie, consum de material).
+
+Motoarele de calcul (`costing_engine.py`, `design_engine.py`) replică exact formulele
+din workbook-urile originale — validate prin teste automate (`tests/`) care reproduc
+cifră cu cifră exemplele reale din ambele fișiere (corp bucătărie 800×720×560 mm).
 
 ## Instalare
 
@@ -51,13 +54,36 @@ python3 -m pytest tests/ -v
 
 ## Structură
 
-- `costing_engine.py` — motorul de calcul (funcții pure, testabile)
+- `costing_engine.py` — motorul de calcul deviz/ofertă (funcții pure, testabile)
+- `design_engine.py` — motorul de proiectare parametrică a corpului de mobilier
+  (verificare geometrică, listă de debitare, feronerie, consum)
 - `qa_agent.py` — integrarea cu Claude API pentru verificarea QA
-- `storage.py` — persistență locală a devizelor (fișiere JSON în `data/devize/`)
+- `storage.py` — persistență locală a devizelor și corpurilor (fișiere JSON în
+  `data/devize/` și `data/corpuri/`)
 - `app.py` — aplicația Flask (rute, formulare)
 - `data/parametri.json`, `data/materiale.json`, `data/manopera.json` — datele reale
   extrase din `arcacosting.xlsx`
 - `templates/`, `static/` — interfața web
+
+## Modulul Proiectare
+
+Pagina „Proiectare" permite introducerea parametrilor unui corp de mobilier (dimensiuni
+de gabarit, comutatoare de construcție, convenții de execuție) și generează automat:
+
+- **verificarea geometrică** — confirmă că piesele reconstituie gabaritul cerut;
+- **lista de debitare** — cele 9 tipuri de piese (laterale, fund, capac, traverse, raft,
+  spate, fronturi uși/sertare) cu dimensiuni, direcție fibră și cant, calculate din
+  comutatoarele alese (tip construcție, tip închidere sus, număr uși/sertare/rafturi);
+- **lista de feronerie** — balamale, plăcuțe, picioare reglabile, suporți raft, glisiere
+  sertar, șuruburi — cu regulile de calcul din workbook (ex: număr balamale în funcție de
+  înălțimea frontului);
+- **consumul de material** — suprafață netă și necesar cu pierdere tehnologică aplicată,
+  plus număr de plăci — gata de transferat manual în Deviz (buton „Deschide Deviz nou" pe
+  pagina de detaliu a corpului).
+
+Transferul dintre Proiectare și Costing rămâne manual (ca în workbook-ul original): pagina
+de detaliu a corpului afișează clar cifrele de introdus, dar utilizatorul alege decorul
+exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
 
 ## Ipoteze și limite ale datelor (din foaia SURSE DATE a workbook-ului original)
 
@@ -84,11 +110,10 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
 
 ## Ce nu acoperă această versiune
 
-Scopul v1 este exclusiv modulul Costing & Ofertare. Nu sunt incluse (rămân pentru etape
-ulterioare, pe baza celorlalte fișiere încărcate — `arcatechspec.xlsx`,
-`arcatechspecproiect.xlsx`, `arcaflux.xlsx`):
+Nu sunt incluse încă (rămân pentru etape ulterioare, pe baza celorlalte fișiere încărcate
+— `arcatechspecproiect.xlsx`, `arcaflux.xlsx`):
 
-- calculatorul parametric de corp de mobilier (listă de debitare, feronerie generate
-  automat din dimensiuni) — Agent Proiectare;
+- proiecte cu mai multe corpuri / liste de debitare agregate pe proiect complet
+  (`arcatechspecproiect.xlsx`);
 - managementul fluxului de proiecte, termene și KPI — Agent Management Fabrică;
 - module Web Design și Product Design.
