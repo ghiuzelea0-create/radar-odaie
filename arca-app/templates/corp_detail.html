@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+{% set r = record.rezultat %}
+<h2>{{ r.proiect }}</h2>
+<p class="muted">Gabarit L x H x A: <strong>{{ r.gabarit }}</strong></p>
+
+<div class="card">
+  <h3>Verificare geometrica automata</h3>
+  {% set vg = r.verificare_geometrica %}
+  <p>Adancime totala cu spate: {{ "%.0f"|format(vg.adancime_totala_cu_spate) }} mm</p>
+  <p>L reconstituit din piese: {{ "%.0f"|format(vg.l_reconstituit) }} mm · H reconstituit: {{ "%.0f"|format(vg.h_reconstituit) }} mm</p>
+  {% if vg.stare.startswith("OK") %}
+    <span class="badge ok">{{ vg.stare }}</span>
+  {% else %}
+    <span class="badge alert">{{ vg.stare }}</span>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Lista de debitare</h3>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Denumire piesa</th><th>Material</th><th>Lungime (mm)</th><th>Latime (mm)</th><th>Buc</th><th>Directie fibra</th><th>Cant 2mm (ml/buc)</th><th>Cant 0,4mm (ml/buc)</th><th>Suprafata (mp)</th></tr>
+    </thead>
+    <tbody>
+      {% for p in r.lista_debitare.piese %}
+        {% if p.buc > 0 %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ p.denumire }}</td>
+          <td>{{ p.material }}</td>
+          <td>{{ "%.0f"|format(p.lungime) }}</td>
+          <td>{{ "%.0f"|format(p.latime) }}</td>
+          <td>{{ p.buc }}</td>
+          <td>{{ p.directie_fibra }}</td>
+          <td>{{ "%.3f"|format(p.cant_2mm_ml_buc) }}</td>
+          <td>{{ "%.3f"|format(p.cant_04mm_ml_buc) }}</td>
+          <td>{{ "%.4f"|format(p.suprafata_mp) }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+      <tr>
+        <td colspan="5"><strong>TOTAL</strong></td>
+        <td><strong>{{ r.lista_debitare.total_buc }}</strong></td>
+        <td></td>
+        <td><strong>{{ "%.3f"|format(r.lista_debitare.total_cant_2mm_ml) }}</strong></td>
+        <td><strong>{{ "%.3f"|format(r.lista_debitare.total_cant_04mm_ml) }}</strong></td>
+        <td><strong>{{ "%.4f"|format(r.lista_debitare.total_suprafata_mp) }}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">Piesele cu 0 bucati au fost excluse (comutatorul le-a exclus).</p>
+</div>
+
+<div class="card">
+  <h3>Lista feronerie</h3>
+  <table>
+    <thead><tr><th>Element</th><th>Cantitate</th><th>U.M.</th><th>Observatii</th></tr></thead>
+    <tbody>
+      {% for el in r.feronerie %}
+      <tr>
+        <td>{{ el.element }}</td>
+        <td>{{ el.cantitate }}</td>
+        <td>{{ el.um }}</td>
+        <td class="muted">{{ el.observatii }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Consum de material — de transferat in Deviz</h3>
+  {% set c = r.consum %}
+  <table>
+    <tbody>
+      <tr><td>Pierdere tehnologica asumata</td><td>{{ "%.1f"|format(c.pierdere_tehnologica * 100) }}%</td></tr>
+      <tr><td>Suprafata piese PAL corp (fara pierdere)</td><td>{{ "%.4f"|format(c.suprafata_pal_corp_mp) }} mp</td></tr>
+      <tr><td>Suprafata piese PAL front (fara pierdere)</td><td>{{ "%.4f"|format(c.suprafata_pal_front_mp) }} mp</td></tr>
+      <tr><td>Suprafata piese HDF (fara pierdere)</td><td>{{ "%.4f"|format(c.suprafata_hdf_mp) }} mp</td></tr>
+      <tr><td><strong>PAL corp necesar (de introdus in DEVIZ)</strong></td><td><strong>{{ "%.4f"|format(c.pal_corp_necesar_metoda_deviz_mp) }} mp — {{ c.nr_placi_pal_corp }} placi</strong></td></tr>
+      <tr><td><strong>PAL front necesar (de introdus in DEVIZ)</strong></td><td><strong>{{ "%.4f"|format(c.pal_front_necesar_metoda_deviz_mp) }} mp — {{ c.nr_placi_pal_front }} placi</strong></td></tr>
+      <tr><td><strong>HDF necesar (de introdus in DEVIZ)</strong></td><td><strong>{{ "%.4f"|format(c.hdf_necesar_metoda_deviz_mp) }} mp — {{ c.nr_placi_hdf }} placi</strong></td></tr>
+      <tr><td>Cant 2 mm total</td><td>{{ "%.3f"|format(c.cant_2mm_total_ml) }} ml</td></tr>
+      <tr><td>Cant 0,4 mm total</td><td>{{ "%.3f"|format(c.cant_04mm_total_ml) }} ml</td></tr>
+      <tr><td>Numar total piese de debitat</td><td>{{ c.nr_total_piese }} buc</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">Atentie la unitatea de masura: in nomenclatorul din Costing placile sunt cotate pe PLACA, nu pe mp — foloseste numarul de placi de mai sus la crearea unui Deviz nou.</p>
+  <a href="{{ url_for('deviz_nou') }}" class="btn secondary">Deschide Deviz nou</a>
+</div>
+
+<a href="{{ url_for('corp_lista') }}" class="muted">&larr; Inapoi la lista de corpuri</a>
+{% endblock %}

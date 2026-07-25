@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Proiectare — corpuri de mobilier</h2>
+<p class="muted"><a href="{{ url_for('corp_nou') }}" class="btn">+ Corp nou</a></p>
+{% if not corpuri %}
+  <p class="notice">Nu exista inca niciun corp proiectat. <a href="{{ url_for('corp_nou') }}">Creeaza primul corp</a>.</p>
+{% else %}
+<table>
+  <thead>
+    <tr>
+      <th>Proiect</th>
+      <th>Gabarit</th>
+      <th>Piese</th>
+      <th>Verificare</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in corpuri %}
+    <tr>
+      <td>{{ c.rezultat.proiect }}</td>
+      <td>{{ c.rezultat.gabarit }}</td>
+      <td>{{ c.rezultat.lista_debitare.total_buc }} buc</td>
+      <td>
+        {% if c.rezultat.verificare_geometrica.stare.startswith("OK") %}
+          <span class="badge ok">OK</span>
+        {% else %}
+          <span class="badge alert">Eroare</span>
+        {% endif %}
+      </td>
+      <td><a href="{{ url_for('corp_detail', corp_id=c.id) }}">Deschide</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

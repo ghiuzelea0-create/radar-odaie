@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 data/devize/*.json
 !data/devize/.gitkeep
+data/corpuri/*.json
+!data/corpuri/.gitkeep

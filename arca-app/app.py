@@ -6,8 +6,16 @@ import os
 from flask import Flask, redirect, render_template, request, url_for
 
 from costing_engine import DevizError, DevizInput, Logistica, ManoperaLine, MaterialLine, calculeaza_deviz
+from design_engine import CorpError, CorpInput, TIPURI_CONSTRUCTIE, TIPURI_INCHIDERE_SUS, SISTEME_ASAMBLARE, calculeaza_corp
 from qa_agent import QAIndisponibil, verifica_deviz
-from storage import incarca_deviz, listeaza_devize, salveaza_deviz
+from storage import (
+    incarca_corp,
+    incarca_deviz,
+    listeaza_corpuri,
+    listeaza_devize,
+    salveaza_corp,
+    salveaza_deviz,
+)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -59,6 +67,93 @@ def parametri_view():
 def nomenclator_view():
     _, materiale, manopera = _incarca_nomenclatoare()
     return render_template("nomenclator.html", materiale=materiale, manopera=manopera)
+
+
+@app.route("/corp")
+def corp_lista():
+    corpuri = listeaza_corpuri()
+    return render_template("corp_lista.html", corpuri=corpuri)
+
+
+@app.route("/corp/nou", methods=["GET", "POST"])
+def corp_nou():
+    parametri, _, _ = _incarca_nomenclatoare()
+    pierdere_implicita = float(parametri["pierdere_pal_mdf"]["valoare"])
+
+    if request.method == "POST":
+        f = request.form
+
+        def numar(cheie, implicit=0):
+            valoare = f.get(cheie, "").strip()
+            return float(valoare) if valoare else implicit
+
+        inaltime_front_usa_str = f.get("inaltime_front_usa", "").strip()
+        pierdere_str = f.get("pierdere_tehnologica", "").strip()
+        pierdere_pct = float(pierdere_str) if pierdere_str else pierdere_implicita * 100
+
+        corp_input = CorpInput(
+            proiect=f.get("proiect", "").strip(),
+            latime=numar("latime"),
+            inaltime=numar("inaltime"),
+            adancime=numar("adancime"),
+            grosime_pal=numar("grosime_pal", 18),
+            grosime_spate_hdf=numar("grosime_spate_hdf", 3),
+            nr_rafturi=int(numar("nr_rafturi", 0)),
+            nr_usi=int(numar("nr_usi", 0)),
+            nr_sertare=int(numar("nr_sertare", 0)),
+            tip_constructie=f.get("tip_constructie", "Laterale continue"),
+            tip_inchidere_sus=f.get("tip_inchidere_sus", "Traverse"),
+            sistem_asamblare=f.get("sistem_asamblare", "Confirmat"),
+            cant_04_pe_muchii_ascunse=f.get("cant_04_pe_muchii_ascunse", "Da"),
+            latime_traversa_sus=numar("latime_traversa_sus", 100),
+            retragere_raft=numar("retragere_raft", 20),
+            rost_fronturi=numar("rost_fronturi", 3),
+            inaltime_front_usa=float(inaltime_front_usa_str) if inaltime_front_usa_str else None,
+            inaltime_zona_sertare=numar("inaltime_zona_sertare", 0),
+            puncte_fixare=int(numar("puncte_fixare", 3)),
+            pas_suruburi_spate=numar("pas_suruburi_spate", 150),
+            pierdere_tehnologica=pierdere_pct / 100,
+        )
+
+        try:
+            rezultat = calculeaza_corp(corp_input)
+        except CorpError as exc:
+            return render_template(
+                "corp_nou.html",
+                eroare=str(exc),
+                form=f,
+                tipuri_constructie=TIPURI_CONSTRUCTIE,
+                tipuri_inchidere=TIPURI_INCHIDERE_SUS,
+                sisteme_asamblare=SISTEME_ASAMBLARE,
+                pierdere_implicita=pierdere_implicita * 100,
+            )
+
+        corp_id = salveaza_corp(
+            {
+                "proiect": corp_input.proiect,
+                "input": vars(corp_input),
+                "rezultat": rezultat,
+            }
+        )
+        return redirect(url_for("corp_detail", corp_id=corp_id))
+
+    return render_template(
+        "corp_nou.html",
+        eroare=None,
+        form={},
+        tipuri_constructie=TIPURI_CONSTRUCTIE,
+        tipuri_inchidere=TIPURI_INCHIDERE_SUS,
+        sisteme_asamblare=SISTEME_ASAMBLARE,
+        pierdere_implicita=pierdere_implicita * 100,
+    )
+
+
+@app.route("/corp/<corp_id>")
+def corp_detail(corp_id: str):
+    record = incarca_corp(corp_id)
+    if record is None:
+        return "Corp negasit", 404
+    return render_template("corp_detail.html", record=record)
 
 
 @app.route("/deviz/nou", methods=["GET", "POST"])
