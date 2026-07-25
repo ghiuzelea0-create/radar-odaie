@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Proiecte tehnice — mai multe corpuri</h2>
+<p class="muted"><a href="{{ url_for('proiect_tehnic_nou') }}" class="btn">+ Proiect nou</a></p>
+{% if not proiecte %}
+  <p class="notice">Niciun proiect tehnic inca. <a href="{{ url_for('proiect_tehnic_nou') }}">Creeaza primul proiect</a>.</p>
+{% else %}
+<table>
+  <thead><tr><th>Denumire</th><th>Tipuri de corp</th><th>Total corpuri</th><th>Total piese</th><th></th></tr></thead>
+  <tbody>
+    {% for p in proiecte %}
+    <tr>
+      <td>{{ p.denumire_proiect }}</td>
+      <td>{{ p.corpuri|length }}</td>
+      <td>{{ p.rezultat.total_corpuri if p.rezultat else "—" }}</td>
+      <td>{{ p.rezultat.total_piese if p.rezultat else "—" }}</td>
+      <td><a href="{{ url_for('proiect_tehnic_detail', proiect_id=p.id) }}">Deschide</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

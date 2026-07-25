@@ -1,7 +1,7 @@
 # ARCA — Costing & Ofertare + Proiectare + Management
 
 Aplicație web + agent Claude pentru arhitectura ARCA AI ORCHESTRATOR (Arca Interiors /
-Arca Fancons SRL). Implementează trei module funcționale, pe baza datelor reale din
+Arca Fancons SRL). Implementează patru module funcționale, pe baza datelor reale din
 fișierele Excel încărcate:
 
 - **Costing & Ofertare** — calculul de deviz, oferta comercială pentru client și
@@ -10,13 +10,18 @@ fișierele Excel încărcate:
 - **Proiectare** — calculatorul parametric de corp de mobilier, pe baza datelor din
   `arcatechspec.xlsx` (verificare geometrică automată, listă de debitare, listă
   feronerie, consum de material).
+- **Proiecte tehnice (multi-corp)** — agregarea mai multor tipuri de corp (fiecare cu
+  bucăți identice) într-un proiect complet, pe baza datelor din
+  `arcatechspecproiect.xlsx` (listă de debitare pe tot proiectul, consum pe decor,
+  feronerie agregată, control încrucișat).
 - **Management** — calculator de termen realist, registru de proiecte, jurnal de flux,
   jurnal de cauze de întârziere cu analiză Pareto și 7 KPI, pe baza datelor din
   `arcaflux.xlsx`.
 
-Motoarele de calcul (`costing_engine.py`, `design_engine.py`, `management_engine.py`)
-replică exact formulele din workbook-urile originale — validate prin teste automate
-(`tests/`) care reproduc cifră cu cifră exemplele reale din toate cele trei fișiere.
+Motoarele de calcul (`costing_engine.py`, `design_engine.py`, `proiect_engine.py`,
+`management_engine.py`) replică exact formulele din workbook-urile originale —
+validate prin teste automate (`tests/`) care reproduc cifră cu cifră exemplele reale
+din toate cele patru fișiere.
 
 ## Instalare
 
@@ -60,11 +65,13 @@ python3 -m pytest tests/ -v
 - `costing_engine.py` — motorul de calcul deviz/ofertă (funcții pure, testabile)
 - `design_engine.py` — motorul de proiectare parametrică a corpului de mobilier
   (verificare geometrică, listă de debitare, feronerie, consum)
+- `proiect_engine.py` — motorul de agregare multi-corp (reutilizează `design_engine`
+  pentru fiecare tip de corp, apoi însumează la nivel de proiect)
 - `management_engine.py` — motorul de management (termen realist, registru proiecte,
   jurnal flux, Pareto cauze de întârziere, KPI)
 - `qa_agent.py` — integrarea cu Claude API pentru verificarea QA
 - `storage.py` — persistență locală (fișiere JSON în `data/devize/`, `data/corpuri/`,
-  `data/proiecte_management/`, `data/evenimente_cauze/`)
+  `data/proiecte_tehnice/`, `data/proiecte_management/`, `data/evenimente_cauze/`)
 - `app.py` — aplicația Flask (rute, formulare)
 - `data/parametri.json`, `data/materiale.json`, `data/manopera.json` — datele reale
   extrase din `arcacosting.xlsx`
@@ -89,6 +96,24 @@ de gabarit, comutatoare de construcție, convenții de execuție) și generează
 Transferul dintre Proiectare și Costing rămâne manual (ca în workbook-ul original): pagina
 de detaliu a corpului afișează clar cifrele de introdus, dar utilizatorul alege decorul
 exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
+
+## Modulul Proiecte tehnice (multi-corp)
+
+Pagina „Proiecte" (`/proiect-tehnic`) permite construirea unui proiect complet (ex: o
+bucătărie întreagă) din mai multe **tipuri** de corp: creezi proiectul, apoi adaugi pe
+rând fiecare tip de corp (cod, denumire, dimensiuni, comutatoare, decor corp/front,
+număr de bucăți identice — ex: 2× același corp de 600mm). Pentru fiecare tip de corp
+se reutilizează exact motorul din Proiectare; rezultatele sunt apoi înmulțite cu numărul
+de bucăți identice și însumate la nivel de proiect:
+
+- **listă de debitare completă** pe tot proiectul (toate piesele tuturor corpurilor,
+  cu decorul exact ales pentru fiecare);
+- **consum pe decor** — câte plăci cumperi din fiecare decor folosit în proiect (un
+  decor poate apărea atât ca decor de corp cât și de front, la corpuri diferite);
+- **feronerie agregată** — total balamale, glisiere, șuruburi etc. pe tot proiectul;
+- **control încrucișat** — verifică independent că suma agregată pe tipuri de corp
+  coincide cu suma piesă cu piesă din lista de debitare (la fel ca în workbook-ul
+  original, ca sistem de siguranță împotriva erorilor de formulă).
 
 ## Modulul Management
 
@@ -147,8 +172,5 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
 
 ## Ce nu acoperă această versiune
 
-Nu sunt incluse încă (rămân pentru etape ulterioare):
-
-- proiecte cu mai multe corpuri / liste de debitare agregate pe proiect complet
-  (`arcatechspecproiect.xlsx`);
-- module Web Design și Product Design.
+Nu sunt incluse încă (rămân pentru etape ulterioare): modulele Web Design și Product
+Design din arhitectura ARCA AI ORCHESTRATOR — nu au fișiere de date reale asociate.
