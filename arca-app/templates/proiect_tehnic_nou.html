@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Proiect tehnic nou</h2>
+<p class="muted">Dupa creare, adaugi pe rand tipurile de corp (ex: B1, B2, S1...), fiecare cu propriile dimensiuni si numarul de bucati identice.</p>
+<form method="post">
+  <div class="card">
+    <label for="denumire_proiect">Denumire proiect</label>
+    <input type="text" id="denumire_proiect" name="denumire_proiect" required placeholder="ex: Bucatarie client Popescu">
+    <label for="pierdere_tehnologica">Pierdere tehnologica PAL/MDF (%)</label>
+    <input type="number" step="0.1" min="0" id="pierdere_tehnologica" name="pierdere_tehnologica" value="10">
+  </div>
+  <button type="submit" class="btn">Creeaza proiectul</button>
+</form>
+{% endblock %}

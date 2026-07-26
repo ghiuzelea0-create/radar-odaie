@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ record.denumire_proiect }}</h2>
+<p class="muted">Pierdere tehnologica PAL/MDF asumata: {{ "%.1f"|format(record.pierdere_tehnologica * 100) }}%</p>
+
+{% if record.eroare %}<div class="error">{{ record.eroare }}</div>{% endif %}
+
+<div class="card">
+  <h3>Adauga tip de corp</h3>
+  <datalist id="lista-decoruri">
+    {% for m in materiale %}<option value="{{ m.denumire }}">{% endfor %}
+  </datalist>
+  <form method="post" action="{{ url_for('proiect_tehnic_corp_nou', proiect_id=record.id) }}">
+    <div class="row-grid" style="grid-template-columns: 1fr 2fr 1fr;">
+      <div><label for="cod_corp">Cod corp</label><input type="text" id="cod_corp" name="cod_corp" required placeholder="ex: B1"></div>
+      <div><label for="denumire_corp">Denumire corp</label><input type="text" id="denumire_corp" name="denumire_corp" required placeholder="ex: Corp baza 800, 2 usi"></div>
+      <div><label for="buc_identice">Buc identice</label><input type="number" step="1" min="1" id="buc_identice" name="buc_identice" value="1"></div>
+    </div>
+
+    <div class="row-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div><label for="latime">L (mm)</label><input type="number" step="1" min="1" id="latime" name="latime" required value="800"></div>
+      <div><label for="inaltime">H (mm)</label><input type="number" step="1" min="1" id="inaltime" name="inaltime" required value="720"></div>
+      <div><label for="adancime">A (mm)</label><input type="number" step="1" min="1" id="adancime" name="adancime" required value="560"></div>
+      <div><label for="grosime_pal">Grosime PAL (mm)</label><input type="number" step="0.1" min="1" id="grosime_pal" name="grosime_pal" value="18"></div>
+    </div>
+    <div class="row-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div><label for="grosime_spate_hdf">Grosime spate HDF</label><input type="number" step="0.1" min="0" id="grosime_spate_hdf" name="grosime_spate_hdf" value="3"></div>
+      <div><label for="nr_rafturi">Nr. rafturi</label><input type="number" step="1" min="0" id="nr_rafturi" name="nr_rafturi" value="1"></div>
+      <div><label for="nr_usi">Nr. usi</label><input type="number" step="1" min="0" id="nr_usi" name="nr_usi" value="2"></div>
+      <div><label for="nr_sertare">Nr. sertare</label><input type="number" step="1" min="0" id="nr_sertare" name="nr_sertare" value="0"></div>
+    </div>
+
+    <div class="row-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div><label for="tip_constructie">Tip constructie</label>
+        <select id="tip_constructie" name="tip_constructie">
+          {% for t in tipuri_constructie %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label for="tip_inchidere_sus">Inchidere sus</label>
+        <select id="tip_inchidere_sus" name="tip_inchidere_sus">
+          {% for t in tipuri_inchidere %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label for="sistem_asamblare">Sistem asamblare</label>
+        <select id="sistem_asamblare" name="sistem_asamblare">
+          {% for s in sisteme_asamblare %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div><label for="latime_traversa_sus">Lat. traversa (mm)</label><input type="number" step="1" min="0" id="latime_traversa_sus" name="latime_traversa_sus" value="100"></div>
+      <div><label for="retragere_raft">Retragere raft (mm)</label><input type="number" step="1" min="0" id="retragere_raft" name="retragere_raft" value="20"></div>
+      <div><label for="rost_fronturi">Rost fronturi (mm)</label><input type="number" step="0.1" min="0" id="rost_fronturi" name="rost_fronturi" value="3"></div>
+      <div><label for="puncte_fixare">Puncte fixare</label><input type="number" step="1" min="1" id="puncte_fixare" name="puncte_fixare" value="3"></div>
+    </div>
+    <div class="row-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div><label for="inaltime_front_usa">H front usa (mm) — implicit H - rost</label><input type="number" step="1" min="0" id="inaltime_front_usa" name="inaltime_front_usa" placeholder="implicit H - rost"></div>
+      <div><label for="inaltime_zona_sertare">H zona sertare (mm)</label><input type="number" step="1" min="0" id="inaltime_zona_sertare" name="inaltime_zona_sertare" value="0"></div>
+      <div><label for="pas_suruburi_spate">Pas suruburi spate (mm)</label><input type="number" step="1" min="1" id="pas_suruburi_spate" name="pas_suruburi_spate" value="150"></div>
+    </div>
+
+    <div class="row-grid" style="grid-template-columns: 1fr 2fr 2fr;">
+      <div><label for="cant_04_pe_muchii_ascunse">Cant 0,4mm ascuns</label>
+        <select id="cant_04_pe_muchii_ascunse" name="cant_04_pe_muchii_ascunse">
+          <option value="Da">Da</option><option value="Nu">Nu</option>
+        </select>
+      </div>
+      <div><label for="decor_corp">Decor corp</label><input type="text" id="decor_corp" name="decor_corp" list="lista-decoruri" required></div>
+      <div><label for="decor_front">Decor front</label><input type="text" id="decor_front" name="decor_front" list="lista-decoruri" required></div>
+    </div>
+
+    <button type="submit" class="btn" style="margin-top: 0.75rem;">Adauga tipul de corp</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Tipuri de corp adaugate</h3>
+  {% if not record.corpuri %}
+    <p class="notice">Niciun tip de corp adaugat inca.</p>
+  {% else %}
+  <table>
+    <thead><tr><th>Cod</th><th>Denumire</th><th>Buc identice</th><th>Gabarit</th><th>Verificare</th><th></th></tr></thead>
+    <tbody>
+      {% for c in record.corpuri %}
+      <tr>
+        <td>{{ c.cod_corp }}</td>
+        <td>{{ c.denumire_corp }}</td>
+        <td>{{ c.buc_identice }}</td>
+        <td>{{ record.rezultat.corpuri[loop.index0].gabarit if record.rezultat else "—" }}</td>
+        <td>
+          {% if record.rezultat and record.rezultat.corpuri[loop.index0].verificare_geometrica.stare.startswith("OK") and record.rezultat.corpuri[loop.index0].cote_pozitive_ok %}
+            <span class="badge ok">OK</span>
+          {% else %}
+            <span class="badge alert">Verifica</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('proiect_tehnic_corp_sterge', proiect_id=record.id, index=loop.index0) }}">
+            <button type="submit" class="remove-row">×</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+{% if record.rezultat %}
+{% set r = record.rezultat %}
+<div class="card">
+  <h3>Consum agregat pe proiect</h3>
+  <table>
+    <tbody>
+      <tr><td>Numar total de corpuri</td><td>{{ r.total_corpuri }} buc</td></tr>
+      <tr><td>Numar total de piese de debitat</td><td>{{ r.total_piese }} buc</td></tr>
+      <tr><td>Suprafata piese PAL corp</td><td>{{ "%.4f"|format(r.consum.suprafata_pal_corp_mp) }} mp</td></tr>
+      <tr><td>Suprafata piese PAL front</td><td>{{ "%.4f"|format(r.consum.suprafata_pal_front_mp) }} mp</td></tr>
+      <tr><td>Suprafata piese HDF</td><td>{{ "%.4f"|format(r.consum.suprafata_hdf_mp) }} mp</td></tr>
+      <tr><td><strong>PAL corp necesar</strong></td><td><strong>{{ "%.4f"|format(r.consum.pal_corp_necesar_mp) }} mp — {{ r.consum.nr_placi_pal_corp }} placi</strong></td></tr>
+      <tr><td><strong>PAL front necesar</strong></td><td><strong>{{ "%.4f"|format(r.consum.pal_front_necesar_mp) }} mp — {{ r.consum.nr_placi_pal_front }} placi</strong></td></tr>
+      <tr><td><strong>HDF necesar</strong></td><td><strong>{{ "%.4f"|format(r.consum.hdf_necesar_mp) }} mp — {{ r.consum.nr_placi_hdf }} placi</strong></td></tr>
+      <tr><td>Cant 2 mm total</td><td>{{ "%.3f"|format(r.consum.cant_2mm_total_ml) }} ml</td></tr>
+      <tr><td>Cant 0,4 mm total</td><td>{{ "%.3f"|format(r.consum.cant_04mm_total_ml) }} ml</td></tr>
+      <tr><td>Control incrucisat (agregare vs. insumare piesa cu piesa)</td>
+        <td>
+          {% if r.consum.stare_control_incrucisat.startswith("OK") %}
+            <span class="badge ok">{{ r.consum.stare_control_incrucisat }}</span>
+          {% else %}
+            <span class="badge alert">{{ r.consum.stare_control_incrucisat }}</span>
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Consum pe decor — cate placi cumperi din fiecare</h3>
+  <table>
+    <thead><tr><th>Decor</th><th>mp piese</th><th>mp cu pierdere</th><th>Placi necesare</th></tr></thead>
+    <tbody>
+      {% for d in r.consum_pe_decor %}
+      <tr>
+        <td>{{ d.decor }}</td>
+        <td>{{ "%.4f"|format(d.mp_piese) }}</td>
+        <td>{{ "%.4f"|format(d.mp_cu_pierdere) }}</td>
+        <td>{{ d.placi }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Feronerie agregata pe proiect</h3>
+  <table>
+    <thead><tr><th>Element</th><th>Cantitate</th></tr></thead>
+    <tbody>
+      {% for f in r.feronerie %}
+      <tr><td>{{ f.element }}</td><td>{{ f.cantitate }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Lista de debitare — tot proiectul</h3>
+  <div style="max-height: 480px; overflow-y: auto;">
+  <table>
+    <thead><tr><th>Corp</th><th>Denumire piesa</th><th>Material</th><th>Lungime</th><th>Latime</th><th>Buc</th><th>Cant 2mm (ml)</th><th>Cant 0,4mm (ml)</th><th>Suprafata (mp)</th></tr></thead>
+    <tbody>
+      {% for row in r.randuri_debitare %}
+        {% if row.buc > 0 %}
+        <tr>
+          <td>{{ row.cod_corp }}</td>
+          <td>{{ row.denumire_piesa }}</td>
+          <td>{{ row.material }}</td>
+          <td>{{ "%.0f"|format(row.lungime) }}</td>
+          <td>{{ "%.0f"|format(row.latime) }}</td>
+          <td>{{ row.buc }}</td>
+          <td>{{ "%.3f"|format(row.cant_2mm_total_ml) }}</td>
+          <td>{{ "%.3f"|format(row.cant_04mm_total_ml) }}</td>
+          <td>{{ "%.4f"|format(row.suprafata_mp) }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+
+<a href="{{ url_for('proiect_tehnic_lista') }}" class="muted">&larr; Inapoi la Proiecte tehnice</a>
+{% endblock %}

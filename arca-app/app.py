@@ -24,20 +24,24 @@ from management_engine import (
     delta_marja,
     zile_intarziere,
 )
+from proiect_engine import CorpProiect, ProiectError, calculeaza_proiect
 from qa_agent import QAIndisponibil, verifica_deviz
 from storage import (
     incarca_corp,
     incarca_deviz,
     incarca_proiect_management,
+    incarca_proiect_tehnic,
     listeaza_corpuri,
     listeaza_devize,
     listeaza_evenimente_cauze,
     listeaza_evenimente_cauze_pentru,
     listeaza_proiecte_management,
+    listeaza_proiecte_tehnice,
     salveaza_corp,
     salveaza_deviz,
     salveaza_eveniment_cauza,
     salveaza_proiect_management,
+    salveaza_proiect_tehnic,
 )
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -177,6 +181,124 @@ def corp_detail(corp_id: str):
     if record is None:
         return "Corp negasit", 404
     return render_template("corp_detail.html", record=record)
+
+
+def _recalculeaza_proiect_tehnic(rec: dict) -> dict:
+    corpuri_obj = []
+    for c in rec["corpuri"]:
+        corpuri_obj.append(
+            CorpProiect(
+                cod_corp=c["cod_corp"],
+                denumire_corp=c["denumire_corp"],
+                buc_identice=c["buc_identice"],
+                decor_corp=c["decor_corp"],
+                decor_front=c["decor_front"],
+                corp=CorpInput(**c["corp_input"]),
+            )
+        )
+    return calculeaza_proiect(corpuri_obj, rec["pierdere_tehnologica"])
+
+
+@app.route("/proiect-tehnic")
+def proiect_tehnic_lista():
+    proiecte = listeaza_proiecte_tehnice()
+    return render_template("proiect_tehnic_lista.html", proiecte=proiecte)
+
+
+@app.route("/proiect-tehnic/nou", methods=["GET", "POST"])
+def proiect_tehnic_nou():
+    if request.method == "POST":
+        denumire = request.form.get("denumire_proiect", "").strip()
+        pierdere = float(request.form.get("pierdere_tehnologica") or 10) / 100
+        proiect_id = salveaza_proiect_tehnic(
+            {"denumire_proiect": denumire, "pierdere_tehnologica": pierdere, "corpuri": [], "rezultat": None, "eroare": None}
+        )
+        return redirect(url_for("proiect_tehnic_detail", proiect_id=proiect_id))
+    return render_template("proiect_tehnic_nou.html")
+
+
+@app.route("/proiect-tehnic/<proiect_id>")
+def proiect_tehnic_detail(proiect_id: str):
+    rec = incarca_proiect_tehnic(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+    _, materiale, _ = _incarca_nomenclatoare()
+    return render_template(
+        "proiect_tehnic_detail.html",
+        record=rec,
+        materiale=materiale,
+        tipuri_constructie=TIPURI_CONSTRUCTIE,
+        tipuri_inchidere=TIPURI_INCHIDERE_SUS,
+        sisteme_asamblare=SISTEME_ASAMBLARE,
+    )
+
+
+@app.route("/proiect-tehnic/<proiect_id>/corp/nou", methods=["POST"])
+def proiect_tehnic_corp_nou(proiect_id: str):
+    rec = incarca_proiect_tehnic(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+
+    f = request.form
+
+    def numar(cheie, implicit=0):
+        v = f.get(cheie, "").strip()
+        return float(v) if v else implicit
+
+    inaltime_front_usa_str = f.get("inaltime_front_usa", "").strip()
+
+    corp_dict = {
+        "cod_corp": f.get("cod_corp", "").strip(),
+        "denumire_corp": f.get("denumire_corp", "").strip(),
+        "buc_identice": int(numar("buc_identice", 1)),
+        "decor_corp": f.get("decor_corp", "").strip(),
+        "decor_front": f.get("decor_front", "").strip(),
+        "corp_input": {
+            "proiect": f.get("cod_corp", "").strip(),
+            "latime": numar("latime"),
+            "inaltime": numar("inaltime"),
+            "adancime": numar("adancime"),
+            "grosime_pal": numar("grosime_pal", 18),
+            "grosime_spate_hdf": numar("grosime_spate_hdf", 3),
+            "nr_rafturi": int(numar("nr_rafturi", 0)),
+            "nr_usi": int(numar("nr_usi", 0)),
+            "nr_sertare": int(numar("nr_sertare", 0)),
+            "tip_constructie": f.get("tip_constructie", "Laterale continue"),
+            "tip_inchidere_sus": f.get("tip_inchidere_sus", "Traverse"),
+            "sistem_asamblare": f.get("sistem_asamblare", "Confirmat"),
+            "cant_04_pe_muchii_ascunse": f.get("cant_04_pe_muchii_ascunse", "Da"),
+            "latime_traversa_sus": numar("latime_traversa_sus", 100),
+            "retragere_raft": numar("retragere_raft", 20),
+            "rost_fronturi": numar("rost_fronturi", 3),
+            "inaltime_front_usa": float(inaltime_front_usa_str) if inaltime_front_usa_str else None,
+            "inaltime_zona_sertare": numar("inaltime_zona_sertare", 0),
+            "puncte_fixare": int(numar("puncte_fixare", 3)),
+            "pas_suruburi_spate": numar("pas_suruburi_spate", 150),
+            "pierdere_tehnologica": rec["pierdere_tehnologica"],
+        },
+    }
+
+    rec["corpuri"].append(corp_dict)
+    try:
+        rec["rezultat"] = _recalculeaza_proiect_tehnic(rec)
+        rec["eroare"] = None
+    except (ProiectError, CorpError) as exc:
+        rec["corpuri"].pop()
+        rec["eroare"] = str(exc)
+    salveaza_proiect_tehnic(rec, proiect_id=proiect_id)
+    return redirect(url_for("proiect_tehnic_detail", proiect_id=proiect_id))
+
+
+@app.route("/proiect-tehnic/<proiect_id>/corp/<int:index>/sterge", methods=["POST"])
+def proiect_tehnic_corp_sterge(proiect_id: str, index: int):
+    rec = incarca_proiect_tehnic(proiect_id)
+    if rec is None:
+        return "Proiect negasit", 404
+    if 0 <= index < len(rec["corpuri"]):
+        rec["corpuri"].pop(index)
+    rec["rezultat"] = _recalculeaza_proiect_tehnic(rec) if rec["corpuri"] else None
+    salveaza_proiect_tehnic(rec, proiect_id=proiect_id)
+    return redirect(url_for("proiect_tehnic_detail", proiect_id=proiect_id))
 
 
 def _proiect_input_din_record(rec: dict) -> ProiectInput:
