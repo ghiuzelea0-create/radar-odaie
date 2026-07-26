@@ -25,10 +25,12 @@ from management_engine import (
     zile_intarziere,
 )
 from proiect_engine import CorpProiect, ProiectError, calculeaza_proiect
+from product_design_engine import ConceptError, ConceptProdus, evalueaza_concept
 from qa_agent import QAIndisponibil, verifica_deviz
 from storage import (
     incarca_corp,
     incarca_deviz,
+    incarca_produs,
     incarca_proiect_management,
     incarca_proiect_tehnic,
     listeaza_corpuri,
@@ -37,9 +39,11 @@ from storage import (
     listeaza_evenimente_cauze_pentru,
     listeaza_proiecte_management,
     listeaza_proiecte_tehnice,
+    listeaza_produse,
     salveaza_corp,
     salveaza_deviz,
     salveaza_eveniment_cauza,
+    salveaza_produs,
     salveaza_proiect_management,
     salveaza_proiect_tehnic,
 )
@@ -486,6 +490,92 @@ def proiect_management_termen_realist(proiect_id: str):
         return redirect(url_for("proiect_management_detail", proiect_id=proiect_id))
 
     return render_template("termen_realist_form.html", proiect=p, faze_flux=FAZE_FLUX)
+
+
+@app.route("/produse")
+def produse_lista():
+    produse = listeaza_produse()
+    return render_template("produse_lista.html", produse=produse)
+
+
+@app.route("/produse/nou", methods=["GET", "POST"])
+def produs_nou():
+    parametri, materiale, manopera = _incarca_nomenclatoare()
+    faze_manopera = [m["faza"] for m in manopera]
+
+    if request.method == "POST":
+        f = request.form
+        denumire = f.get("denumire", "").strip()
+        categorie = f.get("categorie", "").strip()
+        descriere = f.get("descriere", "").strip()
+        diferentiere = f.get("diferentiere", "").strip()
+
+        mat_denumiri = f.getlist("mat_denumire")
+        mat_cantitati = f.getlist("mat_cantitate")
+        mat_pierderi = f.getlist("mat_pierdere")
+        materiale_linii = []
+        for den, cant, pierdere in zip(mat_denumiri, mat_cantitati, mat_pierderi):
+            if not den or not cant:
+                continue
+            pierdere_val = float(pierdere) / 100 if pierdere else None
+            materiale_linii.append(MaterialLine(denumire=den, cantitate=float(cant), pierdere_pct_override=pierdere_val))
+
+        man_faze = f.getlist("man_faza")
+        man_ore = f.getlist("man_ore")
+        manopera_linii = []
+        for faza, ore in zip(man_faze, man_ore):
+            if not faza or not ore:
+                continue
+            manopera_linii.append(ManoperaLine(faza=faza, ore=float(ore)))
+
+        ore_proiectare = float(f.get("ore_proiectare") or 0)
+        pret_tinta_str = f.get("pret_tinta_piata_cu_tva", "").strip()
+        pret_tinta = float(pret_tinta_str) if pret_tinta_str else None
+
+        concept = ConceptProdus(
+            denumire=denumire,
+            categorie=categorie,
+            descriere=descriere,
+            diferentiere=diferentiere,
+            materiale_linii=materiale_linii,
+            manopera_linii=manopera_linii,
+            ore_proiectare=ore_proiectare,
+            pret_tinta_piata_cu_tva=pret_tinta,
+        )
+
+        try:
+            rezultat = evalueaza_concept(concept, parametri, materiale, manopera)
+        except ConceptError as exc:
+            return render_template(
+                "produs_nou.html", materiale=materiale, faze_manopera=faze_manopera, eroare=str(exc), form=f
+            )
+
+        produs_id = salveaza_produs(
+            {
+                "denumire": denumire,
+                "input": {
+                    "categorie": categorie,
+                    "descriere": descriere,
+                    "diferentiere": diferentiere,
+                    "materiale_linii": [vars(m) for m in materiale_linii],
+                    "manopera_linii": [vars(m) for m in manopera_linii],
+                    "ore_proiectare": ore_proiectare,
+                    "pret_tinta_piata_cu_tva": pret_tinta,
+                },
+                "rezultat": rezultat,
+            }
+        )
+        return redirect(url_for("produs_detail", produs_id=produs_id))
+
+    return render_template("produs_nou.html", materiale=materiale, faze_manopera=faze_manopera, eroare=None, form={})
+
+
+@app.route("/produse/<produs_id>")
+def produs_detail(produs_id: str):
+    record = incarca_produs(produs_id)
+    if record is None:
+        return "Produs negasit", 404
+    return render_template("produs_detail.html", record=record)
 
 
 @app.route("/deviz/nou", methods=["GET", "POST"])

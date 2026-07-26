@@ -71,6 +71,18 @@ def listeaza_corpuri() -> list[dict]:
     return _listeaza("corpuri")
 
 
+def salveaza_produs(record: dict, produs_id: str | None = None) -> str:
+    return _salveaza("produse", record, produs_id)
+
+
+def incarca_produs(produs_id: str) -> dict | None:
+    return _incarca("produse", produs_id)
+
+
+def listeaza_produse() -> list[dict]:
+    return _listeaza("produse")
+
+
 def salveaza_proiect_tehnic(record: dict, proiect_id: str | None = None) -> str:
     return _salveaza("proiecte_tehnice", record, proiect_id)
 

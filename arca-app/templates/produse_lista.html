@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Product Design — concepte de produs</h2>
+<p class="muted"><a href="{{ url_for('produs_nou') }}" class="btn">+ Concept nou</a></p>
+{% if not produse %}
+  <p class="notice">Niciun concept inca. <a href="{{ url_for('produs_nou') }}">Creeaza primul concept</a>.</p>
+{% else %}
+<table>
+  <thead><tr><th>Denumire</th><th>Categorie</th><th>Cost productie</th><th>Pret tinta piata</th><th>Verdict</th><th></th></tr></thead>
+  <tbody>
+    {% for p in produse %}
+    <tr>
+      <td>{{ p.denumire }}</td>
+      <td>{{ p.input.categorie }}</td>
+      <td>{{ "%.2f"|format(p.rezultat.cost.sinteza.cost_total_productie) }} RON</td>
+      <td>{{ p.input.pret_tinta_piata_cu_tva if p.input.pret_tinta_piata_cu_tva else "—" }}</td>
+      <td>
+        {% if p.rezultat.evaluare_piata %}
+          {% set v = p.rezultat.evaluare_piata.verdict %}
+          {% if v.startswith("FEZABIL") %}<span class="badge ok">{{ v }}</span>
+          {% elif v.startswith("ATENTIE") %}<span class="badge warn">{{ v }}</span>
+          {% else %}<span class="badge alert">{{ v }}</span>{% endif %}
+        {% else %}<span class="muted">—</span>{% endif %}
+      </td>
+      <td><a href="{{ url_for('produs_detail', produs_id=p.id) }}">Deschide</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
