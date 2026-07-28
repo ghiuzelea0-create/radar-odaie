@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Sunset Projector LED",
+    "name": "Lampă LED Sunset Projection cu efect apus",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Proiector ambient care recreează atmosfera unui apus de soare indoor",
+    "desc": "Lampă proiector LED cu gradient portocaliu, creează atmosferă apus în orice cameră",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 92,
-    "deCeTrend": "Viral pe TikTok cu milioane de vizualizări pentru estetica cozy și mood lighting.",
-    "sursa": "StrongMocha / TikTok Home Decor 2026"
+    "deCeTrend": "Explodată pe TikTok sub #SunsetLamp cu milioane de vizualizări în 2025, virală în categoria cozymaxxing.",
+    "sursa": "TikTok Shop / LightGrace 2025"
   },
   {
     "id": 14,
-    "name": "Vază Ceramică Sculptural Mocha Mousse",
+    "name": "Vază ceramică mată sculptată stil Wabi-Sabi",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 245,
-    "desc": "Vază ceramică oversized cu glazură teracotă, design sculptural minimalist premium",
+    "price": 149,
+    "desc": "Vază artizanală ceramică texturată, finisaj mat, estetică minimalistă japoneză modernă",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Pantone 2025 Mocha Mousse a explodat pe Instagram și Etsy ca tendință definitorie.",
-    "sursa": "Etsy Outfy Trends 2026 / House Beautiful"
+    "deCeTrend": "Dominantă pe Pinterest și TikTok Shop în 2025, iconică pentru stilul 'quiet luxury' și 'dopamine decor'.",
+    "sursa": "TikTok Shop viral vase / SaleHoo 2026"
   },
   {
     "id": 15,
-    "name": "Pătură Bouclé Cozymaxxing",
-    "cat": "textile",
-    "catName": "Textile",
+    "name": "Difuzor aromă cu efect flacără realistă",
+    "cat": "arome",
+    "catName": "Arome",
     "price": 219,
-    "desc": "Pătură pufoasă bouclé textură tactilă premium, estetică warm minimalism",
+    "desc": "Umidificator aromaterapeut cu simulare vizuală flacără, LED ambiant, ultra-silențios",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 88,
-    "deCeTrend": "Tendința cozymaxxing domină feed-urile în 2025 cu throws și texturi senzoriale.",
-    "sursa": "Elle Decor / AOL Viral Interior Trends 2025"
+    "deCeTrend": "Produsul 'Flame Air Diffuser' a câștigat viralitate masivă pe TikTok aprobat de creatorii de interior în 2025.",
+    "sursa": "ideal.house TikTok Approved Decor 2025"
   },
   {
     "id": 16,
-    "name": "Set Lumânări Soy Wax Forme Artistice",
-    "cat": "arome",
-    "catName": "Arome",
-    "price": 159,
-    "desc": "Lumânări soy wax sculptate manual, parfumate, design statement pentru raft",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 83,
-    "deCeTrend": "Lumânările estetice cu forme neobișnuite au 200%+ markup și cerere masivă.",
-    "sursa": "CJDropshipping / AutoDS Home Decor 2026"
-  },
-  {
-    "id": 17,
-    "name": "Tablou Celestial / Moon Phase Wall Art",
+    "name": "Panou decorativ perete macramé boho XL",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 199,
-    "desc": "Print metalic fazele lunii, ramă minimalista, decor perete statement premium",
+    "price": 259,
+    "desc": "Tapiserie macramé handmade, nuanțe naturale, stil boho-chic, efect texturat impresionant",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 80,
-    "deCeTrend": "Decorul celestial și astral domină Etsy și Pinterest cu apel emoțional puternic.",
-    "sursa": "Etsy Outfy Top Selling 2026 / SaleHoo"
+    "deCeTrend": "Textilele tactile și decorurile boho domină feedurile de interior în 2025, cu accent pe layering și cozymaxxing.",
+    "sursa": "Elle Decor / AOL Viral Interior Trends 2025"
+  },
+  {
+    "id": 17,
+    "name": "Pătură chenille oversized 'Cozymaxxing' throw",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 199,
+    "desc": "Pătură premium chenille extra-moale, textură groasă, palette neutru-pământiu, efect lux accesibil",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 87,
+    "deCeTrend": "Trendul 'cozymaxxing' a dominat social media în 2025, cu throws și textile tactile în topul celor mai salvate postări.",
+    "sursa": "AOL / Elle Decor Viral Interior Trends 2025"
   }
 ]
