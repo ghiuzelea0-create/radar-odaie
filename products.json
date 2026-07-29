@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă LED Sunset Projection cu efect apus",
+    "name": "Lampă Sunset Projector Ambient",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Lampă proiector LED cu gradient portocaliu, creează atmosferă apus în orice cameră",
+    "desc": "Lampă proiector care creează atmosferă caldă de apus în orice cameră",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 92,
-    "deCeTrend": "Explodată pe TikTok sub #SunsetLamp cu milioane de vizualizări în 2025, virală în categoria cozymaxxing.",
-    "sursa": "TikTok Shop / LightGrace 2025"
+    "deCeTrend": "Virală pe TikTok cu milioane de vizualizări sub #moodlighting și #cozyhome, generând conținut aesthetic masiv.",
+    "sursa": "TikTok Shop / StrongMocha 2026"
   },
   {
     "id": 14,
-    "name": "Vază ceramică mată sculptată stil Wabi-Sabi",
+    "name": "Vază Ceramică Sculptural Oversized",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 149,
-    "desc": "Vază artizanală ceramică texturată, finisaj mat, estetică minimalistă japoneză modernă",
+    "price": 245,
+    "desc": "Vază ceramică terracotta oversized cu textură manuală, accent sculptural premium",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Dominantă pe Pinterest și TikTok Shop în 2025, iconică pentru stilul 'quiet luxury' și 'dopamine decor'.",
-    "sursa": "TikTok Shop viral vase / SaleHoo 2026"
+    "deCeTrend": "Ceramica artizanală handmade este cel mai căutat produs pe Etsy și Pinterest în 2025-2026, tendință organic modern.",
+    "sursa": "Etsy Trends / Outfy 2026"
   },
   {
     "id": 15,
-    "name": "Difuzor aromă cu efect flacără realistă",
-    "cat": "arome",
-    "catName": "Arome",
-    "price": 219,
-    "desc": "Umidificator aromaterapeut cu simulare vizuală flacără, LED ambiant, ultra-silențios",
+    "name": "Pătură Bouclé Cozymaxxing",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 167,
+    "desc": "Pătură texturată bouclé moale, estetică cozymaxxing virală 2025",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 88,
-    "deCeTrend": "Produsul 'Flame Air Diffuser' a câștigat viralitate masivă pe TikTok aprobat de creatorii de interior în 2025.",
-    "sursa": "ideal.house TikTok Approved Decor 2025"
+    "deCeTrend": "Tendința 'cozymaxxing' a dominat feed-urile sociale în 2025, cu throws și textile tactile ca piese centrale ale trendului.",
+    "sursa": "Elle Decor / AOL Viral Trends 2025"
   },
   {
     "id": 16,
-    "name": "Panou decorativ perete macramé boho XL",
-    "cat": "perete",
-    "catName": "Decor perete",
-    "price": 259,
-    "desc": "Tapiserie macramé handmade, nuanțe naturale, stil boho-chic, efect texturat impresionant",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 80,
-    "deCeTrend": "Textilele tactile și decorurile boho domină feedurile de interior în 2025, cu accent pe layering și cozymaxxing.",
-    "sursa": "Elle Decor / AOL Viral Interior Trends 2025"
-  },
-  {
-    "id": 17,
-    "name": "Pătură chenille oversized 'Cozymaxxing' throw",
-    "cat": "textile",
-    "catName": "Textile",
-    "price": 199,
-    "desc": "Pătură premium chenille extra-moale, textură groasă, palette neutru-pământiu, efect lux accesibil",
+    "name": "Lumânare Sculptural Bubble Soy",
+    "cat": "arome",
+    "catName": "Arome",
+    "price": 129,
+    "desc": "Lumânare din ceară soia în formă bubble sculptural, parfumată premium",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 87,
-    "deCeTrend": "Trendul 'cozymaxxing' a dominat social media în 2025, cu throws și textile tactile în topul celor mai salvate postări.",
-    "sursa": "AOL / Elle Decor Viral Interior Trends 2025"
+    "deCeTrend": "Lumânările sculpturale estetice în forme inedite sunt top-sellers pe TikTok Shop și Etsy, cu marjă ridicată constant.",
+    "sursa": "CJDropshipping / Bettamax 2026"
+  },
+  {
+    "id": 17,
+    "name": "Tablou Celestial Moon Phase Set",
+    "cat": "perete",
+    "catName": "Decor perete",
+    "price": 198,
+    "desc": "Set 3 piese faze lunare, print minimalist celestial pentru perete galerie",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 83,
+    "deCeTrend": "Decorul celestial și astral este trend dominant pe Etsy și Pinterest, cu apel emoțional puternic și cerere mare la cadouri.",
+    "sursa": "Etsy Trends / Outfy 2026"
   }
 ]
