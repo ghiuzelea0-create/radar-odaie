@@ -84,13 +84,33 @@ info "Pornesc dashboardul pe http://localhost:3000"
 (cd "$APP_DASHBOARD" && npm run start -- -p 3000) &
 PIDS+=($!)
 
-cat <<'MESAJ'
+# Adresa in reteaua locala, ca sa poti deschide aplicatia si de pe telefon.
+if command -v hostname >/dev/null 2>&1 && hostname -I >/dev/null 2>&1; then
+  IP_RETEA="$(hostname -I | awk '{print $1}')"      # Linux
+else
+  IP_RETEA="$(ipconfig getifaddr en0 2>/dev/null || true)"   # macOS, Wi-Fi
+fi
+
+cat <<MESAJ
 
 ────────────────────────────────────────────────────────────
   Gata. Deschide in browser:
 
     Dashboard (situatia zilei)   http://localhost:3000
     Aplicatia Arca (introduci)   http://localhost:5000
+MESAJ
+
+if [ -n "${IP_RETEA:-}" ]; then
+  cat <<MESAJ
+
+  De pe telefon, pe acelasi Wi-Fi:
+
+    Dashboard                    http://$IP_RETEA:3000
+    Aplicatia Arca               http://$IP_RETEA:5000
+MESAJ
+fi
+
+cat <<'MESAJ'
 
   Proiectele se adauga in aplicatia Arca, la Management.
   Dashboardul le arata dupa ce reincarci pagina.

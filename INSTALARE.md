@@ -107,6 +107,74 @@ mai e nevoie — nu inventează cifre.
 
 ---
 
+## De pe telefon sau de pe alt calculator din hală
+
+Aplicația **nu se instalează pe telefon**. Rulează în continuare pe calculatorul din
+hală, iar telefonul o deschide prin Wi-Fi, ca pe orice site. Calculatorul trebuie să fie
+pornit, cu aplicația în funcțiune, iar telefonul pe **aceeași rețea Wi-Fi**.
+
+### Pasul 1 — află adresa calculatorului în rețea
+
+**Windows** — deschide Command Prompt și scrie:
+
+```
+ipconfig
+```
+
+Caută linia **IPv4 Address**, ceva de forma `192.168.1.24`.
+
+**macOS / Linux:**
+
+```bash
+hostname -I | awk '{print $1}'      # Linux
+ipconfig getifaddr en0              # macOS (Wi-Fi)
+```
+
+### Pasul 2 — deschide pe telefon
+
+În browserul telefonului, scrie adresa găsită urmată de `:3000`:
+
+```
+http://192.168.1.24:3000
+```
+
+(înlocuiește cu adresa ta). Aplicația Arca e la același IP, pe portul `5000`.
+
+Butoanele din dashboard către aplicația Arca funcționează automat de pe telefon —
+folosesc adresa din bara ta de adrese, nu `localhost`.
+
+### Pune-o ca pictogramă pe ecranul telefonului
+
+Ca să arate ca o aplicație, nu ca un site:
+
+- **iPhone (Safari):** butonul de partajare → **Add to Home Screen**
+- **Android (Chrome):** meniul ⋮ → **Adaugă la ecranul de pornire**
+
+### Dacă telefonul nu se conectează
+
+Cel mai probabil e firewall-ul calculatorului. Trebuie să permiți porturile 3000 și 5000
+în rețeaua locală:
+
+- **Windows:** la prima pornire apare o fereastră „Windows Defender Firewall". Bifează
+  **Rețele private** și apasă **Allow access**. Dacă ai respins-o din greșeală:
+  Control Panel → Windows Defender Firewall → Allow an app through firewall.
+- **macOS:** System Settings → Network → Firewall → Options → permite `python` și `node`.
+- Verifică și că amândouă sunt pe **aceeași rețea** (nu telefonul pe date mobile, și nu
+  pe o rețea „Guest" — multe routere izolează dispozitivele între ele pe rețeaua de
+  oaspeți).
+
+### De reținut, pentru siguranță
+
+Aplicația **nu are parolă**. Oricine e conectat la aceeași rețea Wi-Fi și știe adresa
+poate vedea proiectele, valorile și marjele. Concret:
+
+- ține-o pe rețeaua Wi-Fi a firmei, cu parolă, nu pe una deschisă sau de oaspeți;
+- nu deschide porturile 3000 și 5000 către internet din router;
+- dacă vrei acces din afara halei (de acasă, de pe drum), spune-mi — asta cere
+  autentificare și o configurare diferită, nu doar deschiderea unui port.
+
+---
+
 ## Verifică mai întâi datele de calcul
 
 Înainte de a folosi devizele pentru oferte reale către clienți, intră la

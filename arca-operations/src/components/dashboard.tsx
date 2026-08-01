@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
@@ -55,7 +55,34 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { DateDashboard, RandRegistru } from "@/lib/registru";
 
 /** Aplicatia Flask care SCRIE datele; dashboard-ul acesta doar le citeste. */
-const ARCA_APP_URL = process.env.NEXT_PUBLIC_ARCA_APP_URL ?? "http://localhost:5000";
+const ARCA_APP_URL_CONFIGURAT = process.env.NEXT_PUBLIC_ARCA_APP_URL;
+const ARCA_APP_PORT = process.env.NEXT_PUBLIC_ARCA_APP_PORT ?? "5000";
+
+/**
+ * Adresa aplicatiei Flask, din perspectiva dispozitivului care se uita la pagina.
+ *
+ * Nu putem folosi `localhost`: cand deschizi dashboardul de pe telefon,
+ * `localhost` inseamna telefonul, nu calculatorul din hala, si toate link-urile
+ * catre aplicatia Arca ar fi rupte. Asa ca refolosim gazda din bara de adrese
+ * (acelasi calculator, alt port).
+ *
+ * Serverul nu are `window`, deci randeaza varianta `localhost`, iar browserul
+ * o inlocuieste cu gazda reala. `useSyncExternalStore` e mecanismul React
+ * pentru exact acest caz si trateaza corect hidratarea.
+ */
+// Adresa nu se schimba cat timp pagina e deschisa, deci nu avem la ce ne abona.
+const faraAbonare = () => () => {};
+
+// O adresa setata explicit la instalare are prioritate peste gazda din browser.
+const urlInBrowser = () =>
+  ARCA_APP_URL_CONFIGURAT ??
+  `${window.location.protocol}//${window.location.hostname}:${ARCA_APP_PORT}`;
+
+const urlPeServer = () => ARCA_APP_URL_CONFIGURAT ?? `http://localhost:${ARCA_APP_PORT}`;
+
+function useArcaAppUrl(): string {
+  return useSyncExternalStore(faraAbonare, urlInBrowser, urlPeServer);
+}
 
 const navigation: { label: string; icon: LucideIcon }[] = [
   { label: "Prezentare", icon: LayoutDashboard },
@@ -182,8 +209,10 @@ function MetricCard({
 }) {
   return (
     <Card className="group border-border/70 bg-card/80 shadow-none transition-colors hover:border-wood/30">
-      <CardContent className="p-5">
-        <div className="mb-5 flex items-start justify-between">
+      {/* Pe telefon stau cate doua pe rand, deci sunt mai stranse: altfel cele
+          patru casete umplu un ecran intreg si ascund registrul sub ele. */}
+      <CardContent className="p-4 sm:p-5">
+        <div className="mb-3 flex items-start justify-between sm:mb-5">
           <div className="grid size-9 place-items-center rounded-lg border border-border bg-muted/50 text-muted-foreground group-hover:text-wood">
             <Icon className="size-4" />
           </div>
@@ -201,16 +230,18 @@ function MetricCard({
             </Badge>
           ) : null}
         </div>
-        <p className="text-xs font-medium uppercase tracking-[0.13em] text-muted-foreground">{title}</p>
-        <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{value}</p>
-        <p className="mt-1 text-xs text-muted-foreground">{detail}</p>
+        <p className="text-[10px] font-medium uppercase tracking-[0.13em] text-muted-foreground sm:text-xs">
+          {title}
+        </p>
+        <p className="mt-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{value}</p>
+        <p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">{detail}</p>
       </CardContent>
     </Card>
   );
 }
 
 /** Ce vede utilizatorul cand nu exista inca niciun proiect salvat. */
-function StareGoala({ sursaDate }: { sursaDate: string }) {
+function StareGoala({ sursaDate, arcaAppUrl }: { sursaDate: string; arcaAppUrl: string }) {
   return (
     <Card className="border-border/70 bg-card/80 shadow-none">
       <CardContent className="flex flex-col items-start gap-4 p-8">
@@ -227,14 +258,14 @@ function StareGoala({ sursaDate }: { sursaDate: string }) {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button asChild className="bg-wood text-stone-950 hover:bg-wood-bright">
-            <a href={`${ARCA_APP_URL}/management/proiect/nou`} target="_blank" rel="noreferrer">
+            <a href={`${arcaAppUrl}/management/proiect/nou`} target="_blank" rel="noreferrer">
               <Plus className="size-4" />
               Adaugă un proiect
               <ExternalLink className="size-3.5" />
             </a>
           </Button>
           <Button asChild variant="outline">
-            <a href={`${ARCA_APP_URL}/management`} target="_blank" rel="noreferrer">
+            <a href={`${arcaAppUrl}/management`} target="_blank" rel="noreferrer">
               Deschide modulul Management
             </a>
           </Button>
@@ -438,6 +469,7 @@ export function Dashboard({ date }: { date: DateDashboard }) {
   const [activeSection, setActiveSection] = useState("Prezentare");
   const [search, setSearch] = useState("");
   const [filtru, setFiltru] = useState("Toate");
+  const arcaAppUrl = useArcaAppUrl();
 
   const active = useMemo(() => date.registru.filter((r) => r.activ), [date.registru]);
   const areDate = date.registru.length > 0;
@@ -524,12 +556,12 @@ export function Dashboard({ date }: { date: DateDashboard }) {
                 <DropdownMenuLabel>Contul meu</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <a href={`${ARCA_APP_URL}/parametri`} target="_blank" rel="noreferrer">
+                  <a href={`${arcaAppUrl}/parametri`} target="_blank" rel="noreferrer">
                     Parametri de calcul
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a href={`${ARCA_APP_URL}/management/proceduri`} target="_blank" rel="noreferrer">
+                  <a href={`${arcaAppUrl}/management/proceduri`} target="_blank" rel="noreferrer">
                     Procedura de flux
                   </a>
                 </DropdownMenuItem>
@@ -558,7 +590,7 @@ export function Dashboard({ date }: { date: DateDashboard }) {
                 Vezi producția
               </Button>
               <Button asChild className="bg-wood text-stone-950 hover:bg-wood-bright">
-                <a href={`${ARCA_APP_URL}/management/proiect/nou`} target="_blank" rel="noreferrer">
+                <a href={`${arcaAppUrl}/management/proiect/nou`} target="_blank" rel="noreferrer">
                   <Plus className="size-4" />
                   Proiect nou
                   <ExternalLink className="size-3.5" />
@@ -568,10 +600,10 @@ export function Dashboard({ date }: { date: DateDashboard }) {
           </section>
 
           {!areDate ? (
-            <StareGoala sursaDate={date.sursaDate} />
+            <StareGoala sursaDate={date.sursaDate} arcaAppUrl={arcaAppUrl} />
           ) : activeSection === "Prezentare" ? (
             <>
-              <section aria-label="Indicatori principali" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <section aria-label="Indicatori principali" className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
                 <MetricCard
                   title="Valoare în lucru"
                   value={lei.format(date.valoareActivaTotal)}

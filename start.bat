@@ -58,12 +58,26 @@ start "Arca - aplicatie" cmd /k "cd /d "%APP_FLASK%" && set PORT=5000 && ".venv\
 echo ==^> Pornesc dashboardul pe http://localhost:3000
 start "Arca - dashboard" cmd /k "cd /d "%APP_DASHBOARD%" && npm run start -- -p 3000"
 
+REM Adresa in reteaua locala, ca sa poti deschide aplicatia si de pe telefon.
+set "IP_RETEA="
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4"') do (
+  if not defined IP_RETEA set "IP_RETEA=%%a"
+)
+if defined IP_RETEA set "IP_RETEA=%IP_RETEA: =%"
+
 echo.
 echo ------------------------------------------------------------
 echo   Gata. Deschide in browser:
 echo.
 echo     Dashboard (situatia zilei)   http://localhost:3000
 echo     Aplicatia Arca (introduci)   http://localhost:5000
+if defined IP_RETEA (
+  echo.
+  echo   De pe telefon, pe acelasi Wi-Fi:
+  echo.
+  echo     Dashboard                    http://%IP_RETEA%:3000
+  echo     Aplicatia Arca               http://%IP_RETEA%:5000
+)
 echo.
 echo   Proiectele se adauga in aplicatia Arca, la Management.
 echo   Dashboardul le arata dupa ce reincarci pagina.
