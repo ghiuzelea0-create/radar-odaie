@@ -40,3 +40,31 @@ jobs:
 
       - name: Rulează testele
         run: npm test
+
+  test-arca-operations:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: arca-operations
+    steps:
+      - name: Ia codul
+        uses: actions/checkout@v4
+
+      - name: Pregătește Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: arca-operations/package-lock.json
+
+      - name: Instalează dependențele
+        run: npm ci
+
+      - name: Verifică lint-ul
+        run: npm run lint
+
+      - name: Rulează testele
+        run: npm test
+
+      - name: Verifică build-ul
+        run: npm run build
