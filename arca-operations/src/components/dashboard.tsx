@@ -469,6 +469,7 @@ export function Dashboard({ date }: { date: DateDashboard }) {
   const [activeSection, setActiveSection] = useState("Prezentare");
   const [search, setSearch] = useState("");
   const [filtru, setFiltru] = useState("Toate");
+  const [meniuDeschis, setMeniuDeschis] = useState(false);
   const arcaAppUrl = useArcaAppUrl();
 
   const active = useMemo(() => date.registru.filter((r) => r.activ), [date.registru]);
@@ -495,7 +496,10 @@ export function Dashboard({ date }: { date: DateDashboard }) {
 
       <div className="md:pl-60">
         <header className="sticky top-0 z-20 flex h-16 items-center border-b border-border/80 bg-background/90 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
-          <Sheet>
+          {/* Pe telefon meniul e un sertar peste toata pagina, deci trebuie sa se
+              inchida singur dupa ce alegi o sectiune — altfel acopera exact
+              continutul pe care tocmai l-ai cerut. */}
+          <Sheet open={meniuDeschis} onOpenChange={setMeniuDeschis}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="mr-2 md:hidden" aria-label="Deschide meniul">
                 <Menu className="size-5" />
@@ -503,7 +507,14 @@ export function Dashboard({ date }: { date: DateDashboard }) {
             </SheetTrigger>
             <SheetContent side="left" className="w-72 border-sidebar-border bg-sidebar p-0">
               <SheetTitle className="sr-only">Meniu principal</SheetTitle>
-              <SidebarNavigation active={activeSection} onNavigate={setActiveSection} activeCount={active.length} />
+              <SidebarNavigation
+                active={activeSection}
+                onNavigate={(sectiune) => {
+                  setActiveSection(sectiune);
+                  setMeniuDeschis(false);
+                }}
+                activeCount={active.length}
+              />
             </SheetContent>
           </Sheet>
 
