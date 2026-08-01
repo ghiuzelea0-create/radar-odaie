@@ -52,6 +52,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import type { DateOfertare } from "@/lib/ofertare";
 import type { DateDashboard, RandRegistru } from "@/lib/registru";
 
 /** Aplicatia Flask care SCRIE datele; dashboard-ul acesta doar le citeste. */
@@ -96,8 +97,6 @@ const navigation: { label: string; icon: LucideIcon }[] = [
 ];
 
 const sectionDescriptions: Record<string, string> = {
-  Ofertare:
-    "Devizele si ofertele se calculeaza deocamdata in aplicatia Arca (modulul Costing & Ofertare). Aici vor fi aduse dupa ce devizele sunt legate de codul de proiect.",
   Aprovizionare: "Comenzi de materiale si feronerie, termene de livrare furnizori.",
   Calitate: "Control de calitate pe faza si jurnalul de neconformitati.",
   Echipă: "Alocarea operatorilor pe proiecte si capacitatea disponibila.",
@@ -108,6 +107,8 @@ const sectionDescriptions: Record<string, string> = {
 const lei = new Intl.NumberFormat("ro-RO", { style: "currency", currency: "RON", maximumFractionDigits: 0 });
 const procent = new Intl.NumberFormat("ro-RO", { style: "percent", maximumFractionDigits: 1 });
 const zecimal = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 1 });
+/** Puncte procentuale — diferenta dintre doua procente, nu un procent in sine. */
+const procentPp = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 1 });
 
 function dataScurta(iso: string | null): string {
   if (!iso) return "—";
@@ -136,11 +137,14 @@ function SidebarNavigation({
   active,
   onNavigate,
   activeCount,
+  devizeCount,
 }: {
   active: string;
   onNavigate: (label: string) => void;
   activeCount: number;
+  devizeCount: number;
 }) {
+  const insigne: Record<string, number> = { Proiecte: activeCount, Ofertare: devizeCount };
   return (
     <div className="flex h-full flex-col">
       <div className="px-5 pb-8 pt-6">
@@ -164,9 +168,9 @@ function SidebarNavigation({
             >
               <Icon className={`size-4 ${isActive ? "text-wood" : "group-hover:text-wood"}`} />
               <span>{item.label}</span>
-              {item.label === "Proiecte" && activeCount > 0 ? (
+              {insigne[item.label] > 0 ? (
                 <span className="ml-auto rounded-full bg-wood/15 px-1.5 py-0.5 text-[10px] font-medium text-wood">
-                  {activeCount}
+                  {insigne[item.label]}
                 </span>
               ) : null}
             </button>
@@ -465,7 +469,168 @@ function CardCauze({ date }: { date: DateDashboard }) {
   );
 }
 
-export function Dashboard({ date }: { date: DateDashboard }) {
+function SectiuneaOfertare({ ofertare, arcaAppUrl }: { ofertare: DateOfertare; arcaAppUrl: string }) {
+  if (ofertare.devize.length === 0) {
+    return (
+      <Card className="border-border/70 bg-card/80 shadow-none">
+        <CardContent className="flex flex-col items-start gap-4 p-8">
+          <div className="grid size-10 place-items-center rounded-lg border border-wood/25 bg-wood/10 text-wood">
+            <FileText className="size-5" />
+          </div>
+          <div>
+            <CardTitle className="text-base">Niciun deviz calculat încă</CardTitle>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Devizele se calculează în modulul Costing &amp; Ofertare din aplicația Arca. După primul deviz salvat,
+              aici apar valoarea ofertată, costul și marja fiecăruia.
+            </p>
+          </div>
+          <Button asChild className="bg-wood text-stone-950 hover:bg-wood-bright">
+            <a href={`${arcaAppUrl}/deviz/nou`} target="_blank" rel="noreferrer">
+              <Plus className="size-4" />
+              Deviz nou
+              <ExternalLink className="size-3.5" />
+            </a>
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const a = ofertare.analiza;
+
+  return (
+    <div className="grid gap-6">
+      <section aria-label="Indicatori ofertare" className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <MetricCard
+          title="Total ofertat"
+          value={lei.format(ofertare.total_ofertat_fara_tva)}
+          detail={`${ofertare.devize.length} ${ofertare.devize.length === 1 ? "deviz" : "devize"}, fără TVA`}
+          icon={CircleDollarSign}
+        />
+        <MetricCard
+          title="Marjă brută totală"
+          value={lei.format(ofertare.marja_totala_ron)}
+          detail={a ? `${procent.format(a.marja_rezultata)} din valoare` : "—"}
+          icon={BarChart3}
+          accent={a && a.diferenta > 0 ? "atentie" : undefined}
+        />
+        <MetricCard
+          title="Adaos configurat"
+          value={a ? procent.format(a.adaos) : "—"}
+          detail={a ? `dă o marjă de ${procent.format(a.marja_rezultata)}` : "—"}
+          icon={Gauge}
+        />
+        <MetricCard
+          title="Devize fără proiect"
+          value={String(ofertare.nelegate)}
+          detail={ofertare.nelegate > 0 ? "codul nu e în registru" : "toate legate de registru"}
+          icon={FolderKanban}
+          accent={ofertare.nelegate > 0 ? "atentie" : undefined}
+        />
+      </section>
+
+      {a && a.diferenta > 0 ? (
+        <Alert className="border-amber-400/20 bg-amber-400/10">
+          <AlertTriangle className="size-4 text-amber-400" />
+          <AlertTitle className="text-sm">Adaosul nu îți atinge marja țintă</AlertTitle>
+          <AlertDescription className="text-xs leading-5">
+            Un adaos de {procent.format(a.adaos)} aplicat pe cost nu dă o marjă de {procent.format(a.adaos)}. Cu
+            rezerva de risc de {procent.format(a.rezerva)}, marja care rezultă este{" "}
+            <strong className="text-foreground">{procent.format(a.marja_rezultata)}</strong> — cu{" "}
+            {procentPp.format(a.diferenta * 100)} pp sub ținta setată de {procent.format(a.tinta)}. Pentru a atinge
+            ținta, adaosul ar trebui să fie{" "}
+            <strong className="text-foreground">{procent.format(a.adaos_necesar)}</strong>.
+            <br />
+            Se aplică tuturor devizelor deodată: marja nu depinde de mărimea devizului, ci doar de acești parametri.
+            Se modifică în{" "}
+            <a
+              href={`${arcaAppUrl}/parametri`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              pagina Parametri
+            </a>
+            .
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
+      <Card className="min-w-0 border-border/70 bg-card/80 shadow-none">
+        <CardHeader className="gap-4 border-b border-border/70 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle className="text-base">Devize calculate</CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">Din modulul Costing &amp; Ofertare</p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <a href={`${arcaAppUrl}/deviz/nou`} target="_blank" rel="noreferrer">
+              <Plus className="size-3.5" />
+              Deviz nou
+            </a>
+          </Button>
+        </CardHeader>
+        <CardContent className="p-0">
+          <ScrollArea className="w-full">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-border/70 hover:bg-transparent">
+                  <TableHead className="h-11 pl-5 text-[11px] uppercase tracking-wider">Deviz</TableHead>
+                  <TableHead className="h-11 text-right text-[11px] uppercase tracking-wider">Preț fără TVA</TableHead>
+                  <TableHead className="hidden h-11 text-right text-[11px] uppercase tracking-wider md:table-cell">
+                    Cost
+                  </TableHead>
+                  <TableHead className="h-11 pr-5 text-right text-[11px] uppercase tracking-wider">Marjă</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {ofertare.devize.map((d) => (
+                  <TableRow key={d.id} className="border-border/60">
+                    <TableCell className="min-w-44 py-4 pl-5 sm:min-w-64">
+                      <div className="font-medium text-foreground">{d.client}</div>
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        <span className="font-mono text-[10px] text-wood">{d.proiect || "— fără cod —"}</span>
+                        <span>·</span>
+                        <span>{dataScurta(d.data)}</span>
+                        {!d.legat_de_proiect ? (
+                          <Badge
+                            variant="outline"
+                            className="border-amber-400/20 bg-amber-400/10 text-[10px] text-amber-300"
+                          >
+                            fără proiect în registru
+                          </Badge>
+                        ) : null}
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap text-right text-sm font-medium">
+                      {lei.format(d.pret_fara_tva)}
+                    </TableCell>
+                    <TableCell className="hidden whitespace-nowrap text-right text-sm text-muted-foreground md:table-cell">
+                      {lei.format(d.cost_total)}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap pr-5 text-right">
+                      <div className="text-sm font-medium">{procent.format(d.marja_pct)}</div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">{lei.format(d.marja_ron)}</div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+          {ofertare.nelegate > 0 ? (
+            <div className="border-t border-border/70 px-5 py-3 text-xs leading-5 text-muted-foreground">
+              {ofertare.nelegate}{" "}
+              {ofertare.nelegate === 1 ? "deviz are un cod de proiect care nu apare" : "devize au coduri care nu apar"}{" "}
+              în registrul de proiecte. Câmpul „proiect” din deviz e text liber — scrie acolo exact codul din registru
+              ca să le poți urmări împreună.
+            </div>
+          ) : null}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export function Dashboard({ date, ofertare }: { date: DateDashboard; ofertare: DateOfertare }) {
   const [activeSection, setActiveSection] = useState("Prezentare");
   const [search, setSearch] = useState("");
   const [filtru, setFiltru] = useState("Toate");
@@ -491,7 +656,7 @@ export function Dashboard({ date }: { date: DateDashboard }) {
   return (
     <div className="min-h-svh bg-background text-foreground">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 border-r border-sidebar-border bg-sidebar md:block">
-        <SidebarNavigation active={activeSection} onNavigate={setActiveSection} activeCount={active.length} />
+        <SidebarNavigation active={activeSection} onNavigate={setActiveSection} activeCount={active.length} devizeCount={ofertare.devize.length} />
       </aside>
 
       <div className="md:pl-60">
@@ -514,6 +679,7 @@ export function Dashboard({ date }: { date: DateDashboard }) {
                   setMeniuDeschis(false);
                 }}
                 activeCount={active.length}
+                devizeCount={ofertare.devize.length}
               />
             </SheetContent>
           </Sheet>
@@ -610,7 +776,9 @@ export function Dashboard({ date }: { date: DateDashboard }) {
             </div>
           </section>
 
-          {!areDate ? (
+          {/* Devizele se calculeaza independent de registrul de proiecte, asa ca
+              Ofertare ramane accesibila chiar daca registrul e inca gol. */}
+          {!areDate && activeSection !== "Ofertare" ? (
             <StareGoala sursaDate={date.sursaDate} arcaAppUrl={arcaAppUrl} />
           ) : activeSection === "Prezentare" ? (
             <>
@@ -821,6 +989,8 @@ export function Dashboard({ date }: { date: DateDashboard }) {
                 ) : null}
               </div>
             </div>
+          ) : activeSection === "Ofertare" ? (
+            <SectiuneaOfertare ofertare={ofertare} arcaAppUrl={arcaAppUrl} />
           ) : (
             <Card className="border-border/70 bg-card/80 shadow-none">
               <CardContent className="flex flex-col items-start gap-3 p-8">

@@ -16,6 +16,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import type { EvenimentCauza, ProiectRecord } from "./management";
+import type { DevizRecord } from "./ofertare";
 
 export type Parametru = {
   parametru: string;
@@ -75,6 +76,11 @@ export function citesteProiecte(): Promise<ProiectRecord[]> {
 /** Jurnalul de cauze de intarziere (`data/evenimente_cauze/`). */
 export function citesteEvenimenteCauze(): Promise<EvenimentCauza[]> {
   return citesteColectie<EvenimentCauza>("evenimente_cauze");
+}
+
+/** Devizele calculate in modulul Costing & Ofertare (`data/devize/`). */
+export function citesteDevize(): Promise<DevizRecord[]> {
+  return citesteColectie<DevizRecord>("devize");
 }
 
 /**

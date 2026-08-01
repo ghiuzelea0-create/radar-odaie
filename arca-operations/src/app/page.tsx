@@ -1,5 +1,12 @@
 import { Dashboard } from "@/components/dashboard";
-import { citesteEvenimenteCauze, citesteProiecte, directorDate } from "@/lib/arca-data";
+import {
+  citesteDevize,
+  citesteEvenimenteCauze,
+  citesteParametri,
+  citesteProiecte,
+  directorDate,
+} from "@/lib/arca-data";
+import { construiesteOfertare } from "@/lib/ofertare";
 import { construiesteDate } from "@/lib/registru";
 
 /**
@@ -10,9 +17,20 @@ import { construiesteDate } from "@/lib/registru";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [proiecte, evenimente] = await Promise.all([citesteProiecte(), citesteEvenimenteCauze()]);
+  const [proiecte, evenimente, devize, parametri] = await Promise.all([
+    citesteProiecte(),
+    citesteEvenimenteCauze(),
+    citesteDevize(),
+    citesteParametri(),
+  ]);
+
   const azi = new Date().toISOString().slice(0, 10);
   const date = construiesteDate(proiecte, evenimente, directorDate(), azi);
+  const ofertare = construiesteOfertare(
+    devize,
+    proiecte.map((p) => p.input.cod_proiect),
+    parametri,
+  );
 
-  return <Dashboard date={date} />;
+  return <Dashboard date={date} ofertare={ofertare} />;
 }
