@@ -97,6 +97,23 @@ Transferul dintre Proiectare și Costing rămâne manual (ca în workbook-ul ori
 de detaliu a corpului afișează clar cifrele de introdus, dar utilizatorul alege decorul
 exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
 
+## Legătura deviz ↔ proiect
+
+La crearea unui deviz, proiectul se alege dintr-o listă cu proiectele din registrul de
+Management. Există și opțiunea „Alt proiect — scriu codul de mână", pentru ofertele făcute
+înainte ca proiectul să fie înregistrat; folosește atunci același cod la înregistrare, ca
+să se lege între ele. Codurile se compară ignorând spațiile și diferența de litere mari/mici.
+
+Pe pagina unui proiect apare secțiunea **Devize legate de acest proiect**: fiecare deviz cu
+preț, cost și marjă, plus totalul ofertat. Dedesubt, marja **tastată** în registru e
+comparată cu cea **calculată** de devize. Când diferă cu peste 0,5 puncte procentuale,
+pagina o semnalează — una dintre cifre e greșită, iar dacă cea greșită e din registru,
+indicatorul de erodare a marjei te liniștește degeaba.
+
+Logica de legătură stă în `legaturi.py` (funcții pure, testate în `tests/test_legaturi.py`).
+Dashboardul `arca-operations` folosește aceeași normalizare a codurilor, ca cele două
+aplicații să nu arate legături diferite pentru aceleași date.
+
 ## Modulul Proiecte tehnice (multi-corp)
 
 Pagina „Proiecte" (`/proiect-tehnic`) permite construirea unui proiect complet (ex: o

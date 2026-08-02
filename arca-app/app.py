@@ -8,6 +8,7 @@ from flask import Flask, redirect, render_template, request, url_for
 
 from costing_engine import DevizError, DevizInput, Logistica, ManoperaLine, MaterialLine, calculeaza_deviz
 from design_engine import CorpError, CorpInput, TIPURI_CONSTRUCTIE, TIPURI_INCHIDERE_SUS, SISTEME_ASAMBLARE, calculeaza_corp
+from legaturi import coduri_proiecte, compara_marja_ofertata, devize_pentru_proiect, total_ofertat
 from management_engine import (
     CODURI_TRASABILITATE,
     FAZE_FLUX,
@@ -47,6 +48,11 @@ from storage import (
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 app = Flask(__name__)
+
+# Valoarea din selectorul de proiect care inseamna „scriu codul de mana".
+# Devizele se fac uneori inainte ca proiectul sa fie inregistrat, asa ca nu
+# putem obliga alegerea din registru.
+_PROIECT_MANUAL = "__manual__"
 
 
 def _incarca_nomenclatoare():
@@ -395,6 +401,8 @@ def proiect_management_detail(proiect_id: str):
     durate = calculeaza_durate_flux(jurnal_flux_dates)
     evenimente = listeaza_evenimente_cauze_pentru(p.cod_proiect)
 
+    devize_legate = devize_pentru_proiect(listeaza_devize(), p.cod_proiect)
+
     return render_template(
         "proiect_management_detail.html",
         record=rec,
@@ -407,6 +415,9 @@ def proiect_management_detail(proiect_id: str):
         evenimente=evenimente,
         cauze_nomenclator=NOMENCLATOR_CAUZE,
         termen_realist=rec.get("termen_realist"),
+        devize_legate=devize_legate,
+        total_devize=total_ofertat(devize_legate),
+        comparatie_marja=compara_marja_ofertata(devize_legate, p.marja_ofertata),
     )
 
 
@@ -492,9 +503,14 @@ def proiect_management_termen_realist(proiect_id: str):
 def deviz_nou():
     parametri, materiale, manopera = _incarca_nomenclatoare()
     faze_manopera = [m["faza"] for m in manopera]
+    proiecte_optiuni = coduri_proiecte(listeaza_proiecte_management())
 
     if request.method == "POST":
+        # Formularul ofera doua cai: alegi un proiect din registru, sau scrii
+        # un cod manual pentru o oferta facuta inainte sa existe proiectul.
         proiect = request.form.get("proiect", "").strip()
+        if proiect == _PROIECT_MANUAL:
+            proiect = request.form.get("proiect_manual", "").strip()
         client = request.form.get("client", "").strip()
         data = request.form.get("data", "").strip()
 
@@ -549,6 +565,8 @@ def deviz_nou():
                 faze_manopera=faze_manopera,
                 eroare=str(exc),
                 form=request.form,
+                proiecte_optiuni=proiecte_optiuni,
+                proiect_manual=_PROIECT_MANUAL,
             )
 
         deviz_id = salveaza_deviz(
@@ -567,7 +585,15 @@ def deviz_nou():
         )
         return redirect(url_for("deviz_detail", deviz_id=deviz_id))
 
-    return render_template("deviz_nou.html", materiale=materiale, faze_manopera=faze_manopera, eroare=None, form={})
+    return render_template(
+        "deviz_nou.html",
+        materiale=materiale,
+        faze_manopera=faze_manopera,
+        eroare=None,
+        form={},
+        proiecte_optiuni=proiecte_optiuni,
+        proiect_manual=_PROIECT_MANUAL,
+    )
 
 
 @app.route("/deviz/<deviz_id>")
