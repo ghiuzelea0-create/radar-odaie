@@ -1,3 +1,14 @@
+> **Cauți aplicația Arca?** Instrucțiuni de instalare pe calculatorul tău:
+> **[INSTALARE.md](INSTALARE.md)**. Pornire rapidă: `./start.sh` (macOS/Linux)
+> sau dublu-click pe `start.bat` (Windows).
+>
+> - `arca-app/` — aplicația Arca: costing, proiectare, management (introduci date)
+> - `arca-operations/` — dashboard operațional (vezi situația)
+>
+> Restul acestui fișier descrie site-ul Lut & Lemn, un proiect separat din același repo.
+
+---
+
 # Lut & Lemn — atelier de obiecte handmade
 
 Site vitrină pentru un atelier de obiecte handmade: ceramică, iluminat, textile și accente. Colecția de bază e fixă, iar `products.json` e completat automat, zilnic, de un robot care caută produse virale/în trend (vezi `agent.py` și `.github/workflows/radar.yml`).

@@ -2,3 +2,11 @@ __pycache__/
 *.pyc
 .pytest_cache/
 node_modules/
+
+# Mediul virtual Python si build-ul Next, create de start.sh / start.bat
+.venv/
+.next/
+
+# Previzualizari generate din aplicatia rulata: contin o copie a CSS-ului si a
+# fonturilor, deci se invechesc la prima schimbare de interfata. Se regenereaza.
+arca-operations/artifacts/previzualizare-*.html
