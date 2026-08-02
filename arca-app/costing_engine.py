@@ -56,19 +56,28 @@ def scenarii_adaos(adaos_curent: float, rezerva: float, marja_tinta: float) -> l
     """
     adaos_tinta = adaos_pentru_marja(marja_tinta, rezerva)
 
-    # Rotunjim inainte de deduplicare. Adaosul salvat in parametri si cel
-    # calculat din tinta pot diferi cu un ULP (0,4884615384615385 fata de
-    # ...84), iar un `set` le-ar pastra pe amandoua si tabelul ar afisa acelasi
-    # rand de doua ori. Sase zecimale inseamna 0,0001% — sub orice relevanta.
-    PRECIZIE = 6
-    curent = round(adaos_curent, PRECIZIE)
-    valori = sorted({round(a, PRECIZIE) for a in (adaos_curent, adaos_tinta, 0.30, 0.40, 0.50) if a >= 0})
+    # Candidatii, in ordinea prioritatii: adaosul chiar configurat, apoi cel care
+    # atinge tinta, apoi repere rotunde. Doua valori mai apropiate decat
+    # TOLERANTA sunt acelasi scenariu si dau un singur rand — pastram primul,
+    # adica pe cel mai adevarat.
+    #
+    # Fara asta, un adaos scris in parametri ca 0,4885 si tinta calculata
+    # 0,4884615... ajungeau pe doua randuri, afisate 48,9% si 48,8%, cu aceeasi
+    # marja de 35,0% — doua randuri care spun acelasi lucru.
+    TOLERANTA = 5e-4  # 0,05 puncte procentuale, sub rezolutia afisata in tabel
+    valori: list[float] = []
+    for candidat in (adaos_curent, adaos_tinta, 0.30, 0.40, 0.50):
+        if candidat < 0:
+            continue
+        if any(abs(candidat - pastrat) <= TOLERANTA for pastrat in valori):
+            continue
+        valori.append(candidat)
 
     baza_pret = 1 + adaos_curent + rezerva
     baza_castig = adaos_curent + rezerva
 
     scenarii = []
-    for adaos in valori:
+    for adaos in sorted(valori):
         pret = 1 + adaos + rezerva
         castig = adaos + rezerva
         scenarii.append(
@@ -79,9 +88,10 @@ def scenarii_adaos(adaos_curent: float, rezerva: float, marja_tinta: float) -> l
                 "delta_pret_pct": pret / baza_pret - 1,
                 # Cat la suta mai mult ramane la tine fata de adaosul curent.
                 "delta_castig_pct": (castig / baza_castig - 1) if baza_castig else 0.0,
-                "este_curent": adaos == curent,
-                # Toleranta pe potriva rotunjirii de mai sus.
-                "atinge_tinta": abs(marja_din_adaos(adaos, rezerva) - marja_tinta) < 1e-6,
+                # Valorile pastrate sunt, prin constructie, la peste TOLERANTA una
+                # de alta, deci fiecare eticheta cade pe exact un rand.
+                "este_curent": abs(adaos - adaos_curent) <= TOLERANTA,
+                "atinge_tinta": abs(adaos - adaos_tinta) <= TOLERANTA,
             }
         )
     return scenarii

@@ -101,8 +101,18 @@ exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
 
 Motorul stabilește prețul ca `cost × (1 + adaos + rezervă)`. De aici rezultă că
 **marja brută nu e egală cu adaosul** și că ea **nu depinde de mărimea devizului** —
-doar de acești doi parametri. Cu valorile implicite (adaos 30%, rezervă 5%) marja
-care iese este 25,9%, nu 30% și nu 35%.
+doar de acești doi parametri. Un adaos de 30% cu rezervă 5% dă marjă 25,9%,
+nu 30% și nu 35%.
+
+**Adaosul configurat este 48,85%**, derivat din marja-țintă de 35% la rezerva de
+5%: `adaos = 0,35/(1-0,35) - 0,05`. Rezultă marjă 35,0% pe fiecare deviz.
+Anterior adaosul era 30%, țintă 35% — o diferență de 9 puncte pe care nimic nu o
+semnala, fiindcă ținta nu intra în nicio formulă. Acum două teste din
+`tests/test_adaos_marja.py` leagă valorile: dacă schimbi ținta sau rezerva fără
+să recalculezi adaosul, testele pică și îți spun ce valoare e necesară.
+
+Devizele deja salvate **nu se schimbă** — rezultatul se calculează o singură dată,
+la salvare, și se stochează. Parametrul nou se aplică doar devizelor noi.
 
 Pagina Parametri afișează acum relația explicit: ce marjă rezultă din adaosul curent,
 ce adaos ar cere marja-țintă, și un tabel de scenarii. Ultimele două coloane arată,
@@ -205,9 +215,10 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
   `data/manopera.json` sau din pagina „Parametri" cu propriile date înainte de a folosi
   devizele pentru oferte reale către clienți.
 - **IPOTEZE editabile** — pierderea tehnologică (10% PAL/MDF, 15% lemn masiv), regia
-  (15%), adaosul comercial (30%), rezerva de risc (5%) și gradul de utilizare productivă
-  (75%) sunt valori de pornire. Ajustează-le din pagina „Parametri" la randamentul real
-  al atelierului.
+  (15%), rezerva de risc (5%) și gradul de utilizare productivă (75%) sunt valori de
+  pornire. Ajustează-le din pagina „Parametri" la randamentul real al atelierului.
+- **DECIZIE DE BUSINESS** — adaosul comercial (48,85%) nu e o ipoteză tehnică, ci
+  alegerea de a ținti o marjă brută de 35%. Vezi „Adaos vs. marjă" mai sus.
 
 ## Ce nu acoperă această versiune
 

@@ -111,8 +111,8 @@ def test_scenariile_sunt_ordonate_si_fara_duplicate():
 def test_niciun_rand_dublu_cand_adaosul_curent_atinge_deja_tinta():
     """Adaosul salvat si cel calculat din tinta pot diferi cu un ULP.
 
-    Fara rotunjire inainte de deduplicare, tabelul afisa acelasi rand de doua
-    ori exact in momentul in care utilizatorul tocmai a atins tinta.
+    Fara toleranta la deduplicare, tabelul afisa acelasi rand de doua ori exact
+    in momentul in care utilizatorul tocmai a atins tinta.
     """
     adaos_salvat = 0.4884615384615385  # asa ajunge din formular
     assert adaos_salvat != adaos_pentru_marja(0.35, 0.05)  # difera cu un ULP
@@ -122,3 +122,65 @@ def test_niciun_rand_dublu_cand_adaosul_curent_atinge_deja_tinta():
     assert len(adaosuri) == len(set(adaosuri))
     assert sum(1 for x in s if x["este_curent"]) == 1
     assert sum(1 for x in s if x["atinge_tinta"]) == 1
+
+
+def test_adaosul_rotunjit_din_parametri_nu_dubleaza_randul_tinta():
+    """Valoarea reala din parametri e scrisa rotunjit, nu cu 16 zecimale.
+
+    0,4885 fata de 0,4884615... difera cu 0,004 puncte procentuale, dar in tabel
+    se afisau ca 48,9% si 48,8% — doua randuri cu aceeasi marja de 35,0%.
+    """
+    s = scenarii_adaos(adaos_curent=0.4885, rezerva=0.05, marja_tinta=0.35)
+
+    randuri_tinta = [x for x in s if x["atinge_tinta"]]
+    assert len(randuri_tinta) == 1
+    # Acelasi rand poarta ambele etichete: e si cel configurat, si cel care atinge tinta.
+    assert randuri_tinta[0]["este_curent"]
+    assert randuri_tinta[0]["adaos"] == pytest.approx(0.4885)
+
+    # Niciun alt rand nu e la mai putin de 0,1 puncte procentuale de el.
+    altele = [x["adaos"] for x in s if not x["atinge_tinta"]]
+    assert all(abs(a - 0.4885) > 0.001 for a in altele)
+
+
+def test_adaosul_configurat_chiar_atinge_tinta_de_marja():
+    """Nimic nu verifica setarile reale — de aici a venit gaura de 9 puncte.
+
+    Adaosul livrat era 30%, tinta 35%, iar tinta nu intra in nicio formula: fiecare
+    deviz iesea cu 25,93% si nimeni nu semnala. Testul asta leaga cele doua valori
+    din `data/parametri.json`, ca sa nu mai poata pleca una fara alta.
+
+    Daca pica: ori adaosul, ori tinta a fost schimbata singura. Pagina
+    /parametri arata adaosul necesar pentru tinta curenta.
+    """
+    parametri = json.load(open(os.path.join(DATA, "parametri.json")))
+    adaos = parametri["adaos_comercial"]["valoare"]
+    rezerva = parametri["rezerva_risc"]["valoare"]
+    tinta = parametri["marja_bruta_tinta"]["valoare"]
+
+    marja_efectiva = marja_din_adaos(adaos, rezerva)
+
+    # Toleranta 0,1 puncte procentuale: adaosul e rotunjit la 4 zecimale in fisier.
+    assert marja_efectiva == pytest.approx(tinta, abs=0.001), (
+        f"Adaosul de {adaos:.2%} cu rezerva {rezerva:.2%} da marja {marja_efectiva:.2%}, "
+        f"dar tinta e {tinta:.2%}. Adaosul necesar: {adaos_pentru_marja(tinta, rezerva):.2%}."
+    )
+
+
+def test_adaosul_configurat_tine_devizele_peste_pragul_de_alerta():
+    """Marja rezultata trebuie sa fie confortabil peste pragul de alerta.
+
+    La adaosul vechi de 30% marja era 25,93% fata de un prag de 25% — adica
+    fiecare deviz aparea cu 'ATENTIE - aproape de prag'. Un avertisment care
+    apare mereu nu mai avertizeaza.
+    """
+    parametri = json.load(open(os.path.join(DATA, "parametri.json")))
+    marja_efectiva = marja_din_adaos(
+        parametri["adaos_comercial"]["valoare"], parametri["rezerva_risc"]["valoare"]
+    )
+    prag = parametri["prag_alerta_marja"]["valoare"]
+
+    # +0,05 este banda de 'ATENTIE' din costing_engine.calculeaza_deviz.
+    assert marja_efectiva >= prag + 0.05, (
+        f"Marja {marja_efectiva:.2%} cade in banda de atentie a pragului {prag:.2%}."
+    )

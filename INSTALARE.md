@@ -182,7 +182,9 @@ poate vedea proiectele, valorile și marjele. Concret:
 **<http://localhost:5000/parametri>** și verifică:
 
 - pierderea tehnologică (implicit 10% PAL/MDF, 15% lemn masiv);
-- regia (15%), adaosul comercial (30%), rezerva de risc (5%);
+- regia (15%), rezerva de risc (5%);
+- adaosul comercial este **48,85%** — nu e o ipoteză, ci valoarea care produce
+  marja-țintă de 35%. Dacă schimbi ținta, pagina îți arată ce adaos îi corespunde;
 - gradul de utilizare productivă (75%).
 
 Acestea sunt **ipoteze de pornire**, nu valorile tale reale. La fel, salariile pe fază din

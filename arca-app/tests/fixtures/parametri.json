@@ -20,13 +20,13 @@
     "parametru": "Regie / cheltuieli indirecte"
   },
   "adaos_comercial": {
-    "valoare": 0.4885,
-    "observatii": "Adaos aplicat pe costul total de productie. DERIVAT din marja tinta de 35% la o rezerva de 5%: adaos = 0,35/(1-0,35) - 0,05 = 48,85%. Daca schimbi tinta sau rezerva, recalculeaza adaosul (pagina Parametri arata valoarea necesara).",
+    "valoare": 0.3,
+    "observatii": "Adaos aplicat pe costul total de productie.",
     "parametru": "Adaos comercial"
   },
   "marja_bruta_tinta": {
     "valoare": 0.35,
-    "observatii": "Marja bruta urmarita. Nu intra direct in formula de pret, dar din ea se deriva adaosul comercial de mai sus.",
+    "observatii": "Prag-tinta; nu intra in calcul.",
     "parametru": "Marja bruta tinta (referinta)"
   },
   "rezerva_risc": {

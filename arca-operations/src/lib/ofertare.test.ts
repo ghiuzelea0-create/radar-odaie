@@ -1,6 +1,10 @@
 /**
- * Cifrele de referinta vin din devize calculate efectiv de `costing_engine.py`
- * cu parametrii impliciti din `data/parametri.json` (adaos 30%, rezerva 5%).
+ * Cifrele de referinta vin din devize calculate efectiv de `costing_engine.py`.
+ *
+ * PARAMETRI de mai jos pastreaza intentionat adaosul vechi de 30%, ca sa testeze
+ * cazul in care adaosul NU atinge tinta. Adaosul real, din `data/parametri.json`,
+ * este acum 48,85% si atinge tinta — acel caz e acoperit de testul de mai jos
+ * cu `adaosPentruMarja(0.35, 0.05)`.
  */
 import { describe, expect, it } from "vitest";
 
@@ -89,6 +93,30 @@ describe("analizaAdaosMarja", () => {
     expect(a!.tinta).toBe(0.35);
     expect(a!.diferenta).toBeCloseTo(0.0907407407407408, 12);
     expect(a!.adaos_necesar).toBeCloseTo(0.4884615384615385, 12);
+    expect(a!.atinge_tinta).toBe(false);
+  });
+
+  it("recunoaste adaosul rotunjit din parametri drept atingand tinta", () => {
+    // 0,4885 e valoarea reala din data/parametri.json: scrisa cu 4 zecimale,
+    // nu cu 16. Da marja 35,0016% — peste tinta, dar `diferenta` iese negativa
+    // si minuscula. Fara toleranta, dashboardul ar fi afisat avertismentul
+    // „adaosul nu iti atinge marja tinta" cu o diferenta de 0,0 pp.
+    const a = analizaAdaosMarja({ ...PARAMETRI, adaos_comercial: { valoare: 0.4885 } });
+    expect(a!.marja_rezultata).toBeCloseTo(0.3500162, 6);
+    expect(a!.atinge_tinta).toBe(true);
+    expect(Math.abs(a!.diferenta)).toBeLessThan(0.001);
+  });
+
+  it("marcheaza tinta ca atinsa si la valoarea exacta, si peste ea", () => {
+    for (const adaos of [0.4884615384615385, 0.55, 0.9]) {
+      expect(analizaAdaosMarja({ ...PARAMETRI, adaos_comercial: { valoare: adaos } })!.atinge_tinta).toBe(true);
+    }
+  });
+
+  it("nu inghite o ratare reala a tintei", () => {
+    // 0,485 da 34,85% — sub tinta cu 0,15 pp, adica peste toleranta de 0,1 pp.
+    const a = analizaAdaosMarja({ ...PARAMETRI, adaos_comercial: { valoare: 0.485 } });
+    expect(a!.atinge_tinta).toBe(false);
   });
 
   it("returneaza null daca lipsesc parametrii", () => {
