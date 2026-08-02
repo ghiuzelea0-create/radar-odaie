@@ -6,7 +6,26 @@
 <form method="post">
   <div class="card">
     <label for="proiect">Proiect</label>
-    <input type="text" id="proiect" name="proiect" required value="{{ form.get('proiect', '') }}">
+    <select id="proiect" name="proiect" required onchange="comutaProiectManual()">
+      <option value="">— alege proiectul —</option>
+      {% for o in proiecte_optiuni %}
+      <option value="{{ o.cod_proiect }}" {% if form.get('proiect') == o.cod_proiect %}selected{% endif %}>
+        {{ o.cod_proiect }}{% if o.client %} — {{ o.client }}{% endif %}{% if o.denumire %} ({{ o.denumire }}){% endif %}
+      </option>
+      {% endfor %}
+      <option value="{{ proiect_manual }}" {% if form.get('proiect') == proiect_manual %}selected{% endif %}>
+        Alt proiect — scriu codul de mana
+      </option>
+    </select>
+    <p class="muted">
+      Alegand proiectul din registru, devizul apare pe pagina lui si marja ofertata poate fi comparata cu cea realizata.
+      {% if not proiecte_optiuni %}Registrul e inca gol — foloseste „Alt proiect" pana adaugi primul proiect in Management.{% endif %}
+    </p>
+    <div id="proiect-manual-camp" style="display: none;">
+      <label for="proiect_manual">Cod proiect (scris de mana)</label>
+      <input type="text" id="proiect_manual" name="proiect_manual" value="{{ form.get('proiect_manual', '') }}">
+      <p class="muted">Foloseste acelasi cod cand inregistrezi proiectul in Management, ca sa se lege intre ele.</p>
+    </div>
     <label for="client">Client</label>
     <input type="text" id="client" name="client" value="{{ form.get('client', '') }}">
     <label for="data">Data</label>
@@ -54,6 +73,20 @@
 
 <script>
 const fazeManopera = {{ faze_manopera|tojson }};
+const PROIECT_MANUAL = {{ proiect_manual|tojson }};
+
+// Campul de cod scris de mana apare doar cand alegi „Alt proiect", si devine
+// obligatoriu atunci — altfel s-ar putea salva un deviz fara niciun cod.
+function comutaProiectManual() {
+  const select = document.getElementById('proiect');
+  const camp = document.getElementById('proiect-manual-camp');
+  const input = document.getElementById('proiect_manual');
+  const manual = select.value === PROIECT_MANUAL;
+  camp.style.display = manual ? '' : 'none';
+  input.required = manual;
+  if (!manual) input.value = '';
+}
+comutaProiectManual();
 
 function adaugaRandMaterial() {
   const container = document.getElementById('materiale-rows');

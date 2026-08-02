@@ -129,6 +129,23 @@ describe("construiesteOfertare", () => {
     expect(marje[0]).toBeCloseTo(0.2593, 4);
   });
 
+  it("leaga devizele la fel ca arca-app: fara spatii, fara majuscule", () => {
+    // Flask normalizeaza codul inainte de a lega devizul de proiect. Daca aici
+    // am compara exact, un deviz legat corect in aplicatie ar iesi drept orfan.
+    const date = construiesteOfertare(
+      [deviz("d1", " arc-2026-060 ", 1000, 800), deviz("d2", "ARC-2026-060", 1000, 800)],
+      ["ARC-2026-060"],
+      PARAMETRI,
+    );
+    expect(date.nelegate).toBe(0);
+    expect(date.devize.every((d) => d.legat_de_proiect)).toBe(true);
+  });
+
+  it("un cod gol nu se leaga de nimic", () => {
+    const date = construiesteOfertare([deviz("d1", "", 1000, 800)], ["", "ARC-1"], PARAMETRI);
+    expect(date.nelegate).toBe(1);
+  });
+
   it("nu produce analiza cand nu exista devize", () => {
     const date = construiesteOfertare([], [], PARAMETRI);
     expect(date.analiza).toBeNull();

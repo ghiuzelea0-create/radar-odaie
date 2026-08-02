@@ -29,6 +29,57 @@
 </div>
 
 <div class="card">
+  <h3>Devize legate de acest proiect</h3>
+  {% if devize_legate %}
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Client</th><th>Pret fara TVA</th><th>Cost</th><th>Marja</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for d in devize_legate %}
+        {% set v = d.rezultat.verificare_marja %}
+        <tr>
+          <td>{{ d.data or "—" }}</td>
+          <td>{{ d.client or "—" }}</td>
+          <td>{{ "%.2f"|format(v.pret_vanzare_fara_tva) }} RON</td>
+          <td>{{ "%.2f"|format(v.cost_total_productie) }} RON</td>
+          <td>{{ "%.1f"|format(v.marja_bruta_pct * 100) }}%</td>
+          <td><a href="{{ url_for('deviz_detail', deviz_id=d.id) }}">Deschide</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2"><strong>Total ofertat</strong></td><td colspan="4"><strong>{{ "%.2f"|format(total_devize) }} RON</strong></td></tr>
+      </tfoot>
+    </table>
+
+    {% if comparatie_marja %}
+      {% set c = comparatie_marja %}
+      {% if c.coincid %}
+        <p><span class="badge ok">Marja din registru coincide cu devizele</span>
+          {{ "%.1f"|format(c.marja_registru * 100) }}% fata de {{ "%.1f"|format(c.marja_devize * 100) }}% calculat.</p>
+      {% else %}
+        <p><span class="badge alert">Marja din registru nu coincide cu devizele</span></p>
+        <p class="muted">
+          In registru ai trecut <strong>{{ "%.1f"|format(c.marja_registru * 100) }}%</strong>, dar devizele calculeaza
+          <strong>{{ "%.1f"|format(c.marja_devize * 100) }}%</strong> — o diferenta de
+          {{ "%.1f"|format(c.diferenta * 100) }} puncte procentuale.
+          Una dintre cele doua cifre e gresita: daca cea din registru e prea optimista, indicatorul de erodare a marjei
+          te linisteste degeaba.
+        </p>
+      {% endif %}
+    {% elif proiect.marja_ofertata is none %}
+      <p class="muted">Completeaza marja ofertata in registru ca sa o poti compara cu cea din devize.</p>
+    {% endif %}
+  {% else %}
+    <p class="muted">
+      Niciun deviz legat de codul <strong>{{ proiect.cod_proiect }}</strong>.
+      Cand faci un <a href="{{ url_for('deviz_nou') }}">deviz nou</a>, alege acest proiect din lista ca sa apara aici.
+    </p>
+  {% endif %}
+</div>
+
+<div class="card">
   <h3>Calculator termen realist</h3>
   {% if termen_realist %}
     {% set r = termen_realist.rezultat %}

@@ -127,12 +127,23 @@ export function analizaAdaosMarja(parametri: Record<string, { valoare: number }>
   };
 }
 
+/**
+ * Aceeasi normalizare ca `legaturi.normalizeaza_cod` din arca-app.
+ *
+ * Campul `proiect` din deviz e text liber, iar Flask leaga devizul de proiect
+ * ignorand spatiile si diferenta de litere mari/mici. Daca aici am compara
+ * exact, un deviz legat corect in aplicatie ar aparea aici drept orfan.
+ */
+export function normalizeazaCod(valoare: string | null | undefined): string {
+  return (valoare ?? "").trim().toLocaleLowerCase("ro");
+}
+
 export function construiesteOfertare(
   devize: DevizRecord[],
   coduriProiecte: string[],
   parametri: Record<string, { valoare: number }>,
 ): DateOfertare {
-  const coduri = new Set(coduriProiecte);
+  const coduri = new Set(coduriProiecte.map(normalizeazaCod).filter(Boolean));
 
   const randuri: RandDeviz[] = devize.map((d) => {
     const v = d.rezultat.verificare_marja;
@@ -148,7 +159,7 @@ export function construiesteOfertare(
       marja_pct: v.marja_bruta_pct,
       stare_marja: v.stare_marja,
       pondere_materiale: v.pondere_materiale,
-      legat_de_proiect: coduri.has(d.proiect),
+      legat_de_proiect: coduri.has(normalizeazaCod(d.proiect)),
     };
   });
 
