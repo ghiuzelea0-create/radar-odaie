@@ -97,6 +97,28 @@ Transferul dintre Proiectare și Costing rămâne manual (ca în workbook-ul ori
 de detaliu a corpului afișează clar cifrele de introdus, dar utilizatorul alege decorul
 exact (Egger/Kronospan/Kastamonu) din nomenclator la crearea devizului.
 
+## Adaos vs. marjă (pagina Parametri)
+
+Motorul stabilește prețul ca `cost × (1 + adaos + rezervă)`. De aici rezultă că
+**marja brută nu e egală cu adaosul** și că ea **nu depinde de mărimea devizului** —
+doar de acești doi parametri. Cu valorile implicite (adaos 30%, rezervă 5%) marja
+care iese este 25,9%, nu 30% și nu 35%.
+
+Pagina Parametri afișează acum relația explicit: ce marjă rezultă din adaosul curent,
+ce adaos ar cere marja-țintă, și un tabel de scenarii. Ultimele două coloane arată,
+față de adaosul actual, cu cât crește prețul pentru client și cu cât crește ce îți
+rămâne ție. Fiind rapoarte determinate exclusiv de parametri, sunt valabile la orice
+ofertă. Costul nu se schimbă între scenarii — de aceea câștigul crește mult mai
+repede decât prețul (de la 25,9% la 35% marjă: preț +14,0%, câștig +53,8%).
+
+Dacă la prețul mai mare pierzi comenzi, calculul se schimbă — dar aceea e o decizie
+de piață, nu una de parametri, și aplicația nu o poate lua în locul tău.
+
+Formulele stau în `costing_engine.py`, lângă cea de preț, iar un test rulează motorul
+real la mai multe valori de adaos și verifică că marja anunțată coincide cu cea
+calculată efectiv în deviz — ca pagina Parametri să nu poată afișa altceva decât
+devizele.
+
 ## Legătura deviz ↔ proiect
 
 La crearea unui deviz, proiectul se alege dintr-o listă cu proiectele din registrul de

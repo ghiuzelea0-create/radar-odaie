@@ -18,6 +18,75 @@ def parametri_valori(parametri_raw: dict) -> dict:
     return {k: v["valoare"] for k, v in parametri_raw.items()}
 
 
+# --- Adaos vs. marja ---------------------------------------------------------
+#
+# Motorul stabileste pretul asa: pret = cost x (1 + adaos + rezerva).
+# De aici rezulta ca marja bruta NU e egala cu adaosul, si ca ea nu depinde
+# deloc de marimea devizului — doar de acesti doi parametri. Confuzia dintre
+# adaos si marja costa bani la fiecare oferta, asa ca functiile de mai jos fac
+# relatia explicita si verificabila.
+
+
+def marja_din_adaos(adaos: float, rezerva: float) -> float:
+    """Marja bruta care rezulta efectiv dintr-un adaos dat.
+
+    marja = (pret - cost) / pret = (adaos + rezerva) / (1 + adaos + rezerva)
+    """
+    suma = adaos + rezerva
+    return suma / (1 + suma)
+
+
+def adaos_pentru_marja(marja_tinta: float, rezerva: float) -> float:
+    """Adaosul necesar ca sa atingi o marja tinta, la o rezerva data.
+
+    Inversa lui `marja_din_adaos`: din marja = (a+r)/(1+a+r) rezulta
+    a + r = marja / (1 - marja).
+    """
+    if marja_tinta >= 1:
+        raise ValueError("O marja de 100% ar cere un adaos infinit.")
+    return marja_tinta / (1 - marja_tinta) - rezerva
+
+
+def scenarii_adaos(adaos_curent: float, rezerva: float, marja_tinta: float) -> list[dict]:
+    """Ce se schimba la client si la tine daca muti adaosul.
+
+    Raportul de pret si cel de castig depind doar de parametri, nu de deviz —
+    de aceea sunt exprimate procentual: sunt valabile la orice oferta, de la un
+    corp la o casa intreaga.
+    """
+    adaos_tinta = adaos_pentru_marja(marja_tinta, rezerva)
+
+    # Rotunjim inainte de deduplicare. Adaosul salvat in parametri si cel
+    # calculat din tinta pot diferi cu un ULP (0,4884615384615385 fata de
+    # ...84), iar un `set` le-ar pastra pe amandoua si tabelul ar afisa acelasi
+    # rand de doua ori. Sase zecimale inseamna 0,0001% — sub orice relevanta.
+    PRECIZIE = 6
+    curent = round(adaos_curent, PRECIZIE)
+    valori = sorted({round(a, PRECIZIE) for a in (adaos_curent, adaos_tinta, 0.30, 0.40, 0.50) if a >= 0})
+
+    baza_pret = 1 + adaos_curent + rezerva
+    baza_castig = adaos_curent + rezerva
+
+    scenarii = []
+    for adaos in valori:
+        pret = 1 + adaos + rezerva
+        castig = adaos + rezerva
+        scenarii.append(
+            {
+                "adaos": adaos,
+                "marja": marja_din_adaos(adaos, rezerva),
+                # Cat la suta mai mult plateste clientul fata de adaosul curent.
+                "delta_pret_pct": pret / baza_pret - 1,
+                # Cat la suta mai mult ramane la tine fata de adaosul curent.
+                "delta_castig_pct": (castig / baza_castig - 1) if baza_castig else 0.0,
+                "este_curent": adaos == curent,
+                # Toleranta pe potriva rotunjirii de mai sus.
+                "atinge_tinta": abs(marja_din_adaos(adaos, rezerva) - marja_tinta) < 1e-6,
+            }
+        )
+    return scenarii
+
+
 def gaseste_material(denumire: str, materiale: list[dict]) -> dict | None:
     for m in materiale:
         if m["denumire"] == denumire:
