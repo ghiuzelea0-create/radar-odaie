@@ -170,8 +170,9 @@ poate vedea proiectele, valorile și marjele. Concret:
 
 - ține-o pe rețeaua Wi-Fi a firmei, cu parolă, nu pe una deschisă sau de oaspeți;
 - nu deschide porturile 3000 și 5000 către internet din router;
-- dacă vrei acces din afara halei (de acasă, de pe drum), spune-mi — asta cere
-  autentificare și o configurare diferită, nu doar deschiderea unui port.
+- pentru acces **din afara halei** (de acasă, de pe drum), nu deschide un port în
+  router — aplicația n-are parolă. Folosește un VPN: pașii sunt în
+  **[ACCES-DE-LA-DISTANTA.md](ACCES-DE-LA-DISTANTA.md)**.
 
 ---
 
