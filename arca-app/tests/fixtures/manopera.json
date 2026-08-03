@@ -1,0 +1,74 @@
+[
+  {
+    "faza": "Debitare",
+    "um": "ora",
+    "brut_bucuresti": 5800,
+    "brut_cluj": 5350,
+    "brut_brasov": 4950,
+    "nota": "Operator debitare / fierastrau panel"
+  },
+  {
+    "faza": "Aplicare cant",
+    "um": "ora",
+    "brut_bucuresti": 5800,
+    "brut_cluj": 5350,
+    "brut_brasov": 4950,
+    "nota": "Operator masina de cant"
+  },
+  {
+    "faza": "Gaurire / CNC",
+    "um": "ora",
+    "brut_bucuresti": 7200,
+    "brut_cluj": 6600,
+    "brut_brasov": 6120,
+    "nota": "Operator CNC calificat — cel mai scump post de atelier"
+  },
+  {
+    "faza": "Asamblare",
+    "um": "ora",
+    "brut_bucuresti": 6500,
+    "brut_cluj": 6000,
+    "brut_brasov": 5550,
+    "nota": "Tamplar montator atelier"
+  },
+  {
+    "faza": "Vopsire",
+    "um": "ora",
+    "brut_bucuresti": 7000,
+    "brut_cluj": 6450,
+    "brut_brasov": 5950,
+    "nota": "Vopsitor mobilier — calificare rara, cerere mare"
+  },
+  {
+    "faza": "Finisare",
+    "um": "ora",
+    "brut_bucuresti": 5500,
+    "brut_cluj": 5050,
+    "brut_brasov": 4700,
+    "nota": "Slefuire, retusuri, control final"
+  },
+  {
+    "faza": "Ambalare",
+    "um": "ora",
+    "brut_bucuresti": 4600,
+    "brut_cluj": 4325,
+    "brut_brasov": 4325,
+    "nota": "Necalificat — limitat inferior de salariul minim"
+  },
+  {
+    "faza": "Montaj",
+    "um": "ora",
+    "brut_bucuresti": 6800,
+    "brut_cluj": 6250,
+    "brut_brasov": 5800,
+    "nota": "Montator la client; necesita permis si relationare"
+  },
+  {
+    "faza": "Proiectare tehnica",
+    "um": "ora",
+    "brut_bucuresti": 9000,
+    "brut_cluj": 8300,
+    "brut_brasov": 7700,
+    "nota": "Proiectant mobilier / tehnolog"
+  }
+]

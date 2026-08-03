@@ -1,6 +1,8 @@
 > **Cauți aplicația Arca?** Instrucțiuni de instalare pe calculatorul tău:
 > **[INSTALARE.md](INSTALARE.md)**. Pornire rapidă: `./start.sh` (macOS/Linux)
 > sau dublu-click pe `start.bat` (Windows).
+> Acces din afara halei (de acasă, de pe drum):
+> **[ACCES-DE-LA-DISTANTA.md](ACCES-DE-LA-DISTANTA.md)**.
 >
 > - `arca-app/` — aplicația Arca: costing, proiectare, management (introduci date)
 > - `arca-operations/` — dashboard operațional (vezi situația)

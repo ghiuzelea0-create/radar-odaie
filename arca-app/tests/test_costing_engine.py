@@ -6,15 +6,19 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from costing_engine import DevizInput, Logistica, ManoperaLine, MaterialLine, calculeaza_deviz
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+# Nomenclatoare inghetate, NU cele din data/. Testul de mai jos verifica faptul
+# ca motorul reproduce foaia DEVIZ din arcacosting.xlsx; asta are sens doar fata
+# de datele cu care a fost calculata foaia. Adaosul, salariile si preturile din
+# data/ sunt decizii de business si se schimba — vezi fixtures/README.md.
+FIXTURES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
 
 def _load_nomenclatoare():
-    with open(os.path.join(DATA_DIR, "parametri.json"), encoding="utf-8") as f:
+    with open(os.path.join(FIXTURES_DIR, "parametri.json"), encoding="utf-8") as f:
         parametri = json.load(f)
-    with open(os.path.join(DATA_DIR, "materiale.json"), encoding="utf-8") as f:
+    with open(os.path.join(FIXTURES_DIR, "materiale.json"), encoding="utf-8") as f:
         materiale = json.load(f)
-    with open(os.path.join(DATA_DIR, "manopera.json"), encoding="utf-8") as f:
+    with open(os.path.join(FIXTURES_DIR, "manopera.json"), encoding="utf-8") as f:
         manopera = json.load(f)
     return parametri, materiale, manopera
 

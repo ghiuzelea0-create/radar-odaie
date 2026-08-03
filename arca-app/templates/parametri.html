@@ -2,6 +2,56 @@
 {% block content %}
 <h2>Parametri generali de costing</h2>
 <p class="notice">Moneda RON. Toate preturile din model sunt fara TVA. Ajusteaza aici valorile — devizele noi vor folosi valorile actualizate.</p>
+
+<div class="card">
+  <h3>Adaos vs. marja</h3>
+  {% if marja_curenta >= marja_tinta %}
+    <p><span class="badge ok">Adaosul actual atinge tinta</span>
+      Adaos {{ "%.1f"|format(parametri.adaos_comercial.valoare * 100) }}% →
+      marja {{ "%.1f"|format(marja_curenta * 100) }}%, tinta {{ "%.1f"|format(marja_tinta * 100) }}%.</p>
+  {% else %}
+    <p><span class="badge alert">Adaosul actual nu atinge tinta</span></p>
+    <p>
+      Un adaos de <strong>{{ "%.1f"|format(parametri.adaos_comercial.valoare * 100) }}%</strong> aplicat pe cost
+      <em>nu</em> da o marja de {{ "%.1f"|format(parametri.adaos_comercial.valoare * 100) }}%.
+      Cu rezerva de risc de {{ "%.1f"|format(parametri.rezerva_risc.valoare * 100) }}%, marja care rezulta este
+      <strong>{{ "%.1f"|format(marja_curenta * 100) }}%</strong> —
+      cu {{ "%.1f"|format((marja_tinta - marja_curenta) * 100) }} puncte procentuale sub tinta de
+      {{ "%.1f"|format(marja_tinta * 100) }}%.
+      Ca sa atingi tinta, adaosul ar trebui sa fie <strong>{{ "%.1f"|format(adaos_necesar * 100) }}%</strong>.
+    </p>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Adaos</th><th>Marja rezultata</th>
+        <th>Clientul plateste</th><th>Iti ramane</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in scenarii %}
+      <tr>
+        <td>
+          {{ "%.1f"|format(s.adaos * 100) }}%
+          {% if s.este_curent %}<span class="badge">actual</span>{% endif %}
+          {% if s.atinge_tinta %}<span class="badge ok">tinta</span>{% endif %}
+        </td>
+        <td>{{ "%.1f"|format(s.marja * 100) }}%</td>
+        <td>{% if s.este_curent %}—{% else %}{{ "%+.1f"|format(s.delta_pret_pct * 100) }}%{% endif %}</td>
+        <td>{% if s.este_curent %}—{% else %}{{ "%+.1f"|format(s.delta_castig_pct * 100) }}%{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="muted">
+    Procentele din ultimele doua coloane sunt fata de adaosul actual si <strong>nu depind de marimea devizului</strong> —
+    sunt valabile la orice oferta. Costul nu se schimba deloc: fiecare leu cerut in plus merge integral in marja, de aceea
+    castigul creste mult mai repede decat pretul.
+    Daca la pretul mai mare pierzi comenzi, calculul se schimba — aceea e o decizie de piata, nu de parametri.
+  </p>
+</div>
 <form method="post">
   <div class="card">
     {% for cheie, item in parametri.items() %}

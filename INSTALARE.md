@@ -170,8 +170,9 @@ poate vedea proiectele, valorile și marjele. Concret:
 
 - ține-o pe rețeaua Wi-Fi a firmei, cu parolă, nu pe una deschisă sau de oaspeți;
 - nu deschide porturile 3000 și 5000 către internet din router;
-- dacă vrei acces din afara halei (de acasă, de pe drum), spune-mi — asta cere
-  autentificare și o configurare diferită, nu doar deschiderea unui port.
+- pentru acces **din afara halei** (de acasă, de pe drum), nu deschide un port în
+  router — aplicația n-are parolă. Folosește un VPN: pașii sunt în
+  **[ACCES-DE-LA-DISTANTA.md](ACCES-DE-LA-DISTANTA.md)**.
 
 ---
 
@@ -181,7 +182,9 @@ poate vedea proiectele, valorile și marjele. Concret:
 **<http://localhost:5000/parametri>** și verifică:
 
 - pierderea tehnologică (implicit 10% PAL/MDF, 15% lemn masiv);
-- regia (15%), adaosul comercial (30%), rezerva de risc (5%);
+- regia (15%), rezerva de risc (5%);
+- adaosul comercial este **48,85%** — nu e o ipoteză, ci valoarea care produce
+  marja-țintă de 35%. Dacă schimbi ținta, pagina îți arată ce adaos îi corespunde;
 - gradul de utilizare productivă (75%).
 
 Acestea sunt **ipoteze de pornire**, nu valorile tale reale. La fel, salariile pe fază din

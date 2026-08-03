@@ -63,9 +63,21 @@ export type AnalizaAdaos = {
   tinta: number;
   /** Adaosul necesar ca sa atingi tinta, la aceeasi rezerva. */
   adaos_necesar: number;
-  /** Cate puncte procentuale lipsesc pana la tinta. */
+  /** Cate puncte procentuale lipsesc pana la tinta. Negativ = tinta e depasita. */
   diferenta: number;
+  /**
+   * Adevarat cand adaosul configurat produce tinta, in limita tolerantei.
+   *
+   * Nu compara `diferenta > 0` direct: adaosul se scrie rotunjit in parametri
+   * (0,4885 pentru o tinta de 35%), deci `diferenta` iese aproape niciodata
+   * exact zero. Fara toleranta, un adaos corect setat ar declansa avertismentul
+   * „sub tinta" cu o diferenta de 0,0 pp — un avertisment fals.
+   */
+  atinge_tinta: boolean;
 };
+
+/** 0,1 puncte procentuale — sub rezolutia la care se afiseaza marjele. */
+export const TOLERANTA_TINTA = 0.001;
 
 export type DateOfertare = {
   devize: RandDeviz[];
@@ -106,9 +118,9 @@ export function adaosPentruMarja(marjaTinta: number, rezerva: number): number {
  * Compara adaosul configurat cu marja tinta.
  *
  * Confuzia adaos/marja costa bani: un adaos de 30% NU da o marja de 30%.
- * Regulile proiectului cer explicit separarea celor doua notiuni, iar
- * `parametri.json` marcheaza marja tinta drept „prag-tinta; nu intra in calcul" —
- * adica nimic nu verifica automat daca adaosul o atinge. Aici o verificam.
+ * Regulile proiectului cer explicit separarea celor doua notiuni, iar marja
+ * tinta nu intra in formula de pret — deci nimic din motor nu verifica daca
+ * adaosul o atinge. Aici o verificam.
  */
 export function analizaAdaosMarja(parametri: Record<string, { valoare: number }>): AnalizaAdaos | null {
   const adaos = parametri.adaos_comercial?.valoare;
@@ -117,13 +129,15 @@ export function analizaAdaosMarja(parametri: Record<string, { valoare: number }>
   if (adaos === undefined || rezerva === undefined || tinta === undefined) return null;
 
   const marjaRezultata = marjaDinAdaos(adaos, rezerva);
+  const diferenta = tinta - marjaRezultata;
   return {
     adaos,
     rezerva,
     marja_rezultata: marjaRezultata,
     tinta,
     adaos_necesar: adaosPentruMarja(tinta, rezerva),
-    diferenta: tinta - marjaRezultata,
+    diferenta,
+    atinge_tinta: diferenta <= TOLERANTA_TINTA,
   };
 }
 

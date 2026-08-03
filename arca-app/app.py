@@ -6,7 +6,17 @@ from datetime import date
 
 from flask import Flask, redirect, render_template, request, url_for
 
-from costing_engine import DevizError, DevizInput, Logistica, ManoperaLine, MaterialLine, calculeaza_deviz
+from costing_engine import (
+    DevizError,
+    DevizInput,
+    Logistica,
+    ManoperaLine,
+    MaterialLine,
+    adaos_pentru_marja,
+    calculeaza_deviz,
+    marja_din_adaos,
+    scenarii_adaos,
+)
 from design_engine import CorpError, CorpInput, TIPURI_CONSTRUCTIE, TIPURI_INCHIDERE_SUS, SISTEME_ASAMBLARE, calculeaza_corp
 from legaturi import coduri_proiecte, compara_marja_ofertata, devize_pentru_proiect, total_ofertat
 from management_engine import (
@@ -93,7 +103,20 @@ def parametri_view():
                     pass
         _salveaza_parametri(parametri)
         return redirect(url_for("parametri_view"))
-    return render_template("parametri.html", parametri=parametri, regiuni=["Bucuresti", "Cluj", "Brasov"])
+
+    adaos = float(parametri["adaos_comercial"]["valoare"])
+    rezerva = float(parametri["rezerva_risc"]["valoare"])
+    tinta = float(parametri["marja_bruta_tinta"]["valoare"])
+
+    return render_template(
+        "parametri.html",
+        parametri=parametri,
+        regiuni=["Bucuresti", "Cluj", "Brasov"],
+        marja_curenta=marja_din_adaos(adaos, rezerva),
+        marja_tinta=tinta,
+        adaos_necesar=adaos_pentru_marja(tinta, rezerva),
+        scenarii=scenarii_adaos(adaos, rezerva, tinta),
+    )
 
 
 @app.route("/nomenclator")

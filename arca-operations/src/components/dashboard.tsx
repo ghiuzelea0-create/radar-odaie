@@ -512,7 +512,7 @@ function SectiuneaOfertare({ ofertare, arcaAppUrl }: { ofertare: DateOfertare; a
           value={lei.format(ofertare.marja_totala_ron)}
           detail={a ? `${procent.format(a.marja_rezultata)} din valoare` : "—"}
           icon={BarChart3}
-          accent={a && a.diferenta > 0 ? "atentie" : undefined}
+          accent={a && !a.atinge_tinta ? "atentie" : undefined}
         />
         <MetricCard
           title="Adaos configurat"
@@ -529,7 +529,7 @@ function SectiuneaOfertare({ ofertare, arcaAppUrl }: { ofertare: DateOfertare; a
         />
       </section>
 
-      {a && a.diferenta > 0 ? (
+      {a && !a.atinge_tinta ? (
         <Alert className="border-amber-400/20 bg-amber-400/10">
           <AlertTriangle className="size-4 text-amber-400" />
           <AlertTitle className="text-sm">Adaosul nu îți atinge marja țintă</AlertTitle>
