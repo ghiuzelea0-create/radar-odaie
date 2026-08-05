@@ -37,3 +37,10 @@ export function shelfSpacing(height: number, shelvesCount: number, config: Cabin
   if (shelvesCount <= 0) return internalHeight(height, config);
   return internalHeight(height, config) / (shelvesCount + 1);
 }
+
+/** `count` values evenly spaced (inclusive) between `min` and `max`; a single value is centered. */
+export function evenlySpaced(min: number, max: number, count: number): number[] {
+  if (count <= 1) return [(min + max) / 2];
+  const step = (max - min) / (count - 1);
+  return Array.from({ length: count }, (_, i) => min + step * i);
+}

@@ -17,15 +17,25 @@ describe('calculateCncOperations', () => {
     expect(hinges.map((op) => op.y).sort((a, b) => a - b)).toEqual([100, 614]);
   });
 
-  it('places 4 minifix/dowel holes on the side panel for a doorless cabinet', () => {
+  it('places minifix/dowel holes matching the joint plan: 3 on the bottom (deep cabinet) + 1 per rail', () => {
     const ops = opsFor({ width: 600, height: 720, depth: 560 });
     const minifix = ops.filter((op) => op.type === 'minifix-dowel');
-    expect(minifix).toHaveLength(4);
+    // depth 560 > 500 -> 3 connectors on the bottom joint; 1 each on the front/back rail joints
+    expect(minifix).toHaveLength(5);
     for (const op of minifix) {
       expect(op.diameter).toBe(MINIFIX.DIAMETER);
     }
     const xs = minifix.map((op) => op.x).sort((a, b) => a - b);
-    expect(xs).toEqual([8, 8, 552, 552]); // front/back face setback within depth=560
+    expect(xs).toEqual([8, 8, 280, 552, 552]); // bottom joint evenly spaced [8,280,552]; rails at [8] and [552]
+  });
+
+  it('places 2 wall-cabinet joint holes (top + bottom, both full panels) evenly spaced across depth', () => {
+    const ops = opsFor({ width: 600, height: 720, depth: 400, cabinetType: 'wall' });
+    const minifix = ops.filter((op) => op.type === 'minifix-dowel');
+    // depth 400 <= 500 -> 2 connectors per joint; 2 joints (top + bottom) -> 4 total
+    expect(minifix).toHaveLength(4);
+    const ys = [...new Set(minifix.map((op) => op.y))].sort((a, b) => a - b);
+    expect(ys).toEqual([34, 686]); // bottomY=34, topY=720-34
   });
 
   it('places 2 shelf-pin holes per shelf (front + back), evenly spaced up the height', () => {

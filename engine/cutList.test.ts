@@ -86,6 +86,19 @@ describe('calculateCutList — reference base cabinet (600x720x560, 1 door, 1 sh
   });
 });
 
+describe('calculateCutList — wall cabinet (full top panel, no rails)', () => {
+  it('replaces the two rails with a single full top panel matching the bottom panel', () => {
+    const input = resolveCabinetInput({ width: 600, height: 720, depth: 560, cabinetType: 'wall' });
+    const parts = calculateCutList(input);
+    expect(parts.map((p) => p.name)).toEqual(['Panou lateral', 'Fund', 'Panou sus', 'Spate']);
+
+    const top = parts.find((p) => p.name === 'Panou sus')!;
+    const bottom = parts.find((p) => p.name === 'Fund')!;
+    expect(top).toMatchObject({ length: bottom.length, width: bottom.width, quantity: 1 });
+    expect(top.edgeBanding).toEqual(bottom.edgeBanding);
+  });
+});
+
 describe('calculateCutList — dimension sensitivity', () => {
   it('omits doors/shelves parts entirely when counts are zero', () => {
     const input = resolveCabinetInput({ width: 600, height: 720, depth: 560 });

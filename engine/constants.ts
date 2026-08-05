@@ -93,3 +93,9 @@ export const HANDLE = {
   SKU: 'HANDLE-STD-128',
   NAME: 'Mâner standard, interax 128mm',
 };
+
+/** Suspension hardware for wall-mounted (cabinetType 'wall') cabinets. */
+export const WALL_BRACKET = {
+  SKU: 'HAFELE-HANG-BRACKET',
+  NAME: 'Sistem suspendare perete (set console + șină)',
+};

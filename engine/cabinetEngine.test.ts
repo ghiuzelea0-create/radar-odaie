@@ -48,6 +48,7 @@ describe('buildCabinet — integration', () => {
     const side = output.cutList.find((p) => p.name === 'Panou lateral')!;
     expect(side.thickness).toBe(16);
     const minifix = output.hardwareList.find((i) => i.sku === 'HAFELE-MINIFIX-15');
-    expect(minifix?.quantity).toBe(12); // depth 400 <= 500 -> 2 per joint * 6 joints
+    // depth 400 <= 500 -> bottom joint 2 connectors + front/back rail 1 each = 4 per side * 2 sides
+    expect(minifix?.quantity).toBe(8);
   });
 });

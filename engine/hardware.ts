@@ -1,22 +1,13 @@
 /**
  * Rule-based hardware BOM: hinge count from door height, minifix/dowel count
- * from corner-joint count and panel depth, shelf pins from shelf count, and
- * one Blum TANDEMBOX steel drawer-box set per drawer.
+ * from the shared joint plan (engine/joints.ts), shelf pins from shelf
+ * count, one Blum TANDEMBOX steel drawer-box set per drawer, and a
+ * wall-mounting bracket set for `wall` cabinets.
  */
 import type { HardwareItem, ResolvedCabinetInput } from '../models/types.js';
-import {
-  HANDLE,
-  HINGE,
-  HINGE_COUNT_BREAKPOINTS,
-  MINIFIX,
-  SHELF_PIN,
-  STANDARD_SLIDE_LENGTHS,
-  connectorsPerJoint,
-} from './constants.js';
+import { HANDLE, HINGE, HINGE_COUNT_BREAKPOINTS, MINIFIX, SHELF_PIN, STANDARD_SLIDE_LENGTHS, WALL_BRACKET } from './constants.js';
 import { doorHeight, maxDrawerBoxDepth } from './formulas.js';
-
-/** Number of side-panel-to-carcass corner joints: 2 sides x (bottom + front rail + back rail). */
-const CORNER_JOINTS = 6;
+import { calculateSideJoints, totalConnectorCount } from './joints.js';
 
 export function hingeCountForDoorHeight(heightMm: number): number {
   const breakpoint = HINGE_COUNT_BREAKPOINTS.find((b) => heightMm <= b.maxHeight);
@@ -48,7 +39,7 @@ function mergeBySku(items: HardwareItem[]): HardwareItem[] {
 }
 
 export function calculateHardwareBom(input: ResolvedCabinetInput): HardwareItem[] {
-  const { height, depth, doors, shelves, drawers, config } = input;
+  const { height, depth, doors, shelves, drawers, config, cabinetType } = input;
   const items: HardwareItem[] = [];
 
   if (doors > 0) {
@@ -59,9 +50,13 @@ export function calculateHardwareBom(input: ResolvedCabinetInput): HardwareItem[
     }
   }
 
-  const perJoint = connectorsPerJoint(depth);
-  items.push({ sku: MINIFIX.SKU, name: MINIFIX.NAME, quantity: CORNER_JOINTS * perJoint });
-  items.push({ sku: MINIFIX.DOWEL_SKU, name: MINIFIX.DOWEL_NAME, quantity: CORNER_JOINTS * perJoint });
+  const connectorCount = totalConnectorCount(calculateSideJoints(input));
+  items.push({ sku: MINIFIX.SKU, name: MINIFIX.NAME, quantity: connectorCount });
+  items.push({ sku: MINIFIX.DOWEL_SKU, name: MINIFIX.DOWEL_NAME, quantity: connectorCount });
+
+  if (cabinetType === 'wall') {
+    items.push({ sku: WALL_BRACKET.SKU, name: WALL_BRACKET.NAME, quantity: 2 });
+  }
 
   if (shelves > 0) {
     items.push({ sku: SHELF_PIN.SKU, name: SHELF_PIN.NAME, quantity: shelves * 4 });

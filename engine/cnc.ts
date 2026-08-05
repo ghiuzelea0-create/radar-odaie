@@ -7,6 +7,7 @@ import type { CncOperation, ResolvedCabinetInput } from '../models/types.js';
 import { HINGE, MINIFIX, SHELF_PIN, SYSTEM32 } from './constants.js';
 import { hingeCountForDoorHeight } from './hardware.js';
 import { doorHeight, internalHeight } from './formulas.js';
+import { calculateSideJoints } from './joints.js';
 
 function hingePositions(doorHeightMm: number, count: number): number[] {
   if (count === 1) return [doorHeightMm / 2];
@@ -36,26 +37,16 @@ export function calculateCncOperations(input: ResolvedCabinetInput): CncOperatio
     }
   }
 
-  const frontX = MINIFIX.FACE_SETBACK;
-  const backX = depth - MINIFIX.FACE_SETBACK;
-  const topY = height - MINIFIX.EDGE_SETBACK;
-  const bottomY = MINIFIX.EDGE_SETBACK;
-  for (const [edgeLabel, y] of [
-    ['sus', topY],
-    ['jos', bottomY],
-  ] as const) {
-    for (const [faceLabel, x] of [
-      ['față', frontX],
-      ['spate', backX],
-    ] as const) {
+  for (const joint of calculateSideJoints(input)) {
+    for (const x of joint.x) {
       ops.push({
         part: 'Panou lateral',
         operation: 'drilling',
         type: 'minifix-dowel',
         x,
-        y,
+        y: joint.y,
         diameter: MINIFIX.DIAMETER,
-        note: `Îmbinare ${edgeLabel}-${faceLabel}`,
+        note: `Îmbinare cu ${joint.label}`,
       });
     }
   }

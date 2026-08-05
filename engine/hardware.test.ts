@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { resolveCabinetInput } from './config.js';
 import { calculateHardwareBom, drawerHeightClass, hingeCountForDoorHeight, nearestStandardSlideLength } from './hardware.js';
-import { HINGE, MINIFIX, SHELF_PIN } from './constants.js';
+import { HINGE, MINIFIX, SHELF_PIN, WALL_BRACKET } from './constants.js';
 
 function bomFor(overrides: Parameters<typeof resolveCabinetInput>[0]) {
   return calculateHardwareBom(resolveCabinetInput(overrides));
@@ -52,16 +52,18 @@ describe('calculateHardwareBom', () => {
     expect(hinges?.quantity).toBe(2); // doorHeight = 720 - 2*3 = 714mm -> 2 hinges
 
     const minifix = bom.find((i) => i.sku === MINIFIX.SKU);
-    expect(minifix?.quantity).toBe(18); // 6 joints * 3 connectors (depth 560 > 500)
+    // Per side: bottom joint (3 connectors, depth 560 > 500) + front rail (1) + back rail (1) = 5; x2 sides = 10
+    expect(minifix?.quantity).toBe(10);
 
     const dowels = bom.find((i) => i.sku === MINIFIX.DOWEL_SKU);
-    expect(dowels?.quantity).toBe(18);
+    expect(dowels?.quantity).toBe(10);
   });
 
-  it('uses 2 connectors per joint for a shallow (<=500mm) cabinet', () => {
+  it('uses 2 connectors on the bottom joint for a shallow (<=500mm) cabinet', () => {
     const bom = bomFor({ width: 600, height: 720, depth: 400 });
     const minifix = bom.find((i) => i.sku === MINIFIX.SKU);
-    expect(minifix?.quantity).toBe(12); // 6 joints * 2
+    // Per side: bottom joint (2) + front rail (1) + back rail (1) = 4; x2 sides = 8
+    expect(minifix?.quantity).toBe(8);
   });
 
   it('scales hinge quantity with door count and height breakpoint', () => {
@@ -110,5 +112,13 @@ describe('calculateHardwareBom', () => {
   it('omits handles when includeHandles is disabled', () => {
     const bom = bomFor({ width: 600, height: 720, depth: 560, doors: 1, config: { includeHandles: false } });
     expect(bom.some((i) => i.name.toLowerCase().includes('mâner'))).toBe(false);
+  });
+
+  it('adds a wall-mounting bracket set for cabinetType "wall" and omits it for "base"', () => {
+    const wall = bomFor({ width: 600, height: 720, depth: 560, cabinetType: 'wall' });
+    expect(wall.find((i) => i.sku === WALL_BRACKET.SKU)?.quantity).toBe(2);
+
+    const base = bomFor({ width: 600, height: 720, depth: 560 });
+    expect(base.find((i) => i.sku === WALL_BRACKET.SKU)).toBeUndefined();
   });
 });

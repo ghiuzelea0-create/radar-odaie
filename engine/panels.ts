@@ -1,17 +1,18 @@
 /**
- * Carcass parts: the two side panels, the bottom, the front/back top rails
- * (open-top base-cabinet construction — no full top panel, to leave room
- * for a worktop or sink cutout), and the back panel.
+ * Carcass parts: the two side panels, the bottom, the top (rails for
+ * `base` cabinets — open construction that leaves room for a worktop or
+ * sink cutout; a full panel for `wall` cabinets, which carry no worktop),
+ * and the back panel.
  *
  * The back panel is let into an 8mm-deep groove routed near the rear edge
- * of the sides, rails and bottom, so it is sized to the internal opening
+ * of the sides, top and bottom, so it is sized to the internal opening
  * plus twice the groove depth (it engages the groove on every side).
  */
 import type { Part, ResolvedCabinetInput } from '../models/types.js';
 import { internalHeight, internalWidth } from './formulas.js';
 
 export function calculateCarcassParts(input: ResolvedCabinetInput): Part[] {
-  const { height, depth, material, config } = input;
+  const { height, depth, material, config, cabinetType } = input;
   const { boardThickness, backPanelThickness, backPanelGrooveDepth, railWidth, edgeBandingThickness } = config;
 
   const spanWidth = internalWidth(input.width, config);
@@ -37,15 +38,26 @@ export function calculateCarcassParts(input: ResolvedCabinetInput): Part[] {
     edgeBanding: { top: 0, bottom: 0, left: edgeBandingThickness, right: 0 },
   };
 
-  const rails: Part = {
-    name: 'Traversă sus (față/spate)',
-    length: spanWidth,
-    width: railWidth,
-    quantity: 2,
-    material,
-    thickness: boardThickness,
-    edgeBanding: { top: 0, bottom: 0, left: 0, right: 0 },
-  };
+  const top: Part =
+    cabinetType === 'wall'
+      ? {
+          name: 'Panou sus',
+          length: spanWidth,
+          width: depthCut,
+          quantity: 1,
+          material,
+          thickness: boardThickness,
+          edgeBanding: { top: 0, bottom: 0, left: edgeBandingThickness, right: 0 },
+        }
+      : {
+          name: 'Traversă sus (față/spate)',
+          length: spanWidth,
+          width: railWidth,
+          quantity: 2,
+          material,
+          thickness: boardThickness,
+          edgeBanding: { top: 0, bottom: 0, left: 0, right: 0 },
+        };
 
   const back: Part = {
     name: 'Spate',
@@ -57,5 +69,5 @@ export function calculateCarcassParts(input: ResolvedCabinetInput): Part[] {
     edgeBanding: { top: 0, bottom: 0, left: 0, right: 0 },
   };
 
-  return [sides, bottom, rails, back];
+  return [sides, bottom, top, back];
 }

@@ -39,6 +39,14 @@ export interface CabinetConfig {
 }
 
 /**
+ * `base` — open-top construction (front/back rails, no full top panel),
+ * leaving room for a worktop or sink cutout; typically floor-standing.
+ * `wall` — closed box with a full top panel (like the bottom) plus a
+ * wall-mounting bracket set in the hardware BOM; typically wall-hung.
+ */
+export type CabinetType = 'base' | 'wall';
+
+/**
  * A single drawer requested for the cabinet, ordered top to bottom. The
  * drawer box itself is a pre-fabricated steel system (e.g. Blum TANDEMBOX),
  * so it is resolved as a hardware BOM line, not a cut-list panel — only the
@@ -62,6 +70,8 @@ export interface CabinetInput {
   height: number;
   /** Overall exterior depth of the carcass (side panel depth). */
   depth: number;
+  /** Carcass construction style. Default 'base'. */
+  cabinetType?: CabinetType;
   /** Number of full-overlay doors sharing the front width. Default 0. */
   doors?: number;
   /** Number of adjustable shelves, evenly distributed in the internal height. Default 0. */

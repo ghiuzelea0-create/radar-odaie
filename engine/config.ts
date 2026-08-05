@@ -7,6 +7,7 @@ export function resolveCabinetInput(input: CabinetInput): ResolvedCabinetInput {
     width: input.width,
     height: input.height,
     depth: input.depth,
+    cabinetType: input.cabinetType ?? 'base',
     doors: input.doors ?? 0,
     shelves: input.shelves ?? 0,
     drawers: input.drawers ?? [],
