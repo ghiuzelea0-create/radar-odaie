@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Sunset Projector LED",
+    "name": "Lampă Mushroom din Ceramică Pictată Manual",
     "cat": "iluminat",
     "catName": "Iluminat",
-    "price": 189,
-    "desc": "Proiector luminos cu efect apus, ambianță caldă și fotografiabilă instant",
+    "price": 320,
+    "desc": "Lampă ambientală în formă de ciupercă, glazură artizanală, lumină caldă seară",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 91,
-    "deCeTrend": "Viral pe TikTok cu milioane de vizualizări la #sunsetlamp, ideal pentru estetică cozy și dopamine decor.",
-    "sursa": "StrongMocha / TikTok Trends 2026"
+    "deCeTrend": "Categoria 'ambient & sculptural lighting' domină Etsy 2026 și TikTok cozycore cu milioane de vizualizări.",
+    "sursa": "Etsy Trends / TikTok #mushroomlamp"
   },
   {
     "id": 14,
-    "name": "Vază Ceramică Mată Terracotta",
+    "name": "Vază Ceramică Texturată Glazură Reactivă",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 149,
-    "desc": "Vază ceramică mată, nuanțe terracotta și sage, stil organic-modern minimalist",
+    "price": 195,
+    "desc": "Vază artizanală cu glazură reactivă unicat, estetică wabi-sabi minimalistă",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 82,
-    "deCeTrend": "Ceramic vases în matte terracotta și sage green sunt best-sellers constanți în dropshipping 2026, cu cerere explozivă pe Pinterest și Instagram.",
-    "sursa": "AliDropship / CJDropshipping 2026"
+    "deCeTrend": "Ceramica cu glazuri unice și imperfecțiuni artizanale este top-seller pe Etsy și impulsioneaza dopamine decor în 2025–2026.",
+    "sursa": "Etsy Trends / Outfy 2026 Report"
   },
   {
     "id": 15,
-    "name": "Plaid Texturat Bouclé Mocha Mousse",
-    "cat": "textile",
-    "catName": "Textile",
-    "price": 219,
-    "desc": "Pătură plush bouclé în ton mocha, perfectă pentru cozymaxxing și layering textil",
+    "name": "Panou Decorativ Ratan Macramé Boho Mare",
+    "cat": "perete",
+    "catName": "Decor perete",
+    "price": 245,
+    "desc": "Decor perete macramé ratan natural, estetică cottagecore, 60x90cm handmade",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 85,
-    "deCeTrend": "Mocha Mousse este culoarea anului Pantone 2025, iar textilele bouclé domină feedurile de home decor pe TikTok și Pinterest.",
-    "sursa": "Elle Decor / AliDropship 2026"
+    "scorViral": 79,
+    "deCeTrend": "Estetica cottagecore și boho rămâne virală în 2026, cu căutări constante pe TikTok și Pinterest pentru textile naturale pe perete.",
+    "sursa": "CJDropshipping / Pinterest Trends 2026"
   },
   {
     "id": 16,
-    "name": "Panou Macramé Boho Wall Hanging",
-    "cat": "perete",
-    "catName": "Decor perete",
-    "price": 249,
-    "desc": "Macramé artizanal mare, aspect handmade, stil boho-chic pentru perete",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 78,
-    "deCeTrend": "Macramé wall hangings au cerere solidă în 2026, cu marje premium și performanță excelentă pe Pinterest la audiențe cu intenție de cumpărare.",
-    "sursa": "AliDropship / SaleHoo 2026"
-  },
-  {
-    "id": 17,
-    "name": "Lumânare Aromatică Estetică Sculptată",
+    "name": "Difuzor Electric Ceară Parfumată Wax Melt Flameless",
     "cat": "arome",
     "catName": "Arome",
-    "price": 129,
-    "desc": "Lumânare sculptată artizanal, parfumuri premium, design Instagram-worthy cadou",
+    "price": 159,
+    "desc": "Difuzor electric fără flacără pentru cuburi de ceară parfumată, design minimalist",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 87,
-    "deCeTrend": "Lumânările estetice sculptate au trend în creștere accelerată, cu interes de căutare aproape de peak (90/100) și vânzări record în sezon cadouri.",
-    "sursa": "ShipToTheMoon / Bettamax 2026"
+    "deCeTrend": "Alternativa flameless la lumânări explodează pe TikTok home pages drept decor cozy sigur și elegant în 2025.",
+    "sursa": "FastBundle Trending Dropshipping 2026 / TikTok"
+  },
+  {
+    "id": 17,
+    "name": "Pătură Bouclé Premium Mocha Mousse",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 275,
+    "desc": "Pătură texturată bouclé în nuanțe earth-tone Mocha Mousse, soft tactil premium",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 85,
+    "deCeTrend": "Mocha Mousse este culoarea anului Pantone 2025 iar textilele bouclé domină tendința cozymaxxing virală pe toate platformele social.",
+    "sursa": "Pantone 2025 / House Beautiful TikTok Trends"
   }
 ]
