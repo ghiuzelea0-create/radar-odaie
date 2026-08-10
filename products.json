@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Sunset Projector (Atmosferă Aurie)",
+    "name": "Lampă LED Mushroom (Ciupercă) Ambient",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Proiector de lumină caldă, transformă orice cameră în scenă golden-hour",
+    "desc": "Lampă decorativă LED în formă de ciupercă, lumină caldă ambientală",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 92,
-    "deCeTrend": "Viral pe TikTok și Instagram pentru transformările spectaculoase de atmosferă în câteva secunde.",
-    "sursa": "shiptothemoon.com / TikTok 2026"
+    "scorViral": 91,
+    "deCeTrend": "Motivele tip ciupercă/cottagecore explodează pe TikTok și Etsy în 2026, cu cerere masivă Gen Z și Millennials.",
+    "sursa": "Etsy Trends 2026 / TikTok Viral"
   },
   {
     "id": 14,
-    "name": "Vază Ceramică Mată Organică (Terracotta & Sage)",
+    "name": "Set 3 Vaze Ceramice Matte Japandi",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 149,
-    "desc": "Vază sculptural-organică, finisaj mat, culori naturale terracotta și verde sage",
+    "price": 229,
+    "desc": "Set trei vaze ceramice matte, tonuri terracotta, sage green și alb",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Stilul Organic Luxe domină feed-urile de interior 2026, ceramica mată fiind cel mai fotografiat accesoriu.",
-    "sursa": "alidropship.com / woodgrain.com 2026"
+    "deCeTrend": "Trend biophilic design și Japandi continuă să domine în 2026, vazele ceramice sunt best-sellere constante în dropshipping.",
+    "sursa": "AliDrop / CJDropshipping 2026"
   },
   {
     "id": 15,
-    "name": "Covor Texturat Linen Bej Minimal",
+    "name": "Față de Pernă Linen Texturat cu Franjuri",
     "cat": "textile",
     "catName": "Textile",
-    "price": 279,
-    "desc": "Covor din fibre naturale linen, textură tactilă, tonuri muted neutrale minimaliste",
+    "price": 119,
+    "desc": "Față de pernă din in natural cu franjuri, estetică country-luxe 2026",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 78,
-    "deCeTrend": "Textilele din materiale naturale cu textură vizibilă sunt bestseller pe Pinterest și Etsy în 2026.",
-    "sursa": "alidropship.com / stylebyemilyhenderson.com 2026"
+    "scorViral": 79,
+    "deCeTrend": "Designerii confirmă explozia textilelor cu ruffles, franjuri și linen în stilul country-luxe pentru 2026.",
+    "sursa": "Country Living / Pinterest Predicts 2026"
   },
   {
     "id": 16,
-    "name": "Tablou Macramé Boho Wall Art (Handmade Look)",
+    "name": "Poster Art Celestial / Moon Phase cu Ramă Vintage",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 229,
-    "desc": "Decorațiune perete macramé împletit, aspect artizanal, bej natural, format large",
+    "price": 179,
+    "desc": "Print decorativ faze lunare sau constelații, ramă groasă vintage aurie",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 81,
-    "deCeTrend": "Macramé și wall art woven au cerere solidă și marjă premium, lider pe Pinterest cu audiență purchase-intent ridicat.",
-    "sursa": "alidropship.com / teemdrop.com 2026"
+    "scorViral": 83,
+    "deCeTrend": "Decorul astral și ramele vintage groase revin puternic în 2026, cu appeal ridicat în gifting și social media.",
+    "sursa": "Etsy Top Sellers 2026 / Emily Henderson Trends"
   },
   {
     "id": 17,
-    "name": "Difuzor Aromatic Ceramic Smart (Wellness Orb)",
+    "name": "Lumânare Parfumată Premium în Vas de Beton",
     "cat": "arome",
     "catName": "Arome",
-    "price": 319,
-    "desc": "Difuzor ultrasonic ceramic cu iluminat ambient warm, design orb minimalist matte white",
+    "price": 149,
+    "desc": "Lumânare soia parfumată în recipient beton minimalist, aromaterapie premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 87,
-    "deCeTrend": "Tendința wellness-sensory 2026 combină aromă, lumină și sunet într-un obiect decorativ premium pentru livingul de lux.",
-    "sursa": "accio.com / alidropship.com 2026"
+    "scorViral": 80,
+    "deCeTrend": "",
+    "sursa": "Dropified Trending Products 2026 / Etsy"
   }
 ]
