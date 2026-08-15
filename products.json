@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Ciupercă Reșină (Mushroom Lamp)",
+    "name": "Lampă Ciupercă LED Wabi-Sabi",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Lampă decorativă sculptată, lumină caldă ambientală, estetică boho-retro.",
+    "desc": "Lampă de masă organică, formă ciupercă, lumină caldă ambientală premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 92,
-    "deCeTrend": "Virală pe TikTok și Etsy în 2025–2026, perfectă pentru content vizual de tip 'bedroom glow-up'.",
-    "sursa": "TikTok / Etsy / findniche.com"
+    "scorViral": 93,
+    "deCeTrend": "Tendință TikTok virală cu milioane de vizualizări la #mushroomlamp și #cozydecor în 2025-2026.",
+    "sursa": "TikTok / Amazon / homiodecor.com"
   },
   {
     "id": 14,
-    "name": "Set Vaze Ceramice Boho (3 piese)",
+    "name": "Vază Ceramică Nervurată Minimalistă",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 215,
-    "desc": "Set 3 vaze ceramice lucrate manual, tonuri terracota și sage green.",
+    "price": 149,
+    "desc": "Vază ceramică cu textura ribbed, finisaj mat, stil Japandi modern",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 85,
-    "deCeTrend": "Ceramica handmade domină estetica 2026 cu nuanțe naturale calde și textură artizanală virală pe Pinterest.",
-    "sursa": "Etsy / bestcadpapers.com / aboutwallart.com"
+    "scorViral": 81,
+    "deCeTrend": "Estetica Japandi și minimalismul sculptural domină Pinterest și Instagram în 2025-2026.",
+    "sursa": "Pinterest Trends / CJDropshipping / Etsy"
   },
   {
     "id": 15,
-    "name": "Lumânare Parfumată Soy Wax Premium (eucalipt & lemn de cedru)",
+    "name": "Difuzor Aromaterapie cu Efect Flacără",
     "cat": "arome",
     "catName": "Arome",
-    "price": 129,
-    "desc": "Lumânare din ceară de soia, parfum natural, recipient ceramic reutilizabil.",
+    "price": 219,
+    "desc": "Difuzor ultrasonic cu flacără LED realistă, arome premium, design sculptural",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 80,
-    "deCeTrend": "Trend 'wellness home' și 'spa-like vibes' explodează pe TikTok și Instagram în 2025–2026.",
-    "sursa": "roomofinspo.com / TikTok trends 2026"
+    "scorViral": 88,
+    "deCeTrend": "Produsul combină aromaterapia cu iluminatul ambiental, viral pe TikTok ca must-have cozy 2025.",
+    "sursa": "TikTok #AmazonFinds / ideal.house"
   },
   {
     "id": 16,
-    "name": "Panou Decorativ Perete Abstract Canvas (set 3)",
+    "name": "Oglindă Wavy cu Ramă Ondulată",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 249,
-    "desc": "Set 3 tablouri canvas abstracte, tonuri neutre calde, stil modern minimalist.",
+    "price": 279,
+    "desc": "Oglindă decorativă cu formă val, ramă sculptată, estetică dopamină maximalistă",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 83,
-    "deCeTrend": "Tendiința 'plate walls' și 'layered art' domină decorul de perete viral în 2025–2026 pe TikTok.",
-    "sursa": "TikTok / aboutwallart.com / autods.com"
+    "scorViral": 85,
+    "deCeTrend": "Oglinzile wavy sunt senzație TikTok Gen Z, salvate masiv pe Pinterest în trend Dopamine Decor 2025.",
+    "sursa": "TikTok / homiodecor.com / designerandthediyer.com"
   },
   {
     "id": 17,
-    "name": "Pernă Decorativă Textură Bouclé (set 2)",
+    "name": "Pătură Bouclé Textured Throw",
     "cat": "textile",
     "catName": "Textile",
     "price": 169,
-    "desc": "Perne decorative din material bouclé, culori neutre, estetică 'cozymaxxing'.",
+    "desc": "Pătură decorativă bouclé extra-moale, estetică cozymaxxing, culori neutre premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 78,
-    "deCeTrend": "",
-    "sursa": "ElleDecor / TikTok / cjdropshipping.com"
+    "scorViral": 82,
+    "deCeTrend": "Trend cozymaxxing viral 2025 – spațiile draped în throws bouclé domină feed-urile de interior design.",
+    "sursa": "Elle Decor / AOL Viral Trends 2025 / Syncee"
   }
 ]
