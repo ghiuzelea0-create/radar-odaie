@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Rattan cu Lumină Caldă Ambientală",
+    "name": "Lampă Candle Warmer cu Soclu Vintage",
     "cat": "iluminat",
     "catName": "Iluminat",
-    "price": 289,
-    "desc": "Lampă artizanală din rattan, lumină warm, estetică organică naturală",
+    "price": 189,
+    "desc": "Lampă decorativă care topește lumânări fără flacără, design retro elegant",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 87,
-    "deCeTrend": "Materialele naturale ca rattan domină TikTok și Pinterest 2026 sub estetica 'warm minimalism'.",
-    "sursa": "Pinterest 2026 Trend Report / aboutwallart.com"
+    "scorViral": 92,
+    "deCeTrend": "Hashtag-ul #CandleWarmer a depășit 100 milioane vizualizări pe TikTok în 2026, devenind virală ca alternativă sigură și estetică la lumânările clasice.",
+    "sursa": "TikTok / Taste of Home 2026"
   },
   {
     "id": 14,
-    "name": "Set Vaze Ceramice Boho Tonuri Terracotta",
+    "name": "Vază Ceramică Organică Sculptată",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 199,
-    "desc": "Set 3 vaze ceramice handmade, culori pământii, stil boho-organic",
+    "price": 149,
+    "desc": "Vază stoneware mat, forme curbe organice, finisaj artizanal premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 82,
-    "deCeTrend": "Ceramica artizanală și vasele terracotta sunt în top trending 2026 pe Pinterest și Instagram Reels.",
-    "sursa": "bestcadpapers.com / livingspaces.com 2026 Trend Report"
+    "scorViral": 83,
+    "deCeTrend": "Vazele ceramice cu forme sculptate domină Pinterest și Etsy în 2026, ca element esențial al stilului Organic Luxe și Japandi.",
+    "sursa": "Etsy Trends / Outfy 2026"
   },
   {
     "id": 15,
-    "name": "Feță de Pernă Linen Premium cu Broderie Botanică",
+    "name": "Tapiserie Textilă Boho Afrohemian",
     "cat": "textile",
     "catName": "Textile",
-    "price": 119,
-    "desc": "Husă pernă din in natural, broderie botanică mată, nuanțe sage și dusty rose",
+    "price": 229,
+    "desc": "Tapiserie de perete din fibre naturale, motive etnice, estetică boho premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 75,
-    "deCeTrend": "Textilele din in natural cu broderie line-art sunt dominante în decorul 2026 conform Country Living și Pinterest.",
-    "sursa": "mindfulyliving.com / Country Living 2026"
+    "scorViral": 85,
+    "deCeTrend": "",
+    "sursa": "Pinterest Predicts 2026 / Axios"
   },
   {
     "id": 16,
-    "name": "Panou 3D Artă Texturată din Ipsos pe Pânză",
+    "name": "Panou Decor Perete Neodeco Laminat Auriu",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 249,
-    "desc": "Tablou 3D tencuială ipsos, model organic abstract, efect galerie minimalist",
+    "price": 279,
+    "desc": "Panou metalic art-deco modernizat, finisaj alamă, design geometric sculptural",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 90,
-    "deCeTrend": "Arta texturată din ipsos pe canvas este unul dintre cele mai virale DIY de decor perete în 2026 pe TikTok.",
-    "sursa": "nestellahome.com / TikTok HomeDecor 2026"
+    "scorViral": 78,
+    "deCeTrend": "Tendința Neodeco (Art Deco modernizat) explodează pe Pinterest 2026 cu căutări masive pentru lămpi pandantiv, alamă și estetică retro-lux.",
+    "sursa": "Pinterest Predicts 2026 / Woodgrain"
   },
   {
     "id": 17,
-    "name": "Lampă Warmer Lumânări cu Difuzor Aromă Soy",
+    "name": "Difuzor Aromaterapie Ceață Rece cu Lumină Ambientală",
     "cat": "arome",
     "catName": "Arome",
     "price": 169,
-    "desc": "Lampă warmer cu lumânare soy, dublă funcție: ambianță și aromă naturală",
+    "desc": "Difuzor ceramic cu LED warm, uleiuri esențiale, efect spa la tine acasă",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 88,
-    "deCeTrend": "",
-    "sursa": "imaginedbyra.com / sellthetrend.com 2026"
+    "deCeTrend": "Consumatorii înlocuiesc experiențele spa cu soluții premium de wellness acasă, produsele de aromaterapie înregistrând creșteri de 300% în volum de căutări în 2026.",
+    "sursa": "Dropified / CJDropshipping 2026"
   }
 ]
