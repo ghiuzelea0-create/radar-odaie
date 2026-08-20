@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+{% set r = record.rezultat %}
+<h2>{{ record.denumire }}</h2>
+<p class="muted">Categorie: {{ record.input.categorie }}</p>
+
+<div class="card">
+  <h3>Concept</h3>
+  <p><strong>Descriere:</strong> {{ record.input.descriere or "—" }}</p>
+  <p><strong>Diferentiere fata de piata:</strong> {{ record.input.diferentiere or "—" }}</p>
+</div>
+
+{% if r.materiale_fara_pret %}
+<div class="error">
+  <strong>Atentie — materiale fara pret confirmat in nomenclator:</strong>
+  {{ r.materiale_fara_pret|join(", ") }}. Costul de mai jos NU include aceste linii (intra cu 0 RON) — cere oferta reala inainte de a decide pe baza acestui calcul.
+</div>
+{% endif %}
+
+<div class="card">
+  <h3>Materiale</h3>
+  <table>
+    <thead><tr><th>Denumire</th><th>U.M.</th><th>Cant.</th><th>Pret unitar</th><th>Valoare (RON)</th></tr></thead>
+    <tbody>
+    {% for m in r.cost.materiale %}
+      <tr>
+        <td>{{ m.denumire }}</td>
+        <td>{{ m.um }}</td>
+        <td>{{ m.cantitate }}</td>
+        <td>{{ "%.2f"|format(m.pret_unitar) }}</td>
+        <td>{{ "%.2f"|format(m.valoare) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p><strong>Subtotal materiale: {{ "%.2f"|format(r.cost.sinteza.subtotal_materiale) }} RON</strong></p>
+</div>
+
+<div class="card">
+  <h3>Manopera estimata</h3>
+  <table>
+    <thead><tr><th>Faza</th><th>Ore</th><th>Cost/ora</th><th>Valoare (RON)</th></tr></thead>
+    <tbody>
+    {% for m in r.cost.manopera %}
+      <tr><td>{{ m.faza }}</td><td>{{ m.ore }}</td><td>{{ "%.2f"|format(m.cost_ora) }}</td><td>{{ "%.2f"|format(m.valoare) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Sinteza cost</h3>
+  <table>
+    <tbody>
+      <tr><td>Subtotal cost direct</td><td>{{ "%.2f"|format(r.cost.sinteza.subtotal_cost_direct) }} RON</td></tr>
+      <tr><td>Regie</td><td>{{ "%.2f"|format(r.cost.sinteza.regie) }} RON</td></tr>
+      <tr><td><strong>Cost total productie</strong></td><td><strong>{{ "%.2f"|format(r.cost.sinteza.cost_total_productie) }} RON</strong></td></tr>
+      <tr><td>Adaos comercial</td><td>{{ "%.2f"|format(r.cost.sinteza.adaos) }} RON</td></tr>
+      <tr><td>Rezerva de risc</td><td>{{ "%.2f"|format(r.cost.sinteza.rezerva) }} RON</td></tr>
+      <tr><td><strong>Pret sugerat fara TVA</strong></td><td><strong>{{ "%.2f"|format(r.cost.sinteza.pret_vanzare_fara_tva) }} RON</strong></td></tr>
+      <tr><td><strong>Pret sugerat cu TVA</strong></td><td><strong>{{ "%.2f"|format(r.cost.sinteza.pret_total_cu_tva) }} RON</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+{% if r.evaluare_piata %}
+{% set ev = r.evaluare_piata %}
+<div class="card">
+  <h3>Evaluare fata de pretul tinta de piata</h3>
+  <table>
+    <tbody>
+      <tr><td>Pret tinta (cu TVA)</td><td>{{ "%.2f"|format(ev.pret_tinta_cu_tva) }} RON</td></tr>
+      <tr><td>Pret tinta (fara TVA)</td><td>{{ "%.2f"|format(ev.pret_tinta_fara_tva) }} RON</td></tr>
+      <tr><td>Marja la pretul tinta</td><td>{{ "%.2f"|format(ev.marja_la_pret_tinta_ron) }} RON ({{ "%.1f"|format(ev.marja_la_pret_tinta_pct * 100) }}%)</td></tr>
+      <tr><td>Prag marja minima</td><td>{{ "%.1f"|format(ev.prag_marja_minima * 100) }}%</td></tr>
+      <tr><td>Verdict</td><td>
+        {% if ev.verdict.startswith("FEZABIL") %}<span class="badge ok">{{ ev.verdict }}</span>
+        {% elif ev.verdict.startswith("ATENTIE") %}<span class="badge warn">{{ ev.verdict }}</span>
+        {% else %}<span class="badge alert">{{ ev.verdict }}</span>{% endif %}
+      </td></tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<a href="{{ url_for('produse_lista') }}" class="muted">&larr; Inapoi la Product Design</a>
+{% endblock %}

@@ -1,7 +1,7 @@
-# ARCA — Costing & Ofertare + Proiectare + Management
+# ARCA — Costing & Ofertare + Proiectare + Management + Product Design
 
 Aplicație web + agent Claude pentru arhitectura ARCA AI ORCHESTRATOR (Arca Interiors /
-Arca Fancons SRL). Implementează patru module funcționale, pe baza datelor reale din
+Arca Fancons SRL). Implementează cinci module funcționale, pe baza datelor reale din
 fișierele Excel încărcate:
 
 - **Costing & Ofertare** — calculul de deviz, oferta comercială pentru client și
@@ -17,11 +17,15 @@ fișierele Excel încărcate:
 - **Management** — calculator de termen realist, registru de proiecte, jurnal de flux,
   jurnal de cauze de întârziere cu analiză Pareto și 7 KPI, pe baza datelor din
   `arcaflux.xlsx`.
+- **Product Design** — evaluare rapidă de concepte de produs noi (mobilier, iluminat,
+  accesorii), reutilizând nomenclatorul real de materiale/manoperă din Costing —
+  singurul modul fără fișier Excel sursă propriu (nu a fost încărcat unul; vezi mai jos).
 
 Motoarele de calcul (`costing_engine.py`, `design_engine.py`, `proiect_engine.py`,
-`management_engine.py`) replică exact formulele din workbook-urile originale —
-validate prin teste automate (`tests/`) care reproduc cifră cu cifră exemplele reale
-din toate cele patru fișiere.
+`management_engine.py`, `product_design_engine.py`) replică exact formulele din
+workbook-urile originale sau reutilizează un motor deja validat — testate automat
+(`tests/`), cu rezultate care reproduc cifră cu cifră exemplele reale din toate cele
+patru fișiere Excel.
 
 ## Instalare
 
@@ -196,6 +200,46 @@ proiecte (medie a `termen realizat - data comandă`), nu din coloanele granulare
 foii JURNAL FLUX din workbook (care nu erau vizibile complet la extragere) — validat
 cifră cu cifră (28 zile) față de exemplul real din fișier.
 
+## Modulul Product Design
+
+Singurul modul fără fișier Excel sursă — nu a fost încărcat un `arcaproductdesign.xlsx`.
+Pagina „Product Design" (`/produse`) evaluează rapid un concept de produs nou, fără să
+inventeze o metodologie separată: reutilizează motorul deja validat din Costing
+(`costing_engine.calculeaza_deviz`), tratând conceptul ca pe un mini-deviz fără client
+sau logistică de montaj.
+
+- Completezi denumire, categorie (Mobilier / Iluminat / Accesoriu), descriere,
+  diferențiere față de piață, materiale + manoperă estimată (din același nomenclator ca
+  în Costing), și opțional un preț țintă de piață (dacă ai un reper de la concurență).
+- Aplicația calculează costul de producție, prețul sugerat (cu regie, adaos, rezervă,
+  TVA) și, dacă ai completat prețul țintă, marja rezultată la acel preț cu un verdict
+  (FEZABIL / ATENȚIE / SUB PRAG).
+- **Materiale fără preț confirmat** (lemn masiv, metal, iluminat — categorii care NU
+  există în `arcacosting.xlsx` original) sunt semnalate explicit pe pagina de detaliu,
+  nu ascunse: intră în calcul cu cost 0 RON, cu un avertisment clar să ceri ofertă reală
+  înainte de a decide pe baza cifrelor.
+
+Am adăugat 7 poziții placeholder în `data/materiale.json` pentru aceste categorii
+(lemn masiv stejar, profil metalic, vopsire electrostatică, bandă/driver LED, set
+electric) — toate cu preț `null` și sursa marcată „PRET NEPUBLICAT — de cerut", exact
+ca modelul deja folosit în nomenclatorul original pentru LEGRABOX/Hafele. Nu am
+inventat niciun preț.
+
+### Trei concepte demonstrative
+
+Create prin aplicație, ca test end-to-end al modulului (vezi capturile trimise în
+conversație):
+
+| Concept | Categorie | Cost producție | Preț sugerat cu TVA | Notă |
+|---|---|---|---|---|
+| Etajeră suspendată lemn masiv + suport metalic | Mobilier | 163,60 RON | 267,23 RON | Lemn masiv + metal — materiale fără preț confirmat |
+| Corp mic depozitare, decor lemn + picioare metalice | Mobilier | 953,17 RON | 1.557,00 RON | PAL Egger + balama Blum reale; doar picioarele metalice sunt placeholder |
+| Aplică de perete lemn masiv + LED | Iluminat | 173,21 RON | 282,94 RON | Corp lemn masiv + componente electrice, toate placeholder |
+
+Aceste cifre nu sunt oferte — reflectă costul de producție cu materialele placeholder la
+0 RON. Prețul real de vânzare nu poate fi stabilit până nu se obțin ofertele de la
+furnizorii de cherestea, confecții metalice și componente electrice.
+
 ## Ipoteze și limite ale datelor (din foaia SURSE DATE a workbook-ului original)
 
 Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
@@ -222,5 +266,7 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
 
 ## Ce nu acoperă această versiune
 
-Nu sunt incluse încă (rămân pentru etape ulterioare): modulele Web Design și Product
-Design din arhitectura ARCA AI ORCHESTRATOR — nu au fișiere de date reale asociate.
+Modulul **Web Design** nu are un echivalent aici, în `arca-app` — a fost livrat separat,
+ca machetă de website (vezi conversația / repo-ul principal), nu ca instrument de calcul,
+pentru că responsabilitățile lui (strategie, UX, copywriting, SEO) nu se pretează la un
+motor de formule ca celelalte module.
