@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă de ambianță cu proiector apus de soare LED",
+    "name": "Lampă Ambient LED cu Efect Flacără 3D",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Proiector LED aurora colorat, efect apus, pentru dormitor și living",
+    "desc": "Lampă decorativă LED cu flacără simulată, atmosferă premium, minimalistă",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 94,
-    "deCeTrend": "Viral pe TikTok și Instagram cu milioane de vizualizări, creează ambianță fotografiabilă instant.",
-    "sursa": "CJDropshipping / AliDrop 2026"
+    "scorViral": 92,
+    "deCeTrend": "Iluminatul ambient smart domină TikTok și Pinterest în 2026, cu cerere explozivă pentru produse vizuale și instagramabile.",
+    "sursa": "CJDropshipping / ProductLair 2026"
   },
   {
     "id": 14,
-    "name": "Set vaze ceramice mate terracotta și sage green",
+    "name": "Set Vaze Ceramice Matte Organic (3 piese)",
     "cat": "ceramica",
     "catName": "Ceramică",
     "price": 229,
-    "desc": "Set 3 vaze ceramice matte, forme organice, culori naturale premium",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 82,
-    "deCeTrend": "Trendul biophilic design și Organic Luxe 2026 plasează ceramica naturală în centrul decorului.",
-    "sursa": "AliDrop / Decorilla Trends 2026"
-  },
-  {
-    "id": 15,
-    "name": "Tablou macramé XXL cu franjuri boho handmade",
-    "cat": "perete",
-    "catName": "Decor perete",
-    "price": 279,
-    "desc": "Decor perete macramé mare, textură naturală, stil boho-luxe artizanal",
+    "desc": "Set trio vaze ceramice matte, tonuri terracota și sage, stil biofil",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Tendința Afrohemian și boho-chic pe Pinterest crește 220%, textilele organice domină decorurile 2026.",
-    "sursa": "Pinterest Trend Report 2026 / Axios"
+    "deCeTrend": "Trendul biophilic design și 'organic luxe' din 2026 a transformat vazele ceramice matte în bestseller constant pe toate platformele.",
+    "sursa": "AliDropship / Decorilla Trends 2026"
   },
   {
-    "id": 16,
-    "name": "Difuzor aromatic cu umidificator și LED ambianță",
+    "id": 15,
+    "name": "Difuzor Ceramic Aromaterapie cu Uleiuri Esențiale",
     "cat": "arome",
     "catName": "Arome",
-    "price": 219,
-    "desc": "Difuzor ultrasonic uleiuri esențiale cu lumină LED colorată, design minimalist",
+    "price": 159,
+    "desc": "Difuzor ceramic handmade tip lampă, distribuie arome naturale premium ore întregi",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 88,
-    "deCeTrend": "Consumatorii investesc în experiențe spa acasă, wellness-ul casnic fiind cel mai rapid trend 2026.",
-    "sursa": "Dropified Trending Products 2026"
+    "deCeTrend": "Difuzoarele ceramice de aromatearpie sunt virale pe TikTok în 2026, alimentate de tendința 'luxury hotel scent at home'.",
+    "sursa": "TikTok / Walmart / Vacemry 2026"
+  },
+  {
+    "id": 16,
+    "name": "Panou Decorativ Perete Macrame Boho Premium",
+    "cat": "perete",
+    "catName": "Decor perete",
+    "price": 249,
+    "desc": "Macrame mare, lucrat manual, estetică boho, accent textil pentru perete",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 83,
+    "deCeTrend": "Estetica Afrohemian și Boho cu fibre naturale a crescut cu 220% pe Pinterest, dominând decorurile de perete în 2026.",
+    "sursa": "Pinterest Trend Report 2026 / Axios"
   },
   {
     "id": 17,
-    "name": "Panou decorativ perete 3D din lemn - motiv geometric",
-    "cat": "perete",
-    "catName": "Decor perete",
-    "price": 349,
-    "desc": "Panou sculptural 3D din lemn, geometrie modernă, accent perete living",
+    "name": "Pătură Textilă Heirloom cu Franjuri și Pliseu",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 279,
+    "desc": "Pătură premium cu franjuri și pliseu, estetică country-luxe, caldă și fotografiabilă",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 80,
-    "deCeTrend": "Formele sculpturale organice și materialele naturale tactile sunt definitorii pentru interioarele 2026.",
-    "sursa": "Woodgrain / Decorilla Interior Trends 2026"
+    "deCeTrend": "",
+    "sursa": "Emily Henderson / Country Living 2026"
   }
 ]
