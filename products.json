@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Ambient LED cu Efect Flacără 3D",
+    "name": "Lampă de Încălzire Lumânări (Candle Warmer Lamp)",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Lampă decorativă LED cu flacără simulată, atmosferă premium, minimalistă",
+    "desc": "Lampă elegantă care topește lumânarea fără flacără, aromă intensă și constantă",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 92,
-    "deCeTrend": "Iluminatul ambient smart domină TikTok și Pinterest în 2026, cu cerere explozivă pentru produse vizuale și instagramabile.",
-    "sursa": "CJDropshipping / ProductLair 2026"
+    "scorViral": 91,
+    "deCeTrend": "Viral pe TikTok și Pinterest în 2026 ca alternativă premium la lumânările obișnuite, cu estetică fotografiabilă și siguranță sporită.",
+    "sursa": "thedecordash.com / cjdropshipping.com"
   },
   {
     "id": 14,
-    "name": "Set Vaze Ceramice Matte Organic (3 piese)",
+    "name": "Set Vaze Ceramice Matte Terracotta (3 piese)",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 229,
-    "desc": "Set trio vaze ceramice matte, tonuri terracota și sage, stil biofil",
+    "price": 159,
+    "desc": "Set trio de vaze matte în tonuri terracotta, mocha și dusty blush, organic modern",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 85,
-    "deCeTrend": "Trendul biophilic design și 'organic luxe' din 2026 a transformat vazele ceramice matte în bestseller constant pe toate platformele.",
-    "sursa": "AliDropship / Decorilla Trends 2026"
+    "deCeTrend": "Bestseller constant în 2026 pe Etsy și dropshipping, perfect pentru estetica midiminimalism și Organic Luxe dominantă pe social media.",
+    "sursa": "alidropship.com / thedecordash.com"
   },
   {
     "id": 15,
-    "name": "Difuzor Ceramic Aromaterapie cu Uleiuri Esențiale",
-    "cat": "arome",
-    "catName": "Arome",
-    "price": 159,
-    "desc": "Difuzor ceramic handmade tip lampă, distribuie arome naturale premium ore întregi",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 88,
-    "deCeTrend": "Difuzoarele ceramice de aromatearpie sunt virale pe TikTok în 2026, alimentate de tendința 'luxury hotel scent at home'.",
-    "sursa": "TikTok / Walmart / Vacemry 2026"
-  },
-  {
-    "id": 16,
-    "name": "Panou Decorativ Perete Macrame Boho Premium",
+    "name": "Macramé Wall Hanging Boho Premium",
     "cat": "perete",
     "catName": "Decor perete",
-    "price": 249,
-    "desc": "Macrame mare, lucrat manual, estetică boho, accent textil pentru perete",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 83,
-    "deCeTrend": "Estetica Afrohemian și Boho cu fibre naturale a crescut cu 220% pe Pinterest, dominând decorurile de perete în 2026.",
-    "sursa": "Pinterest Trend Report 2026 / Axios"
-  },
-  {
-    "id": 17,
-    "name": "Pătură Textilă Heirloom cu Franjuri și Pliseu",
-    "cat": "textile",
-    "catName": "Textile",
-    "price": 279,
-    "desc": "Pătură premium cu franjuri și pliseu, estetică country-luxe, caldă și fotografiabilă",
+    "price": 219,
+    "desc": "Suspensie macramé artizanală cu franjuri, aspect handmade, nuanțe naturale calde",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 80,
+    "deCeTrend": "Cerere solidă și în creștere în 2026 pe Pinterest și Instagram, aspect handcrafted cu marjă mare față de prețul de achiziție.",
+    "sursa": "alidropship.com / teemdrop.com"
+  },
+  {
+    "id": 16,
+    "name": "Difuzor Aromatic Ceramic cu Ultrasunete Design Sculptural",
+    "cat": "arome",
+    "catName": "Arome",
+    "price": 249,
+    "desc": "Difuzor ceramic cu forme organice sculpturale, ceață rece, LED ambient incorporat",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 87,
+    "deCeTrend": "Combina trendurile 2026 de forme sculpturale organice cu wellness-ul și aroma-decor, viral pe TikTok prin efectul vizual al ceții.",
+    "sursa": "alidropship.com / salehoo.com"
+  },
+  {
+    "id": 17,
+    "name": "Set Huse Perne Decorative Linen Texturat (4 buc)",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 139,
+    "desc": "Huse perne din in texturat, nuanțe nisip, olive și ruginiu, lavabile la mașină",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 78,
     "deCeTrend": "",
-    "sursa": "Emily Henderson / Country Living 2026"
+    "sursa": "thedecordash.com / alidropship.com"
   }
 ]
