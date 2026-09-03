@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Ciupercă LED din Rășină (Mushroom Lamp)",
+    "name": "Lampă Ambient LED cu Proiector de Apus (Sunset Lamp)",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Lampă ambient cottagecore cu led cald, formă organică din rășină",
+    "desc": "Proiector LED care creează un apus auriu spectaculos în orice cameră",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 91,
-    "deCeTrend": "Explozia estetică cottagecore pe TikTok și Pinterest a generat interes masiv pentru decor cu motive de ciuperci în 2026.",
-    "sursa": "TikTok / Etsy / StrongMocha"
+    "scorViral": 93,
+    "deCeTrend": "Viral pe TikTok și Instagram cu milioane de vizualizări datorită efectului vizual dramatic și fotografiabil.",
+    "sursa": "CJDropshipping / AliDropship 2026"
   },
   {
     "id": 14,
-    "name": "Vază Ceramică Terracotta cu Forme Organice",
+    "name": "Set Vaze Ceramice Matte Trio (alb/teracotă/sage)",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 149,
-    "desc": "Vază stoneware mată artizanală în tonuri terracotta, siluetă sculpturală",
+    "price": 219,
+    "desc": "Set 3 vaze ceramice matte în mărimi gradate, stil organic minimalist",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 85,
-    "deCeTrend": "Ceramica handmade în culori pământii este coloana vertebrală a esteticii 'midiminimalism' dominant în 2026.",
-    "sursa": "Etsy / AboutWallArt / TheDecorDash"
+    "scorViral": 82,
+    "deCeTrend": "Tendința biophilic design și wellness interior împinge cererea pentru ceramică naturală în 2026.",
+    "sursa": "AliDropship / Syncee 2026"
   },
   {
     "id": 15,
-    "name": "Lampă de Încălzit Lumânări (Candle Warmer Lamp)",
+    "name": "Difuzor Ceramic cu Uleiuri Esențiale (stil hotel de lux)",
     "cat": "arome",
     "catName": "Arome",
-    "price": 219,
-    "desc": "Lampă cu bec care topește lumânarea fără flacără, aromă constantă",
+    "price": 159,
+    "desc": "Difuzor ceramic handmade cu parfum de hotel, fără flacără, reîncărcabil",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 94,
-    "deCeTrend": "Este unul dintre cele mai rapide produse în creștere din decor 2026, viral pe TikTok și Amazon ca alternativă sigură la lumânări.",
-    "sursa": "TheDecorDash / Amazon Best Sellers 2026"
+    "scorViral": 90,
+    "deCeTrend": "Tendința 'hotel scent at home' explodează pe TikTok Shop cu zeci de mii de recenzii virale.",
+    "sursa": "TikTok Shop / CJDropshipping 2026"
   },
   {
     "id": 16,
-    "name": "Set Huse Perne Linen Washed (Bej / Sage)",
-    "cat": "textile",
-    "catName": "Textile",
-    "price": 129,
-    "desc": "Huse perne din in spălat, textura moale, tonuri neutre pământii",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 80,
-    "deCeTrend": "Inul fotografiază excepțional și domină estetica 'New Rustic Revival', cu creșteri masive pe Pinterest și Instagram în 2026.",
-    "sursa": "TheDecorDash / RoomOfInspo / Pinterest Trends 2026"
-  },
-  {
-    "id": 17,
-    "name": "Oglindă Decorativă cu Ramă Neregulată (Organic Shape Mirror)",
+    "name": "Panou Decorativ Perete Mozaic Ceramic cu LED Integrat",
     "cat": "perete",
     "catName": "Decor perete",
     "price": 349,
-    "desc": "Oglindă perete cu ramă asimetrică sculptată, finish vintage-luxe",
+    "desc": "Oglindă/panou de perete artizanal cu fragmente ceramice și LED-uri pulsante",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 88,
-    "deCeTrend": "Social media caută obsesiv piese 'Instagrammable' cu forme organice, iar oglinzile statement cu rame neregulate domină feed-urile de interior 2026.",
-    "sursa": "Decorilla / TikTok HomeDecor2026"
+    "scorViral": 85,
+    "deCeTrend": "Designerii și influencerii promovează pereții sculptural-statement ca fundal Instagrammabil în 2026.",
+    "sursa": "Decorilla Trends / Eprolo 2026"
+  },
+  {
+    "id": 17,
+    "name": "Cuvertură Textilă Heirloom cu Franjuri (stil Afrohemian)",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 279,
+    "desc": "Cuvertură bumbac artizanală cu franjuri și motive etnice, paletă caldă premium",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 80,
+    "deCeTrend": "Pinterest raportează +220% căutări pentru Afrohemian decor, cu textilele naturale în centrul tendinței.",
+    "sursa": "Pinterest Trends 2026 / Syncee"
   }
 ]
