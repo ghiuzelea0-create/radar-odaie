@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Ambient LED cu Proiector de Apus (Sunset Lamp)",
+    "name": "Lampă Ambientală Smart cu LED Sunset",
     "cat": "iluminat",
     "catName": "Iluminat",
     "price": 189,
-    "desc": "Proiector LED care creează un apus auriu spectaculos în orice cameră",
+    "desc": "Lampă LED proiector apus de soare, control app, RGB, 360°",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 93,
-    "deCeTrend": "Viral pe TikTok și Instagram cu milioane de vizualizări datorită efectului vizual dramatic și fotografiabil.",
-    "sursa": "CJDropshipping / AliDropship 2026"
+    "scorViral": 92,
+    "deCeTrend": "Virală pe TikTok și Instagram datorită efectului vizual spectaculos de apus folosit în decor camere și streaming.",
+    "sursa": "TikTok / CJDropshipping 2026"
   },
   {
     "id": 14,
-    "name": "Set Vaze Ceramice Matte Trio (alb/teracotă/sage)",
+    "name": "Vază Ceramică Texturată Organic Modern",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 219,
-    "desc": "Set 3 vaze ceramice matte în mărimi gradate, stil organic minimalist",
+    "price": 149,
+    "desc": "Vază ceramică nervurată, finisaj mat, stilizare raft minimalist premium",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 82,
-    "deCeTrend": "Tendința biophilic design și wellness interior împinge cererea pentru ceramică naturală în 2026.",
-    "sursa": "AliDropship / Syncee 2026"
+    "scorViral": 88,
+    "deCeTrend": "Explodată pe TikTok Shop și Pinterest 2026 ca dupe Pottery Barn la preț accesibil, stilul organic modern domină.",
+    "sursa": "TikTok / Pinterest Trends 2026"
   },
   {
     "id": 15,
-    "name": "Difuzor Ceramic cu Uleiuri Esențiale (stil hotel de lux)",
-    "cat": "arome",
-    "catName": "Arome",
-    "price": 159,
-    "desc": "Difuzor ceramic handmade cu parfum de hotel, fără flacără, reîncărcabil",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 90,
-    "deCeTrend": "Tendința 'hotel scent at home' explodează pe TikTok Shop cu zeci de mii de recenzii virale.",
-    "sursa": "TikTok Shop / CJDropshipping 2026"
-  },
-  {
-    "id": 16,
-    "name": "Panou Decorativ Perete Mozaic Ceramic cu LED Integrat",
+    "name": "Oglindă Arc / Arch Mirror cu Ramă Aurie",
     "cat": "perete",
     "catName": "Decor perete",
     "price": 349,
-    "desc": "Oglindă/panou de perete artizanal cu fragmente ceramice și LED-uri pulsante",
+    "desc": "Oglindă arcuită de podea, ramă aurie sau neagră, Instagrammable",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 85,
-    "deCeTrend": "Designerii și influencerii promovează pereții sculptural-statement ca fundal Instagrammabil în 2026.",
-    "sursa": "Decorilla Trends / Eprolo 2026"
+    "scorViral": 95,
+    "deCeTrend": "Unul dintre cele mai căutate produse home decor pe TikTok 2026, viral pentru selfie-uri și transformări de cameră.",
+    "sursa": "TikTok #viralmirror / Glimpse Trends 2026"
+  },
+  {
+    "id": 16,
+    "name": "Difuzor Aromatic cu Ratan + Lumânare Soia Luxe",
+    "cat": "arome",
+    "catName": "Arome",
+    "price": 129,
+    "desc": "Set difuzor ratan + lumânare soia parfumată, estetică spa-home premium",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 82,
+    "deCeTrend": "Tendința wellness acasă 2026 împinge cererea de produse spa-like pentru atmosferă calmantă și reorders frecvente.",
+    "sursa": "Dropified / Syncee Trends 2026"
   },
   {
     "id": 17,
-    "name": "Cuvertură Textilă Heirloom cu Franjuri (stil Afrohemian)",
+    "name": "Cuvertură Linen Texturat Warm Minimalism",
     "cat": "textile",
     "catName": "Textile",
-    "price": 279,
-    "desc": "Cuvertură bumbac artizanală cu franjuri și motive etnice, paletă caldă premium",
+    "price": 219,
+    "desc": "Cuvertură pat din linen natural, tonuri neutre calde, textură premium",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 80,
-    "deCeTrend": "Pinterest raportează +220% căutări pentru Afrohemian decor, cu textilele naturale în centrul tendinței.",
-    "sursa": "Pinterest Trends 2026 / Syncee"
+    "deCeTrend": "Estetica warm minimalism și spa-like dominantă pe TikTok 2026 face textilele naturale texturate extrem de căutate.",
+    "sursa": "TikTok #warmminimalism / Decorilla 2026"
   }
 ]
