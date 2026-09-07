@@ -1,67 +1,67 @@
 [
   {
     "id": 13,
-    "name": "Lampă Ambientală cu Ceară (Candle Warmer Lamp)",
+    "name": "Lampă Ciupercă Ceramică LED (Mushroom Lamp)",
     "cat": "iluminat",
     "catName": "Iluminat",
-    "price": 179,
-    "desc": "Lampă estetică ce topește lumânări fără flacără, lumină caldă ambientală",
+    "price": 189,
+    "desc": "Lampă de masă ceramică în formă de ciupercă, lumină caldă ambientală",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 91,
-    "deCeTrend": "Viral pe TikTok și Pinterest în 2026, combină aromele cu iluminatul warm-minimalist într-un singur obiect fotogenic.",
-    "sursa": "thedecordash.com / eprolo.com 2026"
+    "deCeTrend": "Estetica mushroom-core a explodat pe TikTok și a trecut în retailul mainstream în 2026, cu interes Google în creștere semnificativă.",
+    "sursa": "wholesale2b.com / accio.com 2026"
   },
   {
     "id": 14,
-    "name": "Vază Ceramică Organică Set 3 (Terracotta/Bej)",
+    "name": "Vază Ceramică Artizanală Terracotta",
     "cat": "ceramica",
     "catName": "Ceramică",
-    "price": 229,
-    "desc": "Set 3 vaze ceramice cu forme curbe organice, tonuri pământii naturale",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 85,
-    "deCeTrend": "Ceramica artizanală cu forme imperfecte domină estetica midiminimalism și warm-neutral în 2026 pe toate platformele.",
-    "sursa": "outfy.com / my100yearoldhome.com 2026"
-  },
-  {
-    "id": 15,
-    "name": "Set Perne Linen Boucle (Textură Naturală)",
-    "cat": "textile",
-    "catName": "Textile",
     "price": 149,
-    "desc": "Fețe de pernă boucle și linen, texturi naturale în tonuri neutre calde",
-    "img": "LINK_POZA",
-    "tag": "Trending",
-    "scorViral": 78,
-    "deCeTrend": "Textilele naturale linen și boucle sunt elementul-cheie al esteticii New Rustic Revival și warm-minimalism viral în 2026.",
-    "sursa": "aboutwallart.com / thedecordash.com 2026"
-  },
-  {
-    "id": 16,
-    "name": "Panou Macramé Perete Boho Premium",
-    "cat": "perete",
-    "catName": "Decor perete",
-    "price": 199,
-    "desc": "Macramé manual din bumbac, decor perete bohemian cu texturi suprapuse",
+    "desc": "Vază handmade din ceramică în tonuri terracotta, formă organică neregulată",
     "img": "LINK_POZA",
     "tag": "Trending",
     "scorViral": 82,
-    "deCeTrend": "Macramé rămâne viral pe Pinterest și Instagram în 2026, perfect pentru content video de tip room-makeover și home-tour.",
-    "sursa": "outfy.com / aboutwallart.com 2026"
+    "deCeTrend": "Ceramica artizanală cu imperfecțiuni vizibile este cel mai puternic trend global de decor în 2026, susținut de slow living și craftsmanship autentic.",
+    "sursa": "casaserenaliving.com / aboutwallart.com 2026"
+  },
+  {
+    "id": 15,
+    "name": "Huse Perne Decorative din In Natural (Linen Pillow Covers)",
+    "cat": "textile",
+    "catName": "Textile",
+    "price": 119,
+    "desc": "Set 2 huse perne din in natural, tonuri neutre calde, textură premium",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 76,
+    "deCeTrend": "Textilele din in natural domină tendințele 2026 de warm minimalism și slow living promovate masiv pe TikTok și Instagram.",
+    "sursa": "imaginedbyra.com / roomofinspo.com 2026"
+  },
+  {
+    "id": 16,
+    "name": "Panou Decorativ Perete Macramé Boho",
+    "cat": "perete",
+    "catName": "Decor perete",
+    "price": 165,
+    "desc": "Macramé handmade din bumbac natural, decor perete boho minimalist premium",
+    "img": "LINK_POZA",
+    "tag": "Trending",
+    "scorViral": 80,
+    "deCeTrend": "Decorurile de perete renter-friendly fără găuri generează conținut viral before-and-after pe TikTok, dominând segmentul wall decor în 2026.",
+    "sursa": "eprolo.com / aboutwallart.com 2026"
   },
   {
     "id": 17,
-    "name": "Lumânare Soy Turnată Manual cu Recipient Ceramic",
+    "name": "Difuzor Aromaterapie cu Uleiuri Esențiale (Candle Warmer Lamp)",
     "cat": "arome",
     "catName": "Arome",
-    "price": 139,
-    "desc": "Lumânare aromaterapie din ceară soy în vas ceramic artizanal reutilizabil",
+    "price": 175,
+    "desc": "Lampă încălzitor lumânare ceramică, funcție dublă: lumină ambientală și aromă",
     "img": "LINK_POZA",
     "tag": "Trending",
-    "scorViral": 88,
-    "deCeTrend": "Lumânările soy în recipiente ceramice premium captează trendul 'sensory home' și wellness decor, cu cerere repetabilă și marje ridicate.",
-    "sursa": "outfy.com / dropified.com 2026"
+    "scorViral": 85,
+    "deCeTrend": "Produsele de wellness senzorial combinate cu iluminat ambient au crescut 210% pe platformele de trend în 2026, virale prin storytelling emoțional.",
+    "sursa": "sellthetrend.com / imaginedbyra.com 2026"
   }
 ]
