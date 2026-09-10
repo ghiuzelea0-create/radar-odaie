@@ -204,21 +204,47 @@ Date culese public la 25.07.2026 — verifică-le periodic, nu le trata ca fixe:
   1 iulie 2026 (HG 146/2026); CAM 2,25%.
 - **FAPT, dar RETAIL** — prețurile PAL Egger/Kronospan/Kastamonu din nomenclator sunt
   prețuri retail publice (Mathaus, 25.07.2026). Ca producător, prețul de contract e
-  probabil sub aceste valori — completează coloana `pret_contract` în
-  `data/materiale.json` cu prețurile tale reale de la furnizor.
+  probabil sub aceste valori — completează-le în pagina **Nomenclator**.
 - **LIPSĂ** — sertare Blum LEGRABOX și balamale/glisiere Hafele nu au preț public
   (Luxfer/Hafele cer ofertă). Aceste linii apar cu preț 0 în nomenclator — nu introduce
   o cantitate pentru ele într-un deviz real fără să confirmi prețul întâi.
 - **ESTIMARE cu incertitudine medie-mare** — salariile brute pe fază și regiune
   (Nomenclator Manoperă) sunt estimări ancorate pe salariul minim, salariul mediu pe
   economie și anunțuri reale de angajare, NU salarii reale Arca. Înlocuiește-le în
-  `data/manopera.json` sau din pagina „Parametri" cu propriile date înainte de a folosi
-  devizele pentru oferte reale către clienți.
+  pagina **Nomenclator** înainte de a folosi devizele pentru oferte reale.
 - **IPOTEZE editabile** — pierderea tehnologică (10% PAL/MDF, 15% lemn masiv), regia
   (15%), rezerva de risc (5%) și gradul de utilizare productivă (75%) sunt valori de
   pornire. Ajustează-le din pagina „Parametri" la randamentul real al atelierului.
 - **DECIZIE DE BUSINESS** — adaosul comercial (48,85%) nu e o ipoteză tehnică, ci
   alegerea de a ținti o marjă brută de 35%. Vezi „Adaos vs. marjă" mai sus.
+
+## Pagina Nomenclator — trecerea pe datele tale
+
+Marja de 35% se calculează corect, dar pe un cost care nu e încă al Arca: prețuri
+retail de raft și salarii estimate. Pagina **Nomenclator** face trecerea fără editat
+JSON de mână.
+
+- **Preț de contract per material.** Prețul aplicat în devize e cel de contract dacă
+  există, altfel retail. Câmpul golit șterge prețul de contract și readuce retail-ul —
+  singura cale de a corecta o valoare introdusă greșit.
+- **Salarii brute pe fază și regiune**, din care iese costul orar.
+- **Ce mai lipsește.** Din 62 de materiale, doar câteva ajung în devize. Pagina arată
+  câte au preț de contract, câte sunt încă pe retail și — cifra care contează — câte
+  *dintre cele deja folosite în devize* sunt încă pe retail. Restul pot rămâne pe
+  retail fără să afecteze nimic.
+- **Listă de cerut la furnizor** (CSV, separator `;` și BOM — se deschide direct în
+  Excel), cu materialele folosite primele și o coloană goală de completat.
+
+Numerele se scriu și cu virgulă (`370,23`). Un separator de mii singur (`6.200`) e
+**respins**: poate însemna 6,2 sau 6200, iar un salariu citit 6,2 ar prăbuși costul
+manoperei pe toate devizele fără niciun semn. Aplicația cere clarificare în loc să
+ghicească.
+
+Dacă o valoare din formular e greșită, **nu se salvează nimic** — nici măcar rândurile
+corecte. Ce ai scris rămâne în formular, ca să corectezi doar ce e greșit. Scrierile
+sunt atomice: o pană de curent la mijlocul salvării lasă fișierul vechi intact.
+
+Prețurile noi se aplică **devizelor noi**. Cele salvate își păstrează prețurile.
 
 ## Ce nu acoperă această versiune
 

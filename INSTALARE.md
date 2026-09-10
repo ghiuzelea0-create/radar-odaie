@@ -187,9 +187,17 @@ poate vedea proiectele, valorile și marjele. Concret:
   marja-țintă de 35%. Dacă schimbi ținta, pagina îți arată ce adaos îi corespunde;
 - gradul de utilizare productivă (75%).
 
-Acestea sunt **ipoteze de pornire**, nu valorile tale reale. La fel, salariile pe fază din
-nomenclatorul de manoperă sunt estimări ancorate pe salariul minim, nu salariile Arca.
-Înlocuiește-le cu cifrele tale. Detalii în `arca-app/README.md`.
+Acestea sunt **ipoteze de pornire**, nu valorile tale reale.
+
+Apoi intră la **<http://localhost:5000/nomenclator>** și treci pe datele tale:
+
+- **prețurile de contract** de la furnizor (cele din nomenclator sunt prețuri retail de
+  raft — ca producător plătești sub ele);
+- **salariile brute pe fază**, care acum sunt estimări ancorate pe salariul minim.
+
+Pagina îți arată câte materiale mai sunt pe preț retail, dintre care câte au intrat deja
+în devize, și îți dă lista de cerut la furnizor ca fișier pentru Excel.
+Detalii în `arca-app/README.md`.
 
 ---
 
