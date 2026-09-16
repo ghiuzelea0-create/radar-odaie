@@ -11,3 +11,5 @@ data/evenimente_cauze/*.json
 !data/evenimente_cauze/.gitkeep
 data/proiecte_tehnice/*.json
 !data/proiecte_tehnice/.gitkeep
+data/produse/*.json
+!data/produse/.gitkeep

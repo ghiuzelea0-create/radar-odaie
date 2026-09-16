@@ -742,5 +742,89 @@
     "pret_contract": null,
     "specificatie": "Glisiera cu bile, varianta economica",
     "sursa": "Hafele P-01537254 — pret de cerut"
+  },
+  {
+    "cod": "LEMN-STEJAR-BRUT",
+    "denumire": "Lemn masiv stejar brut, uscat in camera",
+    "producator": "De stabilit",
+    "categorie": "Lemn masiv",
+    "um": "mc",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru produse din lemn masiv. NU exista in nomenclatorul original (arcacosting.xlsx) — de completat cu oferta unui furnizor de cherestea inainte de folosire in deviz real.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "LEMN-STEJAR-BLAT",
+    "denumire": "Blat lemn masiv stejar, 40 mm, geluit calibrat",
+    "producator": "De stabilit",
+    "categorie": "Lemn masiv",
+    "um": "mp",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru blaturi/plansee din lemn masiv. De completat cu oferta reala.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "METAL-PROFIL-PATRAT",
+    "denumire": "Profil metalic otel negru 20x20x2 mm",
+    "producator": "De stabilit",
+    "categorie": "Metal",
+    "um": "ml",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru structuri/picioare metalice. De completat cu oferta unui furnizor de confectii metalice.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "METAL-VOPSIRE-PRAF",
+    "denumire": "Vopsire electrostatica in camp electric (praf), pe mp suprafata",
+    "producator": "De stabilit",
+    "categorie": "Metal",
+    "um": "mp",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru finisare structuri metalice (servici extern). De completat cu oferta reala.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "LED-BANDA-24V",
+    "denumire": "Banda LED 24V IP20, alb cald",
+    "producator": "De stabilit",
+    "categorie": "Iluminat",
+    "um": "ml",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru produse cu iluminat integrat. NU exista in nomenclatorul original — de completat cu oferta reala inainte de folosire in deviz.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "LED-DRIVER-24V",
+    "denumire": "Sursa / driver LED 24V, cu telecomanda dimmer",
+    "producator": "De stabilit",
+    "categorie": "Iluminat",
+    "um": "buc",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder. De completat cu oferta reala.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
+  },
+  {
+    "cod": "ELECTRIC-CABLU-FISA",
+    "denumire": "Set cablu alimentare + fisa + intrerupator inline",
+    "producator": "De stabilit",
+    "categorie": "Electric",
+    "um": "set",
+    "suprafata_unitara_mp": null,
+    "pret_retail": null,
+    "pret_contract": null,
+    "specificatie": "Placeholder pentru produse electrice de iluminat. De completat cu oferta reala si certificare CE.",
+    "sursa": "PRET NEPUBLICAT — de cerut"
   }
 ]
