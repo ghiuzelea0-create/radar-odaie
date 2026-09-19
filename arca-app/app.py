@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import csv
+import io
 import json
 import os
 from datetime import date
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, Response, redirect, render_template, request, url_for
 
 from costing_engine import (
     DevizError,
@@ -19,6 +21,14 @@ from costing_engine import (
 )
 from design_engine import CorpError, CorpInput, TIPURI_CONSTRUCTIE, TIPURI_INCHIDERE_SUS, SISTEME_ASAMBLARE, calculeaza_corp
 from legaturi import coduri_proiecte, compara_marja_ofertata, devize_pentru_proiect, total_ofertat
+from nomenclator import (
+    adnoteaza_materiale,
+    aplica_preturi_contract,
+    aplica_salarii,
+    formateaza_numar,
+    randuri_cerere_oferta,
+    sumar_preturi,
+)
 from management_engine import (
     CODURI_TRASABILITATE,
     FAZE_FLUX,
@@ -59,6 +69,10 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 app = Flask(__name__)
 
+# Campurile de formular reafiseaza numerele fara zerouri inutile: altfel un
+# salariu scris „6200" s-ar intoarce ca „6200.0" si ar parea schimbat.
+app.jinja_env.filters["numar"] = formateaza_numar
+
 # Valoarea din selectorul de proiect care inseamna „scriu codul de mana".
 # Devizele se fac uneori inainte ca proiectul sa fie inregistrat, asa ca nu
 # putem obliga alegerea din registru.
@@ -75,9 +89,24 @@ def _incarca_nomenclatoare():
     return parametri, materiale, manopera
 
 
+def _salveaza_json(nume_fisier: str, continut) -> None:
+    """Scriere atomica: fisierul vechi ramane intreg daca scrierea cade la mijloc.
+
+    Nomenclatorul de materiale se editeaza din browser, rand cu rand. O pana de
+    curent in mijlocul salvarii ar lasa un JSON trunchiat, iar aplicatia n-ar
+    mai porni deloc — nu doar pagina aceea.
+    """
+    cale = os.path.join(DATA_DIR, nume_fisier)
+    temporar = f"{cale}.tmp"
+    with open(temporar, "w", encoding="utf-8") as f:
+        json.dump(continut, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(temporar, cale)
+
+
 def _salveaza_parametri(parametri: dict) -> None:
-    with open(os.path.join(DATA_DIR, "parametri.json"), "w", encoding="utf-8") as f:
-        json.dump(parametri, f, ensure_ascii=False, indent=2)
+    _salveaza_json("parametri.json", parametri)
 
 
 @app.route("/")
@@ -119,10 +148,84 @@ def parametri_view():
     )
 
 
-@app.route("/nomenclator")
+CAMPURI_CERERE_OFERTA = [
+    "cod",
+    "denumire",
+    "producator",
+    "specificatie",
+    "um",
+    "pret_retail_referinta",
+    "folosit_in_devize",
+    "pret_contract_ofertat",
+]
+
+
+@app.route("/nomenclator", methods=["GET", "POST"])
 def nomenclator_view():
     _, materiale, manopera = _incarca_nomenclatoare()
-    return render_template("nomenclator.html", materiale=materiale, manopera=manopera)
+    erori: list[str] = []
+
+    if request.method == "POST":
+        materiale_noi, mod_materiale, erori_materiale = aplica_preturi_contract(
+            materiale, lambda cod: request.form.get(f"pret_contract::{cod}")
+        )
+        manopera_noua, mod_manopera, erori_manopera = aplica_salarii(
+            manopera, lambda faza, coloana: request.form.get(f"salariu::{faza}::{coloana}")
+        )
+        erori = erori_materiale + erori_manopera
+
+        if erori:
+            # Nu salvam nimic partial, dar nici nu-i stergem omului ce a scris:
+            # randurile valide raman completate, ca sa corecteze doar ce e gresit.
+            materiale, manopera = materiale_noi, manopera_noua
+        else:
+            if mod_materiale:
+                _salveaza_json("materiale.json", materiale_noi)
+            if mod_manopera:
+                _salveaza_json("manopera.json", manopera_noua)
+            return redirect(
+                url_for(
+                    "nomenclator_view",
+                    salvate=len(mod_materiale) + len(mod_manopera),
+                    doar=request.form.get("doar") or None,
+                )
+            )
+
+    materiale_adnotate = adnoteaza_materiale(materiale, listeaza_devize())
+    sumar = sumar_preturi(materiale_adnotate)
+
+    doar_folosite = request.args.get("doar") == "folosite"
+    afisate = [m for m in materiale_adnotate if m["utilizari"] > 0] if doar_folosite else materiale_adnotate
+
+    return render_template(
+        "nomenclator.html",
+        materiale=afisate,
+        manopera=manopera,
+        sumar=sumar,
+        erori=erori,
+        doar_folosite=doar_folosite,
+        salvate=request.args.get("salvate", type=int),
+    )
+
+
+@app.route("/nomenclator/cerere-oferta.csv")
+def nomenclator_cerere_oferta():
+    """Lista de materiale de trimis furnizorului, ca sa ceri preturi de contract."""
+    _, materiale, _ = _incarca_nomenclatoare()
+    randuri = randuri_cerere_oferta(adnoteaza_materiale(materiale, listeaza_devize()))
+
+    tampon = io.StringIO()
+    scriitor = csv.DictWriter(tampon, fieldnames=CAMPURI_CERERE_OFERTA, delimiter=";")
+    scriitor.writeheader()
+    scriitor.writerows(randuri)
+
+    # BOM + separator ';' — asa deschide Excel-ul romanesc fisierul direct in
+    # coloane, cu diacriticele intregi, fara pasul de import manual.
+    return Response(
+        "﻿" + tampon.getvalue(),
+        mimetype="text/csv; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="cerere-oferta-materiale.csv"'},
+    )
 
 
 @app.route("/corp")
