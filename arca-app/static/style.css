@@ -192,3 +192,21 @@ input, select, textarea {
   padding: 0.9rem 1.1rem;
   margin-bottom: 1rem;
 }
+
+/* Preturi si salarii din tabelul Nomenclator: campuri numerice inguste,
+   ca randul sa ramana citibil cu 6 coloane pe ecran de laptop. */
+input.pret {
+  width: auto;
+  max-width: 9rem;
+  text-align: right;
+}
+
+/* Tabelele cu multe coloane isi fac propriul scroll orizontal, ca pagina sa
+   ramana la latimea ecranului. Fara asta, telefonul micsoreaza tot continutul
+   ca sa incapa tabelul (pagina Nomenclator ajungea la 715 px pe un ecran de
+   390 px) si nu se mai poate citi nimic. */
+.tabel-lat {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tabel-lat table { min-width: 34rem; }

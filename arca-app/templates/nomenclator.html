@@ -1,36 +1,152 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Nomenclator materiale</h2>
-<p class="muted">Egger / Kronospan / Kastamonu (Mathaus) · Blum (Luxfer) · Hafele. Pretul aplicat = pret contract daca exista, altfel pret retail.</p>
-<table>
-  <thead><tr><th>Denumire</th><th>Producator</th><th>Categorie</th><th>U.M.</th><th>Pret retail</th><th>Pret contract</th></tr></thead>
-  <tbody>
-  {% for m in materiale %}
-    <tr>
-      <td>{{ m.denumire }}</td>
-      <td>{{ m.producator }}</td>
-      <td>{{ m.categorie }}</td>
-      <td>{{ m.um }}</td>
-      <td>{{ m.pret_retail if m.pret_retail is not none else "—" }}</td>
-      <td>{{ m.pret_contract if m.pret_contract else "—" }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+<h2>Nomenclator</h2>
+<p class="notice">
+  Pretul aplicat in devize = <strong>pret de contract</strong> daca exista, altfel pret retail.
+  Preturile retail sunt publice (Mathaus), iar salariile sunt estimari ancorate pe salariul minim —
+  nu cifrele Arca. Pana nu le inlocuiesti, marja de 35% se calculeaza corect, dar pe un cost care nu e inca al tau.
+  Modificarile se aplica <strong>devizelor noi</strong>; cele salvate isi pastreaza preturile.
+</p>
 
-<h2 style="margin-top: 2rem;">Nomenclator manopera</h2>
-<table>
-  <thead><tr><th>Faza</th><th>Brut Bucuresti</th><th>Brut Cluj</th><th>Brut Brasov</th><th>Nota</th></tr></thead>
-  <tbody>
-  {% for m in manopera %}
-    <tr>
-      <td>{{ m.faza }}</td>
-      <td>{{ m.brut_bucuresti }}</td>
-      <td>{{ m.brut_cluj }}</td>
-      <td>{{ m.brut_brasov }}</td>
-      <td class="muted">{{ m.nota }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+{% if salvate is not none %}
+  <p class="notice"><span class="badge ok">Salvat</span>
+    {{ salvate }} {{ "valoare actualizata" if salvate == 1 else "valori actualizate" }}.
+    {% if salvate == 0 %}Nu s-a schimbat nimic fata de ce era deja.{% endif %}
+  </p>
+{% endif %}
+
+{% if erori %}
+  <div class="error">
+    <strong>Nu am salvat nimic.</strong> Corecteaza randurile de mai jos si trimite din nou —
+    restul valorilor pe care le-ai scris au ramas completate.
+    <ul>{% for e in erori %}<li>{{ e }}</li>{% endfor %}</ul>
+  </div>
+{% endif %}
+
+<div class="card">
+  <h3>Cat de departe e nomenclatorul de datele tale</h3>
+  <p>
+    {% if sumar.folosite_fara_contract == 0 and sumar.folosite > 0 %}
+      <span class="badge ok">Materialele folosite au pret de contract</span>
+    {% elif sumar.folosite_fara_contract > 0 %}
+      <span class="badge alert">{{ sumar.folosite_fara_contract }} materiale folosite in devize sunt inca la pret retail</span>
+    {% else %}
+      <span class="badge warn">Inca nu exista devize care sa foloseasca materiale</span>
+    {% endif %}
+  </p>
+  <table>
+    <thead><tr><th>Stare</th><th>Materiale</th><th>Ce inseamna</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge ok">pret de contract</span></td>
+        <td>{{ sumar.cu_contract }} / {{ sumar.total }}</td>
+        <td class="muted">Costul e cel real, de la furnizorul tau.</td>
+      </tr>
+      <tr>
+        <td><span class="badge warn">pret retail</span></td>
+        <td>{{ sumar.pe_retail }} / {{ sumar.total }}</td>
+        <td class="muted">Cost supraevaluat: ca producator platesti sub pretul de raft.</td>
+      </tr>
+      <tr>
+        <td><span class="badge alert">fara pret</span></td>
+        <td>{{ sumar.fara_pret }} / {{ sumar.total }}</td>
+        <td class="muted">Intra in deviz cu 0 lei. Nu le folosi fara sa confirmi pretul intai.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    Din {{ sumar.total }} materiale, {{ sumar.folosite }} au intrat pana acum in devize.
+    Doar pentru acelea conteaza pretul de contract — restul pot ramane pe retail fara sa afecteze nimic.
+  </p>
+  <p><a href="{{ url_for('nomenclator_cerere_oferta') }}">Descarca lista de cerut la furnizor (CSV)</a>
+    <span class="muted">— materialele fara pret de contract, cele folosite primele, cu o coloana goala de completat.</span>
+  </p>
+</div>
+
+<form method="post">
+  <input type="hidden" name="doar" value="{{ 'folosite' if doar_folosite else '' }}">
+
+  <h3>Materiale
+    <span class="muted">
+      {% if doar_folosite %}
+        (doar cele folosite in devize) · <a href="{{ url_for('nomenclator_view') }}">arata toate cele {{ sumar.total }}</a>
+      {% elif sumar.folosite %}
+        (toate) · <a href="{{ url_for('nomenclator_view', doar='folosite') }}">arata doar cele {{ sumar.folosite }} folosite in devize</a>
+      {% else %}
+        (toate {{ sumar.total }})
+      {% endif %}
+    </span>
+  </h3>
+  <div class="tabel-lat">
+  <table>
+    <thead>
+      <tr>
+        <th>Denumire</th><th>Producator</th><th>U.M.</th>
+        <th>Pret retail</th><th>Pret contract (RON)</th><th>Folosit</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for m in materiale %}
+      <tr>
+        <td>
+          {{ m.denumire }}
+          {% if m.stare_pret == 'lipsa' %}<span class="badge alert">fara pret</span>{% endif %}
+          {% if m.specificatie %}<br><span class="muted">{{ m.specificatie }}</span>{% endif %}
+        </td>
+        <td>{{ m.producator }}</td>
+        <td>{{ m.um }}</td>
+        <td>{{ m.pret_retail if m.pret_retail is not none else "—" }}</td>
+        <td>
+          <input class="pret" type="text" inputmode="decimal"
+                 name="pret_contract::{{ m.cod }}"
+                 value="{{ m.pret_contract|numar }}"
+                 placeholder="{{ 'retail ' ~ m.pret_retail if m.pret_retail is not none else 'cere oferta' }}"
+                 aria-label="Pret de contract pentru {{ m.denumire }}">
+        </td>
+        <td class="muted">{{ m.utilizari if m.utilizari else "—" }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="6" class="muted">Niciun material folosit inca in devize.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">
+    Lasa campul gol ca sa revii la pretul retail. Poti scrie si cu virgula: <code>370,23</code>.
+    Nu folosi separator de mii — scrie <code>1250</code> sau <code>1250,00</code>, nu <code>1.250</code>
+    (aplicatia nu are cum sti daca inseamna 1250 sau 1,25 si refuza sa ghiceasca).
+  </p>
+
+  <h3 style="margin-top: 2rem;">Manopera — salarii brute lunare (RON)</h3>
+  <p class="muted">
+    Din salariul brut se calculeaza costul orar:
+    <code>(brut x (1 + CAM) + tichete) / (ore nominale x grad de utilizare)</code>.
+    Se aplica coloana regiunii alese in pagina Parametri. Valorile de acum sunt estimari, nu salariile Arca.
+  </p>
+  <div class="tabel-lat">
+  <table>
+    <thead>
+      <tr><th>Faza</th><th>Brut Bucuresti</th><th>Brut Cluj</th><th>Brut Brasov</th><th>Nota</th></tr>
+    </thead>
+    <tbody>
+    {% for m in manopera %}
+      <tr>
+        <td>{{ m.faza }}</td>
+        {% for coloana in ['brut_bucuresti', 'brut_cluj', 'brut_brasov'] %}
+        <td>
+          <input class="pret" type="text" inputmode="decimal"
+                 name="salariu::{{ m.faza }}::{{ coloana }}"
+                 value="{{ m[coloana]|numar }}"
+                 aria-label="{{ coloana }} pentru faza {{ m.faza }}">
+        </td>
+        {% endfor %}
+        <td class="muted">{{ m.nota }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  <button type="submit" style="margin-top: 1rem;">Salveaza nomenclatorul</button>
+</form>
 {% endblock %}
